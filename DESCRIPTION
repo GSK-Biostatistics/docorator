@@ -22,7 +22,8 @@ Imports:
     tidyr,
     lifecycle,
     png,
-    knitr
+    knitr,
+    withr
 Suggests: 
     rprojroot,
     testthat (>= 3.0.0),
