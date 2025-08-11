@@ -23,7 +23,8 @@ Imports:
     lifecycle,
     png,
     knitr,
-    withr
+    withr,
+    quarto
 Suggests: 
     rprojroot,
     testthat (>= 3.0.0),
