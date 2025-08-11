@@ -315,7 +315,7 @@ render_pdf_qmd <- function(x,
             display_name = x$display_name,
             pkg_path = ifelse(testthat::is_testing(),cur_dir,"")
           ),
-          quiet = FALSE)
+          quiet = TRUE)
 
       if (is.null(doc$error) && file.exists(pdf_name)){
 
