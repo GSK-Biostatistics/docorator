@@ -63,4 +63,3 @@ mytbl |>
 # Note
 
 {docorator} requires LaTeX libraries for PDF rendering. If using {tinytex}, the "TinyTeX" bundle covers the core dependencies. 
-dependencies may differ by computing environment.
