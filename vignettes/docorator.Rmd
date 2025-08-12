@@ -1,0 +1,44 @@
+---
+title: "Getting Started"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Getting Started}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+After preparing a table or figure in R, users can easily prepare their display for rendering with a call to `as_docorator`:
+
+```
+library(docorator)
+
+as_docorator(
+  mytbl,
+  display_name = "mytbl"
+)
+```
+
+This will by default save a docorator object in the form of a .RDS file in the current working directory. Users can optionally pass a different directory to save the file and subsequent renders of the object via the `display_loc` argument.
+
+To render this display, the `as_docorator` call is paired with a render function, for example `render_pdf`. 
+
+```
+library(docorator)
+
+as_docorator(
+  mytbl,
+  display_name = "mytbl"
+) |> 
+render_pdf()
+```
+
+Additional customization options can be found in the "Display Sizing" and "Headers and Footers" vignettes.
+
+More customization options will be offered in future releases. If you have a need to customize something that is not currently offered, please file an [issue](https://github.com/GSK-Biostatistics/docorator/issues).

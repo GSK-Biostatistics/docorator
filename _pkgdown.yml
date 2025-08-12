@@ -1,0 +1,37 @@
+template:
+  bootstrap: 5
+navbar:
+  structure:
+    left:
+    - intro
+    - reference
+    - articles
+    - tutorials
+    - news
+    right:
+    - search
+    - github
+    - lightswitch
+  components:
+    reference:
+      text: Reference
+      href: reference/index.html
+    search:
+      search: []
+    news:
+      text: Changelog
+      href: news/index.html
+    intro:
+      text: Get started
+      href: articles/docorator.html
+    articles:
+      text: Articles
+      menu:
+      - text: Display Sizing
+        href: articles/display_sizing.html
+      - text: Document Sizing
+        href: articles/document_sizing.html
+      - text: Headers and Footers
+        href: articles/headers_footers.html
+      - text: Render PDF
+        href: articles/render_pdf.html

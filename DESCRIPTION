@@ -1,0 +1,33 @@
+Package: docorator
+Title: Docorate (decorate + output) displays
+Version: 0.4.0
+Authors@R: 
+    c(person(given = "Becca", family = "Krouse", email = "becca.z.krouse@gsk.com", role = c("aut", "cre")),
+      person(given = "Shannon", family = "Haughton", email = "shannon.l.haughton@gsk.com", role = c("aut")),
+      person("GlaxoSmithKline Research & Development Limited", role = c("cph", "fnd")))
+Description: Frame a table, listing, or figure with decorations and save to an output file.  
+License: file LICENSE
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.2
+Imports: 
+    gt (>= 0.11.0),
+    rmarkdown,
+    rlang,
+    cli,
+    dplyr,
+    rstudioapi, 
+    purrr,
+    stringr,
+    tidyr,
+    lifecycle,
+    png,
+    knitr
+Suggests: 
+    rprojroot,
+    testthat (>= 3.0.0),
+    tfrmt,
+    pdftools,
+    ggplot2
+Config/testthat/edition: 3
+VignetteBuilder: knitr

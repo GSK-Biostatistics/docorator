@@ -1,0 +1,47 @@
+---
+title: "Document Sizing"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Document Sizing}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(docorator)
+```
+
+Document-level sizing can be customized via the `geometry` argument. This argument accepts a named list of options that are used by the underlying [`geometry`](https://texdoc.org/serve/geometry.pdf/0) latex package.
+
+## Default sizing options
+
+The default for the `geometry` package is `geom_set()`, which includes the following settings:
+
+```{r}
+geom_set()
+```
+
+Users can optionally override any defaults by passing new values as such:
+
+```{r}
+geom_set(top = "0.5in", bottom = "0.5in")
+```
+
+
+For values set to `NULL`, {docorator} will perform automatic size calculations. These can be overridden by hardcoded size values.
+
+```{r}
+geom_set(headheight = "20pt")
+```
+
+
+## Advanced use
+
+Advanced users can pass additional geometry settings/values that are not covered by the defaults. These additional settings will be appended to the default list. Reference the `geometry` documentation for more information: https://texdoc.org/serve/geometry.pdf/0.
