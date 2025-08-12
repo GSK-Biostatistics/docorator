@@ -31,7 +31,7 @@ or both of the following render functions which can be piped together: `render_p
 
 ```r
 # install from GitHub
-install.packages("docorator")
+devtools::install_github("GSK-Biostatistics/docorator")
 
 # Load package
 library(docorator) 
