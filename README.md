@@ -30,7 +30,7 @@ or both of the following render functions which can be piped together: `render_p
 # Use
 
 ```r
-# install from Package Manager  
+# install from GitHub
 install.packages("docorator")
 
 # Load package
