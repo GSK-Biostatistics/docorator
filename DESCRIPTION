@@ -30,5 +30,4 @@ Suggests:
     pdftools,
     ggplot2
 Config/testthat/edition: 3
-URL: https://cautious-funicular-4gon3nn.pages.github.io/
 VignetteBuilder: knitr
