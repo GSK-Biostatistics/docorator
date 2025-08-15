@@ -1,6 +1,6 @@
 Package: docorator
 Title: Docorate (decorate + output) displays
-Version: 0.4.0
+Version: 0.4.0.9000
 Authors@R: 
     c(person(given = "Becca", family = "Krouse", email = "becca.z.krouse@gsk.com", role = c("aut", "cre")),
       person(given = "Shannon", family = "Haughton", email = "shannon.l.haughton@gsk.com", role = c("aut")),
@@ -22,7 +22,9 @@ Imports:
     tidyr,
     lifecycle,
     png,
-    knitr
+    knitr,
+    withr,
+    quarto
 Suggests: 
     rprojroot,
     testthat (>= 3.0.0),

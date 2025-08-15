@@ -30,8 +30,14 @@ prep_obj.character <- function(x, transform = NULL, ...) {
 #' @export
 #' @keywords internal
 prep_obj.PNG <- function(x, transform = NULL, ... ) {
+
+  if (Sys.getenv("DOCORATOR_RENDER_ENGINE")=="qmd"){
+    tmpdir <- getwd()
+  } else {
+    tmpdir <- tempdir()
+  }
   # temporarily store png
-  temp <- tempfile(fileext = ".png")
+  temp <- tempfile(fileext = ".png", tmpdir = tmpdir)
   png::writePNG(x$png, temp)
   knitr::include_graphics(path = temp)
 }
@@ -61,25 +67,40 @@ prep_obj.gt_group <- function(x, transform = NULL, ...) {
 #' @noRd
 gt_to_tex <- function(x, transform = NULL){
 
-  if ("latex_use_longtable" %in% x$`_options`$parameter){
-    x <- x |>
-      gt::tab_options(
-        latex.use_longtable = TRUE
-      )
+  if (Sys.getenv("DOCORATOR_RENDER_ENGINE")=="qmd"){
+
+    if ("latex_use_longtable" %in% x$`_options`$parameter){
+      x <- x |>
+        gt::tab_options(
+          latex.use_longtable = FALSE,
+          latex.tbl.pos = "H"
+        )
+    }
+
+    tbl_tex <- x |>
+      gt::as_latex() |> as.character()
+
+  } else {
+
+    if ("latex_use_longtable" %in% x$`_options`$parameter){
+      x <- x |>
+        gt::tab_options(
+          latex.use_longtable = TRUE
+        )
+    }
+
+    tbl_tex <- x |>
+      gt::as_latex() |> as.character()
+
+    # add line for repeated headers if table breaks on multiple pages
+    #  longtable only
+    tbl_tex <- sub("\\\\midrule","\\\\midrule\\\\endhead",tbl_tex)
   }
-
-  tbl_tex <- x |>
-    gt::as_latex() |> as.character()
-
-  # add line for repeated headers if table breaks on multiple pages
-  tbl_tex_head <- sub("\\\\midrule","\\\\midrule\\\\endhead",tbl_tex)
 
   # apply optional latex transform
   if(!is.null(transform)){
-    tbl_tex_head |> transform()
+    tbl_tex |> transform()
   }else{
-    tbl_tex_head
+    tbl_tex
   }
-
-
 }

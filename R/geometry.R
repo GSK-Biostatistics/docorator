@@ -48,7 +48,6 @@ geom_set <- function(...){
 
   args <- list(...)
 
- # args_keep <- args
   # default list
   geom_list <- list(
     paperheight="8.5in",
