@@ -1,7 +1,7 @@
 # docorator 
 
 <!-- badges: start -->
-[![R-CMD-check](https://github.com/GSK-Biostatistics/docorator/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/GSK-Biostatistics/docorator/actions/workflows/R-CMD-check.yaml) 
+[![R-CMD-check](https://github.com/GSK-Biostatistics/docorator/actions/workflows/R-CMD-check.yml/badge.svg)](https://github.com/GSK-Biostatistics/docorator/actions/workflows/R-CMD-check.yml) 
 [![status:
 experimental](https://github.com/GIScience/badges/raw/master/status/experimental.svg)](https://github.com/GIScience/badges#experimental)
 <!-- badges: end -->
