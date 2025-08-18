@@ -106,6 +106,7 @@ hf_to_gt_group <- function(gt_group, header, subheader, footer){
 #' @export
 #' @keywords internal
 hf_extract <- function(x){
+
   # get header and footer information
   header <- x$header
   footer <- x$footer
@@ -124,9 +125,13 @@ hf_extract <- function(x){
 
   # Take footers that are alignment left, remove any missing
   foot_data <- unlist(lapply(footer, function(x){
-    if(!is.na(x$left)){
-      x$left
-    }}))
+
+    #Take all non empty elements
+    footers <- unlist(x)
+
+    footers[!is.na(footers)]
+
+    }))
 
   list(head_data = head_data,
        subhead_data = subhead_data,
