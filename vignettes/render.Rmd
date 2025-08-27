@@ -20,7 +20,7 @@ library(docorator)
 
 Running `as_docorator()` does not render your display - it creates a `docorator` object to store all your display information. For rendering, an explicit call to a render function is needed. A display can be output to PDF, RTF, or both via a combination of the `render_pdf()` and `render_rtf()` functions.
 
-Further, with `render_pdf()`, users have a choice of R Markdown or Quarto engines via the `quarto` option. Currently, the result is nearly identical, except for {gt} tables, where `quarto = FALSE` renders the `gt` via the `longtable` LaTeX library and `quarto = TRUE` via the `tabular` LaTeX library. 
+Further, with `render_pdf()`, users have a choice of R Markdown or Quarto engines via the `quarto` option. Currently, the result is nearly identical, except for {gt} tables, where `quarto = FALSE` renders the `gt` via the `longtable` LaTeX library and `quarto = TRUE` via the `tabular` LaTeX library. Please note the Quarto engine is currently experimental and can take longer to render. 
 
 ## Render to PDF
 

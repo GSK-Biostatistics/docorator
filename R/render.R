@@ -219,10 +219,6 @@ render_rtf <- function(x, display_loc = NULL, remove_unicode_ws = TRUE, use_page
 #' @returns This function saves a pdf to a specified location
 #' @noRd
 #'
-#' @importFrom rmarkdown render
-#' @importFrom cli cli_alert_success cli_warn
-#' @importFrom tools file_ext
-#'
 #' @section Examples:
 #'
 #' ```r
@@ -243,27 +239,6 @@ render_pdf_qmd <- function(x,
                            header_latex = NULL,
                            clean = TRUE){
 
-  if (!inherits(x, "docorator")) {
-    cli_abort("The {.arg {caller_arg(x)}} argument must be class docorator, not {.obj_type_friendly {x}}. See documentation for `as_docorator`.",
-              call = caller_env())
-  }
-
-  # check transform is a function if not convert to NULL
-  if (!is.null(transform) & !inherits(transform, "function")) {
-    cli_warn("The transform argument must be a function, not {.obj_type_friendly {transform}}. No transform applied.",
-             call = caller_env())
-    transform <- NULL
-  }
-
-  # if no path is given, use docorator path
-  if(is.null(display_loc)){
-    display_loc <- x$display_loc
-  }
-
-  # set name if needed
-  if (is.null(x$display_name)){
-    x$display_name <- "docorator"
-  }
   qmd_name <- paste0(x$display_name,".qmd")
   pdf_name <- paste0(x$display_name, ".pdf")
   docorator_name <- paste0(x$display_name, "_docorator_obj.Rds")
@@ -292,13 +267,13 @@ render_pdf_qmd <- function(x,
 
       # copy tex header to temp directory and rename if one exists
       if(!is.null(header_latex)){
-        if(file.exists(header_latex) && file_ext(header_latex) == "tex"){
+        if(file.exists(header_latex) && tools::file_ext(header_latex) == "tex"){
           file_name <- basename(header_latex)
           file.copy(header_latex, getwd(), overwrite = TRUE, recursive = TRUE)
           file.rename(file_name, "header.tex")
         }else{
-          cli_warn("The header_latex argument must point to a valid .tex file. No header options applied.",
-                   call = caller_env())
+          cli::cli_warn("The header_latex argument must point to a valid .tex file. No header options applied.",
+                   call = rlang::caller_env())
         }
       }
 
@@ -325,7 +300,7 @@ render_pdf_qmd <- function(x,
                              overwrite = TRUE)
 
         if (file_ok){
-          cli_alert_success("Document created at: {out_path}")
+          cli::cli_alert_success("Document created at: {out_path}")
         }
       }
 
