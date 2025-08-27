@@ -218,21 +218,6 @@ render_rtf <- function(x, display_loc = NULL, remove_unicode_ws = TRUE, use_page
 #'
 #' @returns This function saves a pdf to a specified location
 #' @noRd
-#'
-#' @section Examples:
-#'
-#' ```r
-#' gt::gtcars |>
-#'   dplyr::slice_head(n = 10) |>
-#'   dplyr::select(mfr, model, year, msrp) |>
-#'   gt::gt(groupname_col = "mfr",
-#'          row_group_as_column = TRUE) |>
-#'   as_docorator(
-#'    header = fancyhead(fancyrow("Header 1"), fancyrow("Header 2")),
-#'    display_name = "mytbl") |>
-#'  render_pdf()
-#' ```
-#'
 render_pdf_qmd <- function(x,
                            display_loc = NULL,
                            transform = NULL,
