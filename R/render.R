@@ -103,7 +103,7 @@ render_pdf <- function(x,
                              quiet = TRUE)
 
     if (!is.null(doc)){
-      cli_alert_success("Document created at: {doc}")
+      cli::cli_alert_success("Document created at: {doc}")
     }
 
     # clean up temp files
@@ -239,6 +239,9 @@ render_pdf_qmd <- function(x,
                            header_latex = NULL,
                            clean = TRUE){
 
+  # create a full path
+  display_loc <- normalizePath(display_loc, winslash = "/")
+
   qmd_name <- paste0(x$display_name,".qmd")
   pdf_name <- paste0(x$display_name, ".pdf")
   docorator_name <- paste0(x$display_name, "_docorator_obj.Rds")
@@ -294,7 +297,7 @@ render_pdf_qmd <- function(x,
 
       if (is.null(doc$error) && file.exists(pdf_name)){
 
-        out_path <- file.path(cur_dir, display_loc, pdf_name)
+        out_path <- file.path(display_loc, pdf_name)
         file_ok <- file.copy(from = pdf_name,
                              to = out_path,
                              overwrite = TRUE)

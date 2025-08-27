@@ -149,7 +149,7 @@ create_chunk <- function(x, fig_dim, transform) {
   ), collapse = '')
 
   new_chunk <- paste0("
-  `","``{r new_chunk", sample.int(10000, 1), ", fig.height=", fig_dim[1], ", fig.width=", fig_dim[2], ", echo=FALSE, results='asis'}",
+  `","``{r new_chunk", sample.int(10000, 1), ", fig.height=", fig_dim[1], ", fig.width=", fig_dim[2], ", echo=FALSE, results='asis', output='asis'}",
                       "\n(",
                       deparsed
                       , ")()",
