@@ -59,18 +59,17 @@ test_that("render to pdf works", {
   if (!dir.exists(temp_dir_path4)){
     dir.create(file.path(rprojroot::is_testthat$find_file(), "tempdir4"))
   }
-  docorator <- as_docorator(
-    x = my_gt,
-    header = fancyhead(fancyrow("first line header"), fancyrow("second line header")),
-    footer = NULL,
-    display_name = "my_first_gt",
-    display_loc = temp_dir_path4,
-    save_object = FALSE
-  )
 
   withr::with_dir(
     file.path(rprojroot::is_testthat$find_file(), "tempdir4"),
     code = {
+      docorator <- as_docorator(
+        x = my_gt,
+        header = fancyhead(fancyrow("first line header"), fancyrow("second line header")),
+        footer = NULL,
+        display_name = "my_first_gt",
+        save_object = FALSE
+      )
       res <- suppressMessages( docorator |> render_pdf(
         quarto = TRUE
       )
