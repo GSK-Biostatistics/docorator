@@ -37,7 +37,7 @@ test_that("render to pdf works", {
 
   expect_true(file.exists(file.path(temp_dir_path2, "my_first_gt.pdf")))
 
-  # quarto render
+  # quarto render with path supplied
   temp_dir_path3 <- file.path(rprojroot::is_testthat$find_file(), "tempdir3")
   if (!dir.exists(temp_dir_path3)){
     dir.create(file.path(rprojroot::is_testthat$find_file(), "tempdir3"))
@@ -54,9 +54,34 @@ test_that("render to pdf works", {
     })
   expect_true(file.exists(file.path(temp_dir_path3, "my_first_gt.pdf")))
 
+  # quarto render with no path supplied
+  temp_dir_path4 <- file.path(rprojroot::is_testthat$find_file(), "tempdir4")
+  if (!dir.exists(temp_dir_path4)){
+    dir.create(file.path(rprojroot::is_testthat$find_file(), "tempdir4"))
+  }
+  docorator <- as_docorator(
+    x = my_gt,
+    header = fancyhead(fancyrow("first line header"), fancyrow("second line header")),
+    footer = NULL,
+    display_name = "my_first_gt",
+    display_loc = temp_dir_path4,
+    save_object = FALSE
+  )
+
+  withr::with_dir(
+    file.path(rprojroot::is_testthat$find_file(), "tempdir4"),
+    code = {
+      res <- suppressMessages( docorator |> render_pdf(
+        quarto = TRUE
+      )
+      )
+    })
+  expect_true(file.exists(file.path(temp_dir_path4, "my_first_gt.pdf")))
+
   unlink(temp_dir_path, recursive = TRUE)
   unlink(temp_dir_path2, recursive = TRUE)
   unlink(temp_dir_path3, recursive = TRUE)
+  unlink(temp_dir_path4, recursive = TRUE)
 
 
 })
