@@ -1,0 +1,13 @@
+pandoc: 3.1.11
+pkgdown: 2.1.3
+pkgdown_sha: ~
+articles:
+  display_sizing: display_sizing.html
+  docorator: docorator.html
+  document_sizing: document_sizing.html
+  headers_footers: headers_footers.html
+  render: render.html
+last_built: 2025-08-29T09:05Z
+urls:
+  reference: https://gsk-biostatistics.github.io/docorator/reference
+  article: https://gsk-biostatistics.github.io/docorator/articles
