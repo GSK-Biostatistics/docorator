@@ -1,4 +1,5 @@
-# docorator 
+# docorator <a href='https://gsk-biostatistics.github.io/docorator/'><img src="man/figures/docorator_hex.png" align="right" alt = "docorator logo" style="height:139px;"/></a>
+
 
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/GSK-Biostatistics/docorator/actions/workflows/R-CMD-check.yml/badge.svg)](https://github.com/GSK-Biostatistics/docorator/actions/workflows/R-CMD-check.yml) 
