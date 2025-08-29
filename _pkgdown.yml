@@ -35,4 +35,4 @@ navbar:
       - text: Headers and Footers
         href: articles/headers_footers.html
       - text: Render PDF
-        href: articles/render_pdf.html
+        href: articles/render.html
