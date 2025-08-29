@@ -1,8 +1,6 @@
 url: https://gsk-biostatistics.github.io/docorator/
 template:
   bootstrap: 5
-development:
-  mode: auto
 navbar:
   structure:
     left:
@@ -27,6 +25,9 @@ navbar:
     intro:
       text: Get started
       href: articles/docorator.html
+    development:
+      mode: auto
+      version_label: default
     articles:
       text: Articles
       menu:
