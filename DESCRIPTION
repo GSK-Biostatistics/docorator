@@ -33,3 +33,5 @@ Suggests:
     ggplot2
 Config/testthat/edition: 3
 VignetteBuilder: knitr
+URL: https://GSK-Biostatistics.github.io/docorator/, https://github.com/GSK-Biostatistics/docorator
+
