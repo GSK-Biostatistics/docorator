@@ -1,6 +1,7 @@
 test_that("render to pdf works", {
 
-  skip_if_not(interactive())
+  skip_on_cran()
+  skip_on_ci()
 
   my_gt <- gt::exibble |>
     gt::gt(
@@ -87,7 +88,8 @@ test_that("render to pdf works", {
 
 test_that("render to pdf, lists", {
 
-  skip_if_not(interactive())
+  skip_on_cran()
+  skip_on_ci()
 
   png_obj1 <- png_path(path = system.file("extdata/test_image.png", package = "docorator"))
   png_obj2 <- png_path(path = system.file("extdata/test_image.png", package = "docorator"))
@@ -140,7 +142,8 @@ test_that("render to pdf, lists", {
 
 test_that("render to pdf, lists - quarto", {
 
-  skip_if_not(interactive())
+  skip_on_cran()
+  skip_on_ci()
 
   png_obj1 <- png_path(path = system.file("extdata/test_image.png", package = "docorator"))
   png_obj2 <- png_path(path = system.file("extdata/test_image.png", package = "docorator"))
@@ -198,7 +201,8 @@ test_that("render to pdf, lists - quarto", {
 
 test_that("render to rtf works", {
 
-  skip_if_not(interactive())
+  skip_on_cran()
+  skip_on_ci()
 
   my_gt <- gt::exibble |>
     gt::gt(
@@ -320,7 +324,8 @@ test_that("rtf headers",{
 
 test_that("pipe together renders",{
 
-  skip_if_not(interactive())
+  skip_on_cran()
+  skip_on_ci()
 
   my_gt <- gt::exibble |>
     gt::gt(
@@ -353,7 +358,8 @@ test_that("pipe together renders",{
 
 test_that("render non docorator object fails", {
 
-  skip_if_not(interactive())
+  skip_on_cran()
+  skip_on_ci()
 
   my_gt <- gt::exibble |>
     gt::gt(
@@ -365,7 +371,8 @@ test_that("render non docorator object fails", {
 })
 
 test_that("render invalid transform", {
-  skip_if_not(interactive())
+  skip_on_cran()
+  skip_on_ci()
 
   my_gt <- gt::exibble |>
     gt::gt(
@@ -394,7 +401,8 @@ test_that("render invalid transform", {
 })
 
 test_that("render invalid header_latex", {
-  skip_if_not(interactive())
+  skip_on_cran()
+  skip_on_ci()
 
   my_gt <- gt::exibble |>
     gt::gt(
@@ -423,7 +431,8 @@ test_that("render invalid header_latex", {
 })
 
 test_that("render header_latex", {
-  skip_if_not(interactive())
+  skip_on_cran()
+  skip_on_ci()
 
   my_gt <- gt::exibble |>
     gt::gt(
@@ -466,7 +475,8 @@ test_that("render header_latex", {
 
 
 test_that("render keep tex file", {
-  skip_if_not(interactive())
+  skip_on_cran()
+  skip_on_ci()
 
   my_gt <- gt::exibble |>
     gt::gt(

@@ -1,6 +1,7 @@
 test_that("save docorator object works", {
 
-  skip_if_not(interactive())
+  skip_on_cran()
+  skip_on_ci()
 
   my_gt <- gt::exibble |>
     gt::gt(
@@ -37,7 +38,8 @@ test_that("save docorator object works", {
 
 test_that("deprecated - docorate works", {
 
-  skip_if_not(interactive())
+  skip_on_cran()
+  skip_on_ci()
 
   my_gt <- gt::exibble |>
     gt::gt(

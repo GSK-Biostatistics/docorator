@@ -6,7 +6,8 @@ test_that("create PNG object",{
 
 test_that("markdown chunks are created correctly",{
 
-  skip_if_not(interactive())
+  skip_on_cran()
+  skip_on_ci()
 
   png_obj <- png_path(path = system.file("extdata/test_image.png", package = "docorator"))
   chunk_png <- create_chunk(x = png_obj, fig_dim = c(5,8), transform = NULL) |> capture.output()
