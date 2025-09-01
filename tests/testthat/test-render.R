@@ -219,7 +219,8 @@ test_that("rtf headers",{
 
 test_that("render to rtf, lists of figures", {
 
-  skip_if_not(interactive())
+  skip_on_cran()
+  skip_on_ci()
 
   png_obj1 <- png_path(path = system.file("extdata/test_image.png", package = "docorator"))
   png_obj2 <- png_path(path = system.file("extdata/test_image.png", package = "docorator"))
