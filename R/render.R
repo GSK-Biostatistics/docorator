@@ -137,7 +137,7 @@ render_rtf <- function(x, display_loc = NULL, remove_unicode_ws = TRUE, use_page
   }
 
   if(!inherits(x$display, "gt_tbl") & !inherits(x$display, "gt_group")) {
-    cli::cli_abort("rtf render is only enabled for objects of class gt_tbl or gt_grp, not {.obj_type_friendly {x$display}}. See documentation for `render_rtf`.",
+    cli::cli_warn("RTF render is only enabled for objects of class gt_tbl or gt_grp, not {.obj_type_friendly {x$display}}. See documentation for `render_rtf`.",
               call = rlang::caller_env())
   }
 
@@ -153,8 +153,8 @@ render_rtf <- function(x, display_loc = NULL, remove_unicode_ws = TRUE, use_page
     filename <- paste0(x$display_name,".rtf")
   }
 
-  # add headers and footers
-  gt <- hf_to_gt(x)
+  # convert outputs to gt for rtf render
+  gt <- prep_obj_rtf(x)
 
   # page headers
   gt <- apply_to_grp(
