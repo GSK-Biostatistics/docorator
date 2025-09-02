@@ -221,13 +221,18 @@ gg_to_gt <- function(x){
     gt::fmt_image(columns = dplyr::everything(), sep = ",", width = "6in") |>
     # add header and footer information
     gt::tab_header(title = display_info$head_data, subtitle = display_info$subhead_data) |>
-    gt::tab_footnote(footnote = display_info$foot_data) |>
     # remove column headers and borders
     gt::tab_options(
       column_labels.hidden = TRUE,
       table.border.top.style = "hidden",
       table.border.bottom.style = "hidden"
     )
+
+  # add footnotes if not NULL - avoids null row being added
+  if(!is.null(display_info$foot_data)){
+    gt <- gt |>
+      gt::tab_footnote(footnote = display_info$foot_data)
+  }
 
   gt
 

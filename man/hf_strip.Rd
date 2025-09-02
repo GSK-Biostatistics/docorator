@@ -7,7 +7,7 @@
 hf_strip(x)
 }
 \arguments{
-\item{x}{a docorator object with ggplot display}
+\item{x}{a ggplot object}
 }
 \value{
 list of header footer info
