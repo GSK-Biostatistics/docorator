@@ -39,7 +39,7 @@
 <li><a class="dropdown-item" href="articles/display_sizing.html">Display Sizing</a></li>
     <li><a class="dropdown-item" href="articles/document_sizing.html">Document Sizing</a></li>
     <li><a class="dropdown-item" href="articles/headers_footers.html">Headers and Footers</a></li>
-    <li><a class="dropdown-item" href="articles/render.html">Render PDF</a></li>
+    <li><a class="dropdown-item" href="articles/render.html">Render</a></li>
   </ul>
 </li>
 <li class="nav-item"><a class="nav-link" href="news/index.html">Changelog</a></li>
@@ -57,7 +57,7 @@
 </nav><div class="container template-home">
 <div class="row">
   <main id="main" class="col-md-9"><div class="section level1">
-<div class="page-header"><h1 id="docorator-">docorator <a href="https://gsk-biostatistics.github.io/docorator/"><img src="reference/figures/docorator_hex.png" align="right" alt="docorator logo" style="height:139px;"></a>
+<div class="page-header"><h1 id="docorator-">docorator <a href="https://gsk-biostatistics.github.io/docorator/" class="external-link"><img src="reference/figures/docorator_hex.png" align="right" alt="docorator logo" style="height:139px;"></a>
 <a class="anchor" aria-label="anchor" href="#docorator-"></a>
 </h1></div>
 <!-- badges: start -->
@@ -91,7 +91,7 @@
 <span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"GSK-Biostatistics/docorator"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Load package</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://GSK-Biostatistics.github.io/docorator/" class="external-link">docorator</a></span><span class="op">)</span> </span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://GSK-Biostatistics.github.io/docorator/">docorator</a></span><span class="op">)</span> </span>
 <span></span>
 <span><span class="co"># Create table (or figure)</span></span>
 <span><span class="va">mytbl</span> <span class="op">&lt;-</span> <span class="fu">gt</span><span class="fu">::</span><span class="va"><a href="https://gt.rstudio.com/reference/exibble.html" class="external-link">exibble</a></span> <span class="op">|&gt;</span> </span>
@@ -107,7 +107,7 @@
 <span>      <span class="fu"><a href="reference/fancyrow.html">fancyrow</a></span><span class="op">(</span>left <span class="op">=</span> <span class="cn">NA</span>, center <span class="op">=</span> <span class="st">"My Table"</span>, right <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span></span>
 <span>    <span class="op">)</span>,</span>
 <span>    footer <span class="op">=</span> <span class="fu"><a href="reference/fancyfoot.html">fancyfoot</a></span><span class="op">(</span></span>
-<span>      <span class="fu"><a href="reference/fancyrow.html">fancyrow</a></span><span class="op">(</span>left <span class="op">=</span> <span class="fu"><a href="reference/doc_path.html">doc_path</a></span><span class="op">(</span><span class="va">display_name</span>, <span class="va">display_loc</span><span class="op">)</span>, center <span class="op">=</span> <span class="cn">NA</span>, right <span class="op">=</span> <span class="st">"Data as of 2025-01-01"</span><span class="op">)</span></span>
+<span>      <span class="fu"><a href="reference/fancyrow.html">fancyrow</a></span><span class="op">(</span>left <span class="op">=</span> <span class="st">"mypath/mytbl.R"</span>, center <span class="op">=</span> <span class="cn">NA</span>, right <span class="op">=</span> <span class="st">"Data as of 2025-01-01"</span><span class="op">)</span></span>
 <span>    <span class="op">)</span> </span>
 <span>  <span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="reference/render_pdf.html">render_pdf</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
