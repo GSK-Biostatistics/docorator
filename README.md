@@ -51,7 +51,7 @@ mytbl |>
       fancyrow(left = NA, center = "My Table", right = NA)
     ),
     footer = fancyfoot(
-      fancyrow(left = doc_path(display_name, display_loc), center = NA, right = "Data as of 2025-01-01")
+      fancyrow(left = "mypath/mytbl.R", center = NA, right = "Data as of 2025-01-01")
     ) 
   ) |> 
   render_pdf() |>
