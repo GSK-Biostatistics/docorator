@@ -4,6 +4,7 @@ Version: 0.4.0.9000
 Authors@R: 
     c(person(given = "Becca", family = "Krouse", email = "becca.z.krouse@gsk.com", role = c("aut", "cre")),
       person(given = "Shannon", family = "Haughton", email = "shannon.l.haughton@gsk.com", role = c("aut")),
+      person(given = "Seongbin", family = "Hong", email = "seongbin.x.hong@gsk.com", role = c("aut")),
       person("GlaxoSmithKline Research & Development Limited", role = c("cph", "fnd")))
 Description: Frame a table, listing, or figure with decorations and save to an output file.  
 License: file LICENSE
@@ -22,7 +23,9 @@ Imports:
     tidyr,
     lifecycle,
     png,
-    knitr
+    knitr,
+    withr,
+    quarto
 Suggests: 
     rprojroot,
     testthat (>= 3.0.0),
@@ -31,3 +34,7 @@ Suggests:
     ggplot2
 Config/testthat/edition: 3
 VignetteBuilder: knitr
+URL: https://GSK-Biostatistics.github.io/docorator/, https://github.com/GSK-Biostatistics/docorator
+BugReports: https://github.com/GSK-Biostatistics/docorator/issues
+Depends: 
+    R (>= 4.1.0)
