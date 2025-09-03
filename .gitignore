@@ -2,4 +2,8 @@
 .Rhistory
 .RData
 .Ruserdata
-.DS_Store
+inst/doc
+docs
+/doc/
+/Meta/
+*.DS_Store
