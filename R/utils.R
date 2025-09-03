@@ -132,13 +132,13 @@ png_path <- function(path = NULL){
 
 }
 
-#' Create prep_obj code chunks
+#' Create prep_obj_tex code chunks
 #' Taken from https://gist.github.com/MichaelJW/b4a3dd999a47b137d12f42a8f7562b11
 #' @noRd
 create_chunk <- function(x, fig_dim, transform) {
   deparsed <- paste0(deparse(
     function() {
-      prep_obj(x, transform)
+      prep_obj_tex(x, transform)
     }
   ), collapse = '')
 

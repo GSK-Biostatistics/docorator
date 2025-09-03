@@ -21,3 +21,4 @@ filepath to snap of ggplot
 ggplot to image filepath
 Taken from code here: https://github.com/rstudio/gt/blob/6312cf5be92fae41633b5df7d41aa948b850aaf8/R/image.R#L351C1-L392C2
 }
+\keyword{internal}

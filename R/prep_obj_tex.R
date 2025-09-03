@@ -8,28 +8,28 @@
 #' @return object to be included as-is in knitted rmd
 #' @export
 #' @keywords internal
-prep_obj <- function (x, transform = NULL, ...) {
-  UseMethod("prep_obj", x)
+prep_obj_tex <- function (x, transform = NULL, ...) {
+  UseMethod("prep_obj_tex", x)
 }
 
 #' default
 #' @export
 #' @keywords internal
-prep_obj.default <- function(x, transform = NULL, ...) {
+prep_obj_tex.default <- function(x, transform = NULL, ...) {
   x
 }
 
 #' prep object that is a character string (presumably latex code)
 #' @export
 #' @keywords internal
-prep_obj.character <- function(x, transform = NULL, ...) {
+prep_obj_tex.character <- function(x, transform = NULL, ...) {
   cat(x)
 }
 
 #' prep object that is a path to a PNG
 #' @export
 #' @keywords internal
-prep_obj.PNG <- function(x, transform = NULL, ... ) {
+prep_obj_tex.PNG <- function(x, transform = NULL, ... ) {
   # temporarily store png
   temp <- tempfile(fileext = ".png")
   png::writePNG(x$png, temp)
@@ -39,7 +39,7 @@ prep_obj.PNG <- function(x, transform = NULL, ... ) {
 #' prep gt_tbl object
 #' @export
 #' @keywords internal
-prep_obj.gt_tbl <- function(x, transform = NULL, ...) {
+prep_obj_tex.gt_tbl <- function(x, transform = NULL, ...) {
 
   gt_to_tex(x, transform) |>
     cat()
@@ -48,7 +48,7 @@ prep_obj.gt_tbl <- function(x, transform = NULL, ...) {
 #' prep gt_group object
 #' @export
 #' @keywords internal
-prep_obj.gt_group <- function(x, transform = NULL, ...) {
+prep_obj_tex.gt_group <- function(x, transform = NULL, ...) {
   res <- lapply(seq_len(nrow(x$gt_tbls)), function(idx) {
     tbl <- gt::grp_pull(x, idx)
 

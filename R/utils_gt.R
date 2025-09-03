@@ -244,6 +244,7 @@ gg_to_gt <- function(x){
 #' @param fig_dim vector containing figure height and width in inches. Defaults to c(5,8) - docorator defaults
 #' @param path file path including the png location to save the output to
 #' @return filepath to snap of ggplot
+#' @keywords internal
 gg_to_image <- function(plot_object, fig_dim = c(5,8), path = getwd()) {
 
 
