@@ -111,7 +111,7 @@ check_fancyrow_string <- function(left = NA,
   for (name in names(args)) {
     value <- args[[name]]
     # Check if arguments are a vector of size greater than 1
-    if (length(value) != 1) {
+    if (length(value) > 1) {
       errors <- c(
         errors,
         cli::format_message("{.arg {name}} must be a single value, but has a length of {length(value)}.")
