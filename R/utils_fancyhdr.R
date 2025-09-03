@@ -100,7 +100,9 @@ fancyrow <- function(left = NA,
 #' @noRd
 #' @keywords internal
 #'
-check_fancyrow_string <- function(left, center, right) {
+check_fancyrow_string <- function(left = NA,
+                                  center = NA,
+                                  right = NA){
   
   # Create list of arguments for iteration
   args <- list(left = left, center = center, right = right)
