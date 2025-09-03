@@ -98,6 +98,7 @@ fancyrow <- function(left = NA,
 #' @param center Character string to be aligned to the center of the row.
 #' @param right Character string to be aligned to the right side of the row.
 #' @noRd
+#' @keywords internal
 #'
 check_fancyrow_string <- function(left, center, right) {
   
