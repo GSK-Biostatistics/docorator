@@ -81,6 +81,9 @@ fancyrow <- function(left = NA,
                      center = NA,
                      right = NA){
 
+  # Check that all arguments are single strings
+  check_fancyrow_string(left = left, center = center, right = right)
+
   structure(
     list(left = left,
          center = center,
@@ -88,6 +91,44 @@ fancyrow <- function(left = NA,
     class = "fancyrow"
   )
 
+}
+
+#' Check that all arguments in fancyrow() are single strings or NA
+#' @param left Character string to be aligned to the left side of the row.
+#' @param center Character string to be aligned to the center of the row.
+#' @param right Character string to be aligned to the right side of the row.
+#'
+check_fancyrow_string <- function(left, center, right) {
+  
+  # Create list of arguments for iteration
+  args <- list(left = left, center = center, right = right)
+  errors <- character(0)
+  
+  for (name in names(args)) {
+    value <- args[[name]]
+    # Check if arguments are a vector of size greater than 1
+    if (length(value) != 1) {
+      errors <- c(
+        errors,
+        cli::format_message("{.arg {name}} must be a single value, but has a length of {length(value)}.")
+      )
+      next
+    }
+    
+    # Check if arguments contain any non-string values if not NA
+    if (!is.na(value) && !is.character(value)) {
+      errors <- c(
+        errors,
+        cli::format_message("{.arg {name}} must be a character string or NA, but is {class(value)}.")
+      )
+    }
+  }    
+  
+  if (length(errors) > 0) {
+    cli::cli_abort(c("Invalid input in fancyrow():", errors))
+  }
+  
+  invisible(TRUE)
 }
 
 #' Check that header and footer args are of class `fancyhdr`
