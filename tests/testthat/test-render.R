@@ -1,6 +1,7 @@
 test_that("render to pdf works", {
 
-  skip_if_not(interactive())
+  skip_on_cran()
+  skip_on_ci()
 
   my_gt <- gt::exibble |>
     gt::gt(
@@ -37,14 +38,58 @@ test_that("render to pdf works", {
 
   expect_true(file.exists(file.path(temp_dir_path2, "my_first_gt.pdf")))
 
+  # quarto render with path supplied
+  temp_dir_path3 <- file.path(rprojroot::is_testthat$find_file(), "tempdir3")
+  if (!dir.exists(temp_dir_path3)){
+    dir.create(file.path(rprojroot::is_testthat$find_file(), "tempdir3"))
+  }
+  withr::with_dir(
+    rprojroot::is_testthat$find_file(),
+    code = {
+
+      res <- suppressMessages( docorator |> render_pdf(
+        quarto = TRUE,
+        display_loc = "tempdir3"
+      )
+      )
+    })
+  expect_true(file.exists(file.path(temp_dir_path3, "my_first_gt.pdf")))
+
+  # quarto render with no path supplied
+  temp_dir_path4 <- file.path(rprojroot::is_testthat$find_file(), "tempdir4")
+  if (!dir.exists(temp_dir_path4)){
+    dir.create(file.path(rprojroot::is_testthat$find_file(), "tempdir4"))
+  }
+
+  withr::with_dir(
+    file.path(rprojroot::is_testthat$find_file(), "tempdir4"),
+    code = {
+      docorator <- as_docorator(
+        x = my_gt,
+        header = fancyhead(fancyrow("first line header"), fancyrow("second line header")),
+        footer = NULL,
+        display_name = "my_first_gt",
+        save_object = FALSE
+      )
+      res <- suppressMessages( docorator |> render_pdf(
+        quarto = TRUE
+      )
+      )
+    })
+  expect_true(file.exists(file.path(temp_dir_path4, "my_first_gt.pdf")))
+
   unlink(temp_dir_path, recursive = TRUE)
   unlink(temp_dir_path2, recursive = TRUE)
+  unlink(temp_dir_path3, recursive = TRUE)
+  unlink(temp_dir_path4, recursive = TRUE)
+
 
 })
 
 test_that("render to pdf, lists", {
 
-  skip_if_not(interactive())
+  skip_on_cran()
+  skip_on_ci()
 
   png_obj1 <- png_path(path = system.file("extdata/test_image.png", package = "docorator"))
   png_obj2 <- png_path(path = system.file("extdata/test_image.png", package = "docorator"))
@@ -95,9 +140,69 @@ test_that("render to pdf, lists", {
   unlink(temp_dir_path, recursive = TRUE)
 })
 
+test_that("render to pdf, lists - quarto", {
+
+  skip_on_cran()
+  skip_on_ci()
+
+  png_obj1 <- png_path(path = system.file("extdata/test_image.png", package = "docorator"))
+  png_obj2 <- png_path(path = system.file("extdata/test_image.png", package = "docorator"))
+
+  ggplot1 <- ggplot2::ggplot(data = mtcars, ggplot2::aes(y=cyl, x=mpg)) +
+    ggplot2::geom_point()
+  ggplot2 <- ggplot2::ggplot(data = mtcars, ggplot2::aes(x=cyl, y=mpg)) +
+    ggplot2::geom_point()
+
+  temp_dir_path <- file.path(rprojroot::is_testthat$find_file(), "tempdir3")
+  if (!dir.exists(temp_dir_path)){
+    dir.create(file.path(rprojroot::is_testthat$find_file(), "tempdir3"))
+  }
+
+  withr::with_dir(
+    rprojroot::is_testthat$find_file(),
+    code = {
+      docorator <- as_docorator(
+        x = list(png_obj1, png_obj2),
+        header = fancyhead(fancyrow("first line header"), fancyrow("second line header")),
+        footer = NULL,
+        display_name = "my_first_list",
+        display_loc = "tempdir3",
+        save_object = FALSE
+      )
+
+      # list of ggplots
+      docorator2 <- as_docorator(
+        x = list(ggplot1, ggplot2),
+        header = fancyhead(fancyrow("first line header"), fancyrow("second line header")),
+        footer = NULL,
+        display_name = "my_first_ggplot_list",
+        display_loc = "tempdir3",
+        save_object = FALSE
+      )
+
+
+      res <- suppressMessages( docorator |> render_pdf(quarto = TRUE))
+
+      res2 <- suppressMessages( docorator2 |> render_pdf(quarto = TRUE))
+
+
+    }
+  )
+
+  expect_true(file.exists(file.path(temp_dir_path, "my_first_list.pdf")))
+  expect_true(file.exists(file.path(temp_dir_path, "my_first_ggplot_list.pdf")))
+
+  # 2 pages
+  expect_equal(pdftools::pdf_info(file.path(temp_dir_path, "my_first_list.pdf"))$pages,2)
+  expect_equal(pdftools::pdf_info(file.path(temp_dir_path, "my_first_ggplot_list.pdf"))$pages,2)
+
+  unlink(temp_dir_path, recursive = TRUE)
+})
+
 test_that("render to rtf works", {
 
-  skip_if_not(interactive())
+  skip_on_cran()
+  skip_on_ci()
 
   my_gt <- gt::exibble |>
     gt::gt(
@@ -271,7 +376,8 @@ test_that("render to rtf, lists of figures", {
 
 test_that("pipe together renders",{
 
-  skip_if_not(interactive())
+  skip_on_cran()
+  skip_on_ci()
 
   my_gt <- gt::exibble |>
     gt::gt(
@@ -304,7 +410,8 @@ test_that("pipe together renders",{
 
 test_that("render non docorator object fails", {
 
-  skip_if_not(interactive())
+  skip_on_cran()
+  skip_on_ci()
 
   my_gt <- gt::exibble |>
     gt::gt(
@@ -316,7 +423,8 @@ test_that("render non docorator object fails", {
 })
 
 test_that("render invalid transform", {
-  skip_if_not(interactive())
+  skip_on_cran()
+  skip_on_ci()
 
   my_gt <- gt::exibble |>
     gt::gt(
@@ -345,7 +453,8 @@ test_that("render invalid transform", {
 })
 
 test_that("render invalid header_latex", {
-  skip_if_not(interactive())
+  skip_on_cran()
+  skip_on_ci()
 
   my_gt <- gt::exibble |>
     gt::gt(
@@ -374,7 +483,8 @@ test_that("render invalid header_latex", {
 })
 
 test_that("render header_latex", {
-  skip_if_not(interactive())
+  skip_on_cran()
+  skip_on_ci()
 
   my_gt <- gt::exibble |>
     gt::gt(
@@ -417,7 +527,8 @@ test_that("render header_latex", {
 
 
 test_that("render keep tex file", {
-  skip_if_not(interactive())
+  skip_on_cran()
+  skip_on_ci()
 
   my_gt <- gt::exibble |>
     gt::gt(

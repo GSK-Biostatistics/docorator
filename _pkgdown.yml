@@ -1,12 +1,16 @@
+url: https://GSK-Biostatistics.github.io/docorator/
 template:
   bootstrap: 5
+  opengraph:
+  image:
+    src: man/figures/docorator_hex.png
+    alt: "docorator Hex Sticker"
 navbar:
   structure:
     left:
     - intro
     - reference
     - articles
-    - tutorials
     - news
     right:
     - search
@@ -15,7 +19,7 @@ navbar:
   components:
     reference:
       text: Reference
-      href: reference/index.html
+      href:  reference/index.html
     search:
       search: []
     news:
@@ -24,6 +28,9 @@ navbar:
     intro:
       text: Get started
       href: articles/docorator.html
+    development:
+      mode: auto
+      version_label: default
     articles:
       text: Articles
       menu:
@@ -33,5 +40,28 @@ navbar:
         href: articles/document_sizing.html
       - text: Headers and Footers
         href: articles/headers_footers.html
-      - text: Render PDF
-        href: articles/render_pdf.html
+      - text: Render
+        href: articles/render.html
+reference:
+- title: Create docorator
+  contents:
+  - as_docorator
+  - docorate
+  - png_path
+- title: Render output
+  contents:
+  - render_pdf
+  - render_rtf
+- title: Header and footer helpers
+  contents:
+  - fancyhead
+  - fancyfoot
+  - fancyrow
+  - doc_datetime
+  - doc_pagenum
+  - doc_path
+  - hf_escape
+- title: Sizing helpers
+  contents:
+  - geom_set
+  - scale_gt
