@@ -153,7 +153,7 @@ render_rtf <- function(x, display_loc = NULL, remove_unicode_ws = TRUE, use_page
 
   # if version of gt is <= 1.0.0
   if(!inherits(x$display, "gt_tbl") & !inherits(x$display, "gt_group") & utils::compareVersion(as.character(utils::packageVersion("gt")), "1.0.0")>0) {
-    cli::cli_warn("RTF render is only enabled for objects of class gt_tbl or gt_grp, not {.obj_type_friendly {x$display}}. See documentation for `render_rtf`.",
+    cli::cli_warn("RTF render is only enabled for objects of class `gt_tbl` or `gt_group`, not {.obj_type_friendly {x$display}}. See documentation for `render_rtf`.",
               call = rlang::caller_env())
   }
 
