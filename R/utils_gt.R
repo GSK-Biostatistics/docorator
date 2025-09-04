@@ -207,7 +207,7 @@ png_to_gt <- function(x){
 gg_to_gt <- function(x){
 
   if (!inherits(x$display, "ggplot")) {
-    cli::cli_abort("The display must be class ggplot, not {.obj_type_friendly {x$display}}.",
+    cli::cli_abort("The display must be class `ggplot`, not {.obj_type_friendly {x$display}}.",
                    call = rlang::caller_env())
   }
 
