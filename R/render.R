@@ -223,6 +223,11 @@ render_pdf_qmd <- function(x,
                            header_latex = NULL,
                            clean = TRUE){
 
+  if (!is.null(transform)) {
+    cli::cli_warn("The {.arg {rlang::caller_arg(transform)}} argument is not currently available for quarto rendered documents. Try `quarto = FALSE`",
+                  call = rlang::caller_env())
+  }
+
   # create a full path
   display_loc <- normalizePath(display_loc, winslash = "/")
 
@@ -276,7 +281,7 @@ render_pdf_qmd <- function(x,
           execute_params = list(
             display_name = x$display_name,
             pkg_path = "", #set to cur_dir in development
-            transform = transform
+            transform = NULL # disabled for quarto
           ),
           quiet = TRUE)
 

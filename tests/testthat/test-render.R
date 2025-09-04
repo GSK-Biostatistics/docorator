@@ -249,14 +249,12 @@ test_that("render to pdf - transform", {
         display_name = "my_first_gt",
         save_object = FALSE
       )
-      res <- suppressMessages( docorator |> render_pdf(
+      expect_warning(suppressMessages( docorator |> render_pdf(
         quarto = TRUE, transform = transform
-      )
-      )
+      )), "The `transform` argument is not currently available for quarto rendered documents. Try
+`quarto = FALSE`")
     })
   expect_true(file.exists(file.path(temp_dir_path2, "my_first_gt.pdf")))
-  expect_true(stringr::str_detect(pdftools::pdf_text(file.path(temp_dir_path2, "my_first_gt.pdf")),"NUM"))
-  expect_false(stringr::str_detect(pdftools::pdf_text(file.path(temp_dir_path2, "my_first_gt.pdf")),"num"))
 
   unlink(temp_dir_path, recursive = TRUE)
   unlink(temp_dir_path2, recursive = TRUE)
