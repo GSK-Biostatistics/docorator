@@ -7,14 +7,14 @@
 prep_obj_tex(x, transform = NULL, ...)
 }
 \arguments{
-\item{x}{table, listing, or figure object}
+\item{x}{docorator object containing info about the table, listing or figure}
 
 \item{transform}{optional latex transformation function to apply to a gt latex string}
 
 \item{...}{additional args}
 }
 \value{
-object to be included as-is in knitted rmd
+object to be included as-is in render engine
 }
 \description{
 Prepare table, listing, figure object for inclusion in the template Rmd

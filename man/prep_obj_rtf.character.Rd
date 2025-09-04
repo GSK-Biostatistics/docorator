@@ -2,11 +2,11 @@
 % Please edit documentation in R/prep_obj_rtf.R
 \name{prep_obj_rtf.character}
 \alias{prep_obj_rtf.character}
-\title{prep object that is a character string (presumably latex code)}
+\title{prep object that is a character string}
 \usage{
 \method{prep_obj_rtf}{character}(x, ...)
 }
 \description{
-prep object that is a character string (presumably latex code)
+prep object that is a character string
 }
 \keyword{internal}

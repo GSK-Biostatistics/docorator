@@ -12,7 +12,7 @@ prep_obj_rtf(x, ...)
 \item{...}{additional args}
 }
 \value{
-object to be included as-is in knitted rmd
+object to be included as-is render engine
 }
 \description{
 Prepare table, listing, figure object for output to rtf

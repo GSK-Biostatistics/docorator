@@ -5,13 +5,10 @@
 \title{Create prep_obj_tex code chunks
 Taken from https://gist.github.com/MichaelJW/b4a3dd999a47b137d12f42a8f7562b11}
 \usage{
-create_chunk(x, fig_dim, transform)
+create_chunk(x, transform)
 }
 \arguments{
-\item{x}{object containing the display. See @details for more information.}
-
-\item{fig_dim}{vector containing figure height and width in inches. Defaults
-to \code{c(5,8)}}
+\item{x}{docorator object}
 
 \item{transform}{optional latex transformation function to apply to a gt latex string}
 }
