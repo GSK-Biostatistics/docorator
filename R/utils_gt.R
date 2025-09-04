@@ -293,7 +293,7 @@ hf_strip <- function(x){
 
 
   if (!inherits(x, "ggplot")) {
-    cli::cli_abort("The display must be class ggplot, not {.obj_type_friendly {x}}.",
+    cli::cli_abort("The display must be class `ggplot`, not {.obj_type_friendly {x}}.",
                    call = rlang::caller_env())
   }
 
