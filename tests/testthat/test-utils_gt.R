@@ -208,43 +208,45 @@ test_that("apply_to_grp works",{
 
 test_that("Create png from ggplot", {
 
-  gg <- ggplot2::ggplot(mtcars) +
-    ggplot2::aes(x = disp, y = mpg) +
-    ggplot2::geom_point()
+  withr::with_tempdir({
+    gg <- ggplot2::ggplot(mtcars) +
+      ggplot2::aes(x = disp, y = mpg) +
+      ggplot2::geom_point()
 
 
-  image_paths <- gg_to_image(gg, path = tempdir())
+    image_paths <- gg_to_image(gg, path = getwd())
 
-  expect_length(image_paths, 1)
+    expect_length(image_paths, 1)
 
-  expect_equal(
-    file.exists(image_paths),
-    c(TRUE)
-  )
-
+      expect_equal(
+        file.exists(image_paths),
+        c(TRUE)
+      )
+  })
 
 })
 
 test_that("Create set of png from list of ggplots", {
 
-  gg1 <- ggplot2::ggplot(mtcars) +
-    ggplot2::aes(x = disp, y = mpg) +
-    ggplot2::geom_point()
+  withr::with_tempdir({
+    gg1 <- ggplot2::ggplot(mtcars) +
+      ggplot2::aes(x = disp, y = mpg) +
+      ggplot2::geom_point()
 
 
-  gg2 <- ggplot2::ggplot(mtcars) +
-    ggplot2::aes(x = hp, y = mpg) +
-    ggplot2::geom_point()
+    gg2 <- ggplot2::ggplot(mtcars) +
+      ggplot2::aes(x = hp, y = mpg) +
+      ggplot2::geom_point()
 
-  image_paths <- gg_to_image(list(gg1, gg2), path = tempdir())
+    image_paths <- gg_to_image(list(gg1, gg2), path = getwd())
 
-  expect_length(image_paths, 2)
+    expect_length(image_paths, 2)
 
-  expect_equal(
-    file.exists(image_paths),
-    c(TRUE, TRUE)
-  )
-
+    expect_equal(
+      file.exists(image_paths),
+      c(TRUE, TRUE)
+    )
+  })
 })
 
 test_that("Extract header footer information from ggplot", {
