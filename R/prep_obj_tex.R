@@ -5,7 +5,7 @@
 #' @param transform optional latex transformation function to apply to a gt latex string
 #' @param ... additional args
 #'
-#' @return object to be included as-is in knitted rmd
+#' @return object to be included as-is in render engine
 #' @export
 #' @keywords internal
 prep_obj_tex <- function (x, transform = NULL, ...) {
