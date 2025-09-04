@@ -275,7 +275,7 @@ render_pdf_qmd <- function(x,
           output_file = pdf_name,
           execute_params = list(
             display_name = x$display_name,
-            pkg_path = ifelse(testthat::is_testing(),cur_dir,""),
+            pkg_path = "", #set to cur_dir in development
             transform = transform
           ),
           quiet = TRUE)
