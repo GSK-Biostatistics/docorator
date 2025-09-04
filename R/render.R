@@ -268,8 +268,8 @@ render_pdf_qmd <- function(x,
       saveRDS(x, docorator_name)
 
       # render pdf
-      doc <- purrr::safely(
-        quarto::quarto_render)(
+      doc <-
+        quarto::quarto_render(
           input = qmd_name,
           output_format = "pdf",
           output_file = pdf_name,
@@ -280,7 +280,7 @@ render_pdf_qmd <- function(x,
           ),
           quiet = TRUE)
 
-      if (is.null(doc$error) && file.exists(pdf_name)){
+      if (file.exists(pdf_name)){
 
         out_path <- file.path(display_loc, pdf_name)
         file_ok <- file.copy(from = pdf_name,
