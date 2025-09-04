@@ -80,3 +80,24 @@ test_that("Footnote characters are escaped correctly",{
   expect_true(stringr::str_detect(title_string, "hello_world"))
 })
 
+test_that("fancyrow() accepts valid arguments",{
+
+  expect_silent(fancyrow(left = "Left text", center = "Center text"))
+  expect_silent(fancyrow(left = NA, center = "Center text", right = NA))
+  expect_invisible(check_fancyrow_string(left = NA, center = "Center text", right = NA), TRUE)
+})
+
+test_that("fancyrow() flags non-character arguments",{
+
+  expect_error(fancyrow(left = 123, center = "Center text", right = "Right text"), "`left` must be a character string or NA, but is numeric.")
+  expect_error(fancyrow(left = "Left text", center = list("Center"), right = "Right text"), "`center` must be a character string or NA, but is list.")
+})
+
+test_that("fancyrow() flags arguments with length > 1",{
+
+  expect_error(fancyrow(left = c("Left1", "Left2"), center = "Center text", right = "Right text"), "`left` must be a single value, but has a length of 2.")
+  expect_error(fancyrow(left = 123, center = c("Center1", "Center2"), right = "`left` must be a character string or NA, but is numeric.
+`center` must be a single value, but has a length of 2."))
+  expect_error(fancyrow(left = 123, center = c("Center1", "Center2", "Center3")),"`left` must be a character string or NA, but is numeric.
+`center` must be a single value, but has a length of 3.")
+})
