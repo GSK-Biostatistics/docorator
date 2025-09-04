@@ -1,62 +1,63 @@
 
 #' Prepare table, listing, figure object for inclusion in the template Rmd
 #'
-#' @param x table, listing, or figure object
+#' @param x docorator object containing info about the table, listing or figure
 #' @param transform optional latex transformation function to apply to a gt latex string
 #' @param ... additional args
 #'
-#' @return object to be included as-is in knitted rmd
+#' @return object to be included as-is in render engine
 #' @export
 #' @keywords internal
-prep_obj <- function (x, transform = NULL, ...) {
-  UseMethod("prep_obj", x)
+prep_obj_tex <- function (x, transform = NULL, ...) {
+  UseMethod("prep_obj_tex", x$display)
 }
 
 #' default
 #' @export
 #' @keywords internal
-prep_obj.default <- function(x, transform = NULL, ...) {
-  x
+prep_obj_tex.default <- function(x, transform = NULL, ...) {
+  x$display
 }
 
 #' prep object that is a character string (presumably latex code)
 #' @export
 #' @keywords internal
-prep_obj.character <- function(x, transform = NULL, ...) {
-  cat(x)
+prep_obj_tex.character <- function(x, transform = NULL, ...) {
+  cat(x$display)
 }
 
 #' prep object that is a path to a PNG
 #' @export
 #' @keywords internal
-prep_obj.PNG <- function(x, transform = NULL, ... ) {
+prep_obj_tex.PNG <- function(x, transform = NULL, ... ) {
 
   if (Sys.getenv("DOCORATOR_RENDER_ENGINE")=="qmd"){
     tmpdir <- getwd()
   } else {
     tmpdir <- tempdir()
   }
+
   # temporarily store png
   temp <- tempfile(fileext = ".png", tmpdir = tmpdir)
-  png::writePNG(x$png, temp)
+  png::writePNG(x$display$png, temp)
   knitr::include_graphics(path = temp)
 }
 
 #' prep gt_tbl object
 #' @export
 #' @keywords internal
-prep_obj.gt_tbl <- function(x, transform = NULL, ...) {
+prep_obj_tex.gt_tbl <- function(x, transform = NULL, ...) {
 
-  gt_to_tex(x, transform) |>
+  gt_to_tex(x$display, transform) |>
     cat()
 }
 
 #' prep gt_group object
 #' @export
 #' @keywords internal
-prep_obj.gt_group <- function(x, transform = NULL, ...) {
-  res <- lapply(seq_len(nrow(x$gt_tbls)), function(idx) {
-    tbl <- gt::grp_pull(x, idx)
+prep_obj_tex.gt_group <- function(x, transform = NULL, ...) {
+  res <- lapply(seq_len(nrow(x$display$gt_tbls)), function(idx) {
+    tbl <- gt::grp_pull(x$display, idx)
 
     gt_to_tex(tbl, transform)
   })

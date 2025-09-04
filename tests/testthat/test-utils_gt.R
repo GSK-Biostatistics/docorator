@@ -205,3 +205,66 @@ test_that("apply_to_grp works",{
   # check apply_to_grp works for gt_tbl
   expect_identical(options_tbl, apply_to_grp(func, arg_list_tbl))
 })
+
+test_that("Create png from ggplot", {
+
+  withr::with_tempdir({
+    gg <- ggplot2::ggplot(mtcars) +
+      ggplot2::aes(x = disp, y = mpg) +
+      ggplot2::geom_point()
+
+
+    image_paths <- gg_to_image(gg, path = getwd())
+
+    expect_length(image_paths, 1)
+
+      expect_equal(
+        file.exists(image_paths),
+        c(TRUE)
+      )
+  })
+
+})
+
+test_that("Create set of png from list of ggplots", {
+
+  withr::with_tempdir({
+    gg1 <- ggplot2::ggplot(mtcars) +
+      ggplot2::aes(x = disp, y = mpg) +
+      ggplot2::geom_point()
+
+
+    gg2 <- ggplot2::ggplot(mtcars) +
+      ggplot2::aes(x = hp, y = mpg) +
+      ggplot2::geom_point()
+
+    image_paths <- gg_to_image(list(gg1, gg2), path = getwd())
+
+    expect_length(image_paths, 2)
+
+    expect_equal(
+      file.exists(image_paths),
+      c(TRUE, TRUE)
+    )
+  })
+})
+
+test_that("Extract header footer information from ggplot", {
+
+  ggplot1 <- ggplot2::ggplot(data = mtcars, ggplot2::aes(y=cyl, x=mpg)) +
+    ggplot2::geom_point() +
+    ggplot2::labs(title = "title1", subtitle = "subtitle1", alt = "alt", tag = "tag1", caption = "footnote1")
+
+  stripped_ggplot <- ggplot2::ggplot(data = mtcars, ggplot2::aes(y=cyl, x=mpg)) +
+    ggplot2::geom_point() +
+    ggplot2::labs(alt = "alt")
+
+  hf_ggplot <- hf_strip(ggplot1)
+
+  expect_equal(stripped_ggplot$labels, hf_ggplot$display$labels)
+
+  expect_equal(hf_ggplot$head_data, "title1")
+  expect_equal(hf_ggplot$subhead_data, c("subtitle1", "tag1"))
+  expect_equal(hf_ggplot$foot_data, "footnote1")
+
+})

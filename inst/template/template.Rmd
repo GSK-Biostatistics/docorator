@@ -8,11 +8,9 @@ params:
   x: NULL 
   header: NULL
   footer: NULL
-  fontsize: NULL
   geometry: NULL
-  fig_dim: NULL 
   transform: NULL
-fontsize: "`r paste0(params$fontsize, 'pt')`"
+fontsize: "`r paste0(params$x$fontsize, 'pt')`"
 geometry: "`r params$geometry`" 
 header-includes:  
   - \renewcommand*\familydefault{\ttdefault}
@@ -38,15 +36,18 @@ fig_crop: FALSE
 
 
 ```{r echo = FALSE, results = "asis"}
-if(identical(class(params$x), "list")) {
-  for (i in 1:length(params$x)) {
-    create_chunk(params$x[[i]],params$fig_dim,params$transform)
-    if(length(params$x)>1){
+display <- params$x$display
+if(identical(class(display), "list")) {
+  for (i in 1:length(display)) {
+    new_docorator <- params$x
+    new_docorator$display <- display[[i]]
+    create_chunk(new_docorator,params$transform)
+    if(length(display)>1){
       cat("\\pagebreak\n")
     }
   }
 } else{
-  create_chunk(params$x, params$fig_dim, params$transform)
+  create_chunk(params$x, params$transform)
 }
 ```
 

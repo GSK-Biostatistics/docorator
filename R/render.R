@@ -87,7 +87,7 @@ render_pdf <- function(x,
                              output_file = filename,
                              output_dir = display_loc,
                              output_options = list(keep_tex = keep_tex),
-                             params = list(x = x$display,
+                             params = list(x = x,
                                            header = hf_process(x$header, escape_latex = escape_latex),
                                            footer = hf_process(x$footer, escape_latex = escape_latex),
                                            geometry = geom_process(
@@ -96,8 +96,6 @@ render_pdf <- function(x,
                                              x$fontsize,
                                              x$geometry
                                            ),
-                                           fontsize = x$fontsize,
-                                           fig_dim = x$fig_dim,
                                            transform = transform
                              ),
                              quiet = TRUE)
@@ -151,8 +149,9 @@ render_rtf <- function(x, display_loc = NULL, remove_unicode_ws = TRUE, use_page
               call = rlang::caller_env())
   }
 
-  if(!inherits(x$display, "gt_tbl") & !inherits(x$display, "gt_group")) {
-    cli::cli_abort("rtf render is only enabled for objects of class gt_tbl or gt_grp, not {.obj_type_friendly {x$display}}. See documentation for `render_rtf`.",
+  # if version of gt is <= 1.0.0
+  if(!inherits(x$display, "gt_tbl") & !inherits(x$display, "gt_group") & utils::compareVersion(as.character(utils::packageVersion("gt")), "1.0.0")>0) {
+    cli::cli_warn("RTF render is only enabled for objects of class `gt_tbl` or `gt_group`, not {.obj_type_friendly {x$display}}. See documentation for `render_rtf`.",
               call = rlang::caller_env())
   }
 
@@ -168,8 +167,8 @@ render_rtf <- function(x, display_loc = NULL, remove_unicode_ws = TRUE, use_page
     filename <- paste0(x$display_name,".rtf")
   }
 
-  # add headers and footers
-  gt <- hf_to_gt(x)
+  # convert outputs to gt for rtf render
+  gt <- prep_obj_rtf(x)
 
   # page headers
   gt <- apply_to_grp(
@@ -224,6 +223,11 @@ render_pdf_qmd <- function(x,
                            header_latex = NULL,
                            clean = TRUE){
 
+  if (!is.null(transform)) {
+    cli::cli_warn("The {.arg {rlang::caller_arg(transform)}} argument is not currently available for quarto rendered documents. Try `quarto = FALSE`",
+                  call = rlang::caller_env())
+  }
+
   # create a full path
   display_loc <- normalizePath(display_loc, winslash = "/")
 
@@ -269,18 +273,19 @@ render_pdf_qmd <- function(x,
       saveRDS(x, docorator_name)
 
       # render pdf
-      doc <- purrr::safely(
-        quarto::quarto_render)(
+      doc <-
+        quarto::quarto_render(
           input = qmd_name,
           output_format = "pdf",
           output_file = pdf_name,
           execute_params = list(
             display_name = x$display_name,
-            pkg_path = ifelse(testthat::is_testing(),cur_dir,"")
+            pkg_path = "", #set to cur_dir in development
+            transform = NULL # disabled for quarto
           ),
           quiet = TRUE)
 
-      if (is.null(doc$error) && file.exists(pdf_name)){
+      if (file.exists(pdf_name)){
 
         out_path <- file.path(display_loc, pdf_name)
         file_ok <- file.copy(from = pdf_name,
