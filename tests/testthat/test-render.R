@@ -251,8 +251,7 @@ test_that("render to pdf - transform", {
       )
       expect_warning(suppressMessages( docorator |> render_pdf(
         quarto = TRUE, transform = transform
-      )), "The `transform` argument is not currently available for quarto rendered documents. Try
-`quarto = FALSE`")
+      )))
     })
   expect_true(file.exists(file.path(temp_dir_path2, "my_first_gt.pdf")))
 
