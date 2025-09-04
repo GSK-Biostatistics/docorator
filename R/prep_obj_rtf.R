@@ -4,7 +4,7 @@
 #' @param x docorator object containing display information
 #' @param ... additional args
 #'
-#' @return object to be included as-is in knitted rmd
+#' @return object to be included as-is render engine
 #' @export
 #' @keywords internal
 prep_obj_rtf <- function (x, ...) {
