@@ -199,6 +199,69 @@ test_that("render to pdf, lists - quarto", {
   unlink(temp_dir_path, recursive = TRUE)
 })
 
+test_that("render to pdf - transform", {
+
+  skip_on_cran()
+  skip_on_ci()
+
+  my_gt <- gt::exibble |>
+    gt::gt(
+      rowname_col = "row",
+      groupname_col = "group"
+    )
+
+  transform <- function(x){stringr::str_replace_all(x,"num", "NUM")}
+
+  temp_dir_path <- file.path(rprojroot::is_testthat$find_file(), "tempdir")
+  if (!dir.exists(temp_dir_path)){
+    dir.create(file.path(rprojroot::is_testthat$find_file(), "tempdir"))
+  }
+
+  docorator <- as_docorator(
+    x = my_gt,
+    header = fancyhead(fancyrow("first line header"), fancyrow("second line header")),
+    footer = NULL,
+    display_name = "my_first_gt",
+    display_loc = temp_dir_path,
+    save_object = FALSE
+  )
+
+  res <- suppressMessages( docorator |> render_pdf(transform = transform)
+  )
+
+  expect_true(file.exists(file.path(temp_dir_path, "my_first_gt.pdf")))
+  expect_true(stringr::str_detect(pdftools::pdf_text(file.path(temp_dir_path, "my_first_gt.pdf")),"NUM"))
+  expect_false(stringr::str_detect(pdftools::pdf_text(file.path(temp_dir_path, "my_first_gt.pdf")),"num"))
+
+  # quarto render
+  temp_dir_path2 <- file.path(rprojroot::is_testthat$find_file(), "tempdir2")
+  if (!dir.exists(temp_dir_path2)){
+    dir.create(file.path(rprojroot::is_testthat$find_file(), "tempdir2"))
+  }
+
+  withr::with_dir(
+    file.path(rprojroot::is_testthat$find_file(), "tempdir2"),
+    code = {
+      docorator <- as_docorator(
+        x = my_gt,
+        header = fancyhead(fancyrow("first line header"), fancyrow("second line header")),
+        footer = NULL,
+        display_name = "my_first_gt",
+        save_object = FALSE
+      )
+      res <- suppressMessages( docorator |> render_pdf(
+        quarto = TRUE, transform = transform
+      )
+      )
+    })
+  expect_true(file.exists(file.path(temp_dir_path2, "my_first_gt.pdf")))
+  expect_true(stringr::str_detect(pdftools::pdf_text(file.path(temp_dir_path2, "my_first_gt.pdf")),"NUM"))
+  expect_false(stringr::str_detect(pdftools::pdf_text(file.path(temp_dir_path2, "my_first_gt.pdf")),"num"))
+
+  unlink(temp_dir_path, recursive = TRUE)
+  unlink(temp_dir_path2, recursive = TRUE)
+})
+
 test_that("render to rtf works", {
 
   skip_on_cran()
