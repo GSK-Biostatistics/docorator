@@ -135,13 +135,12 @@ png_path <- function(path = NULL){
 #' Create prep_obj_tex code chunks
 #' Taken from https://gist.github.com/MichaelJW/b4a3dd999a47b137d12f42a8f7562b11
 #'
-#' @inheritParams as_docorator
+#' @param x docorator object
 #' @param transform optional latex transformation function to apply to a gt latex string
 #'
 #' @export
 #' @keywords internal
-create_chunk <- function(x, fig_dim, transform) {
-
+create_chunk <- function(x, transform) {
   deparsed <- paste0(deparse(
     function() {
       prep_obj_tex(x, transform)
@@ -149,7 +148,7 @@ create_chunk <- function(x, fig_dim, transform) {
   ), collapse = '')
 
   new_chunk <- paste0("
-  `","``{r new_chunk", sample.int(10000, 1), ", fig.height=", fig_dim[1], ", fig.width=", fig_dim[2], ", echo=FALSE, results='asis', output='asis'}",
+  `","``{r new_chunk", sample.int(10000, 1), ", fig.height=", x$fig_dim[1], ", fig.width=", x$fig_dim[2], ", echo=FALSE, results='asis', output='asis'}",
                       "\n(",
                       deparsed
                       , ")()",

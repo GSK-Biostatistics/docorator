@@ -40,6 +40,7 @@ test_that("gt to latex conversion works with additional transformation function"
 
 test_that("png objects are prepared correctly ",{
   png <- png_path(path = system.file("extdata/test_image.png", package = "docorator"))
-  knit_png <- prep_obj_tex(png)
+  docorator <- as_docorator(png, save_object = FALSE)
+  knit_png <- prep_obj_tex(docorator)
   expect_true(inherits(knit_png,c("knit_image_paths", "knit_asis")))
 })

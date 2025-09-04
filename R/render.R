@@ -87,7 +87,7 @@ render_pdf <- function(x,
                              output_file = filename,
                              output_dir = display_loc,
                              output_options = list(keep_tex = keep_tex),
-                             params = list(x = x$display,
+                             params = list(x = x,
                                            header = hf_process(x$header, escape_latex = escape_latex),
                                            footer = hf_process(x$footer, escape_latex = escape_latex),
                                            geometry = geom_process(
@@ -96,8 +96,6 @@ render_pdf <- function(x,
                                              x$fontsize,
                                              x$geometry
                                            ),
-                                           fontsize = x$fontsize,
-                                           fig_dim = x$fig_dim,
                                            transform = transform
                              ),
                              quiet = TRUE)
@@ -277,7 +275,8 @@ render_pdf_qmd <- function(x,
           output_file = pdf_name,
           execute_params = list(
             display_name = x$display_name,
-            pkg_path = ifelse(testthat::is_testing(),cur_dir,"")
+            pkg_path = ifelse(testthat::is_testing(),cur_dir,""),
+            transform = transform
           ),
           quiet = TRUE)
 

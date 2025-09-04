@@ -1,7 +1,7 @@
 
 #' Prepare table, listing, figure object for inclusion in the template Rmd
 #'
-#' @param x table, listing, or figure object
+#' @param x docorator object containing info about the table, listing or figure
 #' @param transform optional latex transformation function to apply to a gt latex string
 #' @param ... additional args
 #'
@@ -9,21 +9,21 @@
 #' @export
 #' @keywords internal
 prep_obj_tex <- function (x, transform = NULL, ...) {
-  UseMethod("prep_obj_tex", x)
+  UseMethod("prep_obj_tex", x$display)
 }
 
 #' default
 #' @export
 #' @keywords internal
 prep_obj_tex.default <- function(x, transform = NULL, ...) {
-  x
+  x$display
 }
 
 #' prep object that is a character string (presumably latex code)
 #' @export
 #' @keywords internal
 prep_obj_tex.character <- function(x, transform = NULL, ...) {
-  cat(x)
+  cat(x$display)
 }
 
 #' prep object that is a path to a PNG
@@ -39,7 +39,7 @@ prep_obj_tex.PNG <- function(x, transform = NULL, ... ) {
 
   # temporarily store png
   temp <- tempfile(fileext = ".png", tmpdir = tmpdir)
-  png::writePNG(x$png, temp)
+  png::writePNG(x$display$png, temp)
   knitr::include_graphics(path = temp)
 }
 
@@ -48,7 +48,7 @@ prep_obj_tex.PNG <- function(x, transform = NULL, ... ) {
 #' @keywords internal
 prep_obj_tex.gt_tbl <- function(x, transform = NULL, ...) {
 
-  gt_to_tex(x, transform) |>
+  gt_to_tex(x$display, transform) |>
     cat()
 }
 
@@ -56,8 +56,8 @@ prep_obj_tex.gt_tbl <- function(x, transform = NULL, ...) {
 #' @export
 #' @keywords internal
 prep_obj_tex.gt_group <- function(x, transform = NULL, ...) {
-  res <- lapply(seq_len(nrow(x$gt_tbls)), function(idx) {
-    tbl <- gt::grp_pull(x, idx)
+  res <- lapply(seq_len(nrow(x$display$gt_tbls)), function(idx) {
+    tbl <- gt::grp_pull(x$display, idx)
 
     gt_to_tex(tbl, transform)
   })

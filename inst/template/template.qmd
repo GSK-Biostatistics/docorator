@@ -6,6 +6,7 @@ format:
 params:
   display_name: ""
   pkg_path: ""
+  transform: NULL
 
 ---
 
@@ -56,15 +57,17 @@ include-in-header:
  
 ```{r echo = FALSE, results = "asis"}
 if (inherits(dd$display, c("gt_tbl","gt_group"))){
-  prep_obj_tex(dd$display, dd$transform)
+  prep_obj_tex(dd, params$transform)
 } else if(identical(class(dd$display), "list")) {
   for (i in 1:length(dd$display)) {
-    create_chunk(dd$display[[i]],dd$fig_dim,dd$transform)
+    new_docorator <- dd
+    new_docorator$display <- dd$display[[i]]
+    create_chunk(new_docorator, params$transform)
     if(length(dd$display)>1){
       cat("\\pagebreak\n")
     }
   }
 } else {
-  create_chunk(dd$display, dd$fig_dim, dd$transform)
+  create_chunk(dd, params$transform)
 }
 ```
