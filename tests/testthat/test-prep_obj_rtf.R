@@ -62,19 +62,44 @@ test_that("prep_obj_rtf - png", {
   gt_2 <- gt::grp_pull(gt_display, 2)
 
   # check headers and footers are added correctly for each
-
-  # ggplot footnote first
   expect_equal(unlist(gt_1$`_footnotes`$footnotes), "this is the docorator footnote")
   expect_equal(unlist(gt_2$`_footnotes`$footnotes), "this is the docorator footnote")
 
   # title should be docorator title
-  # subtitle should be docorator subtitles then ggplot subtitle then tag
+  # subtitle should be docorator subtitles
   expect_equal(gt_1$`_heading`$title, "this is the title")
   expect_equal(as.character(gt_1$`_heading`$subtitle), "this is the subtitle1<br>this is the subtitle2")
   expect_equal(gt_2$`_heading`$title, "this is the title")
   expect_equal(as.character(gt_2$`_heading`$subtitle), "this is the subtitle1<br>this is the subtitle2")
 
 })
+
+test_that("prep_obj_rtf - character", {
+  character <- "No Data to Display"
+
+  docorator <- as_docorator(
+    x = character,
+    header = fancyhead(fancyrow(center = "this is the title"),
+                       fancyrow(center = "this is the subtitle1"),
+                       fancyrow(center = "this is the subtitle2")),
+    footer = fancyfoot(fancyrow(left = "this is the docorator footnote")),
+    save_object = FALSE)
+
+  gt_display <- prep_obj_rtf(docorator)
+
+  # should be a gt_table object
+  expect_equal(class(gt_display), c("gt_tbl","list"))
+
+
+  # check headers and footers are added correctly
+
+  expect_equal(unlist(gt_display$`_footnotes`$footnotes), "this is the docorator footnote")
+
+  # title should be docorator title
+  # subtitle should be docorator subtitle
+  expect_equal(gt_display$`_heading`$title, "this is the title")
+  expect_equal(as.character(gt_display$`_heading`$subtitle), "this is the subtitle1<br>this is the subtitle2")
+ })
 
 test_that("prep_obj_rtf - invalid", {
   numeric <- 1

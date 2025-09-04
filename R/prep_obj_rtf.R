@@ -20,13 +20,14 @@ prep_obj_rtf.default <- function(x,  ...) {
                    call = rlang::caller_env())
 }
 
-#' prep object that is a character string (presumably latex code)
+#' prep object that is a character string
 #' @export
 #' @keywords internal
 prep_obj_rtf.character <- function(x,  ...) {
-  dplyr::tibble(character = x) |>
+  x$display <- dplyr::tibble(character = x$display) |>
     gt::gt() |>
     gt::cols_label(character = "")
+  hf_to_gt(x)
 }
 
 #' prep object that is a path to a PNG
