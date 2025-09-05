@@ -1,17 +1,26 @@
-
 #' Prepare table, listing, figure object for output to rtf
 #'
 #' @param x docorator object containing display information
 #' @param ... additional args
 #'
-#' @return object to be included as-is render engine
+#' @return gt object to be included as-is to render engine
+#' @name prep_obj_rtf
+#' @examples
+#' docorator <- gt::exibble |>
+#' gt::gt() |>
+#' as_docorator()
+#'
+#' prepared_obj <- prep_obj_rtf(docorator)
+NULL
+
+#' @name prep_obj_rtf
 #' @export
 #' @keywords internal
 prep_obj_rtf <- function (x, ...) {
   UseMethod("prep_obj_rtf", x$display)
 }
 
-#' default
+#' @name prep_obj_rtf
 #' @export
 #' @keywords internal
 prep_obj_rtf.default <- function(x,  ...) {
@@ -20,7 +29,7 @@ prep_obj_rtf.default <- function(x,  ...) {
                    call = rlang::caller_env())
 }
 
-#' prep object that is a character string
+#' @name prep_obj_rtf
 #' @export
 #' @keywords internal
 prep_obj_rtf.character <- function(x,  ...) {
@@ -30,7 +39,7 @@ prep_obj_rtf.character <- function(x,  ...) {
   hf_to_gt(x)
 }
 
-#' prep object that is a path to a PNG
+#' @name prep_obj_rtf
 #' @export
 #' @keywords internal
 prep_obj_rtf.PNG <- function(x,  ... ) {
@@ -40,7 +49,7 @@ prep_obj_rtf.PNG <- function(x,  ... ) {
 
 }
 
-#' prep ggplot object
+#' @name prep_obj_rtf
 #' @export
 #' @keywords internal
 prep_obj_rtf.ggplot <- function(x,  ... ) {
@@ -49,7 +58,7 @@ prep_obj_rtf.ggplot <- function(x,  ... ) {
 
 }
 
-#' prep gt_tbl object
+#' @name prep_obj_rtf
 #' @export
 #' @keywords internal
 prep_obj_rtf.gt_tbl <- function(x,  ...) {
@@ -58,7 +67,7 @@ prep_obj_rtf.gt_tbl <- function(x,  ...) {
 
 }
 
-#' prep gt_group object
+#' @name prep_obj_rtf
 #' @export
 #' @keywords internal
 prep_obj_rtf.gt_group <- function(x,  ...) {
@@ -67,7 +76,7 @@ prep_obj_rtf.gt_group <- function(x,  ...) {
 
 }
 
-#' prep list object
+#' @name prep_obj_rtf
 #' @export
 #' @keywords internal
 prep_obj_rtf.list <- function(x,  ...) {

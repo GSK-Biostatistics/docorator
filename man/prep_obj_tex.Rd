@@ -2,9 +2,24 @@
 % Please edit documentation in R/prep_obj_tex.R
 \name{prep_obj_tex}
 \alias{prep_obj_tex}
+\alias{prep_obj_tex.default}
+\alias{prep_obj_tex.character}
+\alias{prep_obj_tex.PNG}
+\alias{prep_obj_tex.gt_tbl}
+\alias{prep_obj_tex.gt_group}
 \title{Prepare table, listing, figure object for inclusion in the template Rmd}
 \usage{
 prep_obj_tex(x, transform = NULL, ...)
+
+\method{prep_obj_tex}{default}(x, transform = NULL, ...)
+
+\method{prep_obj_tex}{character}(x, transform = NULL, ...)
+
+\method{prep_obj_tex}{PNG}(x, transform = NULL, ...)
+
+\method{prep_obj_tex}{gt_tbl}(x, transform = NULL, ...)
+
+\method{prep_obj_tex}{gt_group}(x, transform = NULL, ...)
 }
 \arguments{
 \item{x}{docorator object containing info about the table, listing or figure}
@@ -18,5 +33,12 @@ object to be included as-is in render engine
 }
 \description{
 Prepare table, listing, figure object for inclusion in the template Rmd
+}
+\examples{
+docorator <- gt::exibble |>
+gt::gt() |>
+as_docorator()
+
+prepared_obj <- prep_obj_tex(docorator)
 }
 \keyword{internal}
