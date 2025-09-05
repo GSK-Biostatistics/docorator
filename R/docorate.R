@@ -118,6 +118,7 @@ docorate <- function(x,
 #'
 #' @examples
 #'
+#' \dontrun{
 #' gt::gtcars |>
 #'   dplyr::slice_head(n = 10) |>
 #'   dplyr::select(mfr, model, year, msrp) |>
@@ -126,9 +127,8 @@ docorate <- function(x,
 #'   as_docorator(
 #'    header = fancyhead(fancyrow("Header 1"), fancyrow("Header 2")),
 #'    display_name = "mytbl",
-#'    footer = NULL,
-#'    save_object = FALSE)
-#'
+#'    footer = NULL)
+#' }
 #'
 as_docorator <- function(x,
                      display_name = "docorator",

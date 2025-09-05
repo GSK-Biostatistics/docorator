@@ -70,6 +70,7 @@ following classes/types are recommended:
 }
 \examples{
 
+\dontrun{
 gt::gtcars |>
   dplyr::slice_head(n = 10) |>
   dplyr::select(mfr, model, year, msrp) |>
@@ -78,8 +79,7 @@ gt::gtcars |>
   as_docorator(
    header = fancyhead(fancyrow("Header 1"), fancyrow("Header 2")),
    display_name = "mytbl",
-   footer = NULL,
-   save_object = FALSE)
-
+   footer = NULL)
+}
 
 }

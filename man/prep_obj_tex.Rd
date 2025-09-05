@@ -37,7 +37,8 @@ Prepare table, listing, figure object for inclusion in the template Rmd
 \examples{
 docorator <- gt::exibble |>
 gt::gt() |>
-as_docorator(footer = NULL)
+as_docorator(footer = NULL,
+save_object = FALSE)
 
 prepared_obj <- prep_obj_tex(docorator)
 }
