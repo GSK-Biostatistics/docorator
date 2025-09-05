@@ -41,7 +41,7 @@ Prepare table, listing, figure object for output to rtf
 \examples{
 docorator <- gt::exibble |>
 gt::gt() |>
-as_docorator()
+as_docorator(footer=NULL)
 
 prepared_obj <- prep_obj_rtf(docorator)
 }

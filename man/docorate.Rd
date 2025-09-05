@@ -64,3 +64,16 @@ following classes/types are recommended:
 \item list of paths to PNG files created via \code{png_path()}
 }
 }
+\examples{
+\dontrun{
+gt::gtcars |>
+  dplyr::slice_head(n = 10) |>
+  dplyr::select(mfr, model, year, msrp) |>
+  gt::gt(groupname_col = "mfr",
+         row_group_as_column = TRUE) |>
+  docorate(
+   header = fancyhead(fancyrow("Header 1"), fancyrow("Header 2")),
+   filename = "mytbl.pdf")
+ }
+
+}

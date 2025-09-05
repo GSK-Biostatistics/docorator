@@ -4,23 +4,20 @@
 #' @param ... additional args
 #'
 #' @return gt object to be included as-is to render engine
-#' @name prep_obj_rtf
+#' @export
+#' @keywords internal
+#'
 #' @examples
 #' docorator <- gt::exibble |>
 #' gt::gt() |>
-#' as_docorator()
+#' as_docorator(footer=NULL)
 #'
 #' prepared_obj <- prep_obj_rtf(docorator)
-NULL
-
-#' @name prep_obj_rtf
-#' @export
-#' @keywords internal
 prep_obj_rtf <- function (x, ...) {
   UseMethod("prep_obj_rtf", x$display)
 }
 
-#' @name prep_obj_rtf
+#' @rdname prep_obj_rtf
 #' @export
 #' @keywords internal
 prep_obj_rtf.default <- function(x,  ...) {
@@ -29,7 +26,7 @@ prep_obj_rtf.default <- function(x,  ...) {
                    call = rlang::caller_env())
 }
 
-#' @name prep_obj_rtf
+#' @rdname prep_obj_rtf
 #' @export
 #' @keywords internal
 prep_obj_rtf.character <- function(x,  ...) {
@@ -39,7 +36,7 @@ prep_obj_rtf.character <- function(x,  ...) {
   hf_to_gt(x)
 }
 
-#' @name prep_obj_rtf
+#' @rdname prep_obj_rtf
 #' @export
 #' @keywords internal
 prep_obj_rtf.PNG <- function(x,  ... ) {
@@ -49,7 +46,7 @@ prep_obj_rtf.PNG <- function(x,  ... ) {
 
 }
 
-#' @name prep_obj_rtf
+#' @rdname prep_obj_rtf
 #' @export
 #' @keywords internal
 prep_obj_rtf.ggplot <- function(x,  ... ) {
@@ -58,7 +55,7 @@ prep_obj_rtf.ggplot <- function(x,  ... ) {
 
 }
 
-#' @name prep_obj_rtf
+#' @rdname prep_obj_rtf
 #' @export
 #' @keywords internal
 prep_obj_rtf.gt_tbl <- function(x,  ...) {
@@ -67,7 +64,7 @@ prep_obj_rtf.gt_tbl <- function(x,  ...) {
 
 }
 
-#' @name prep_obj_rtf
+#' @rdname prep_obj_rtf
 #' @export
 #' @keywords internal
 prep_obj_rtf.gt_group <- function(x,  ...) {
@@ -76,7 +73,7 @@ prep_obj_rtf.gt_group <- function(x,  ...) {
 
 }
 
-#' @name prep_obj_rtf
+#' @rdname prep_obj_rtf
 #' @export
 #' @keywords internal
 prep_obj_rtf.list <- function(x,  ...) {

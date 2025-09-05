@@ -12,3 +12,8 @@ character string containing latex code
 \description{
 Automatic page numbering
 }
+\examples{
+\dontrun{
+ doc_pagenum()
+}
+}

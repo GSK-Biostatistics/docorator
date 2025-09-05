@@ -12,3 +12,8 @@ character string
 \description{
 Date and time of program run
 }
+\examples{
+\dontrun{
+ doc_datetime()
+}
+}

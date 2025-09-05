@@ -17,3 +17,8 @@ character string
 \description{
 Path of program
 }
+\examples{
+\dontrun{
+ doc_path(filename = "my_tbl.pdf", path = getwd())
+}
+}

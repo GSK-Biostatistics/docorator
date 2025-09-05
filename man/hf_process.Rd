@@ -18,7 +18,20 @@ hf_process(x, escape_latex = TRUE)
 
 \method{hf_process}{fancyfoot}(x, escape_latex = TRUE)
 }
+\arguments{
+\item{x}{header or footer}
+
+\item{escape_latex}{Boolean to escape latex in header/footer}
+}
 \description{
 Process headers/footers
+}
+\examples{
+header <- fancyhead(
+fancyrow(left = "Protocol: 12345", right = doc_pagenum()),
+fancyrow(center = "Demographic Summary"))
+
+hf_process(header)
+
 }
 \keyword{internal}

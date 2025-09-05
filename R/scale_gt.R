@@ -70,9 +70,8 @@ apply_scale.gt_group <- function(x, fontsize, tbl_scale, tbl_stub_pct) {
 #' @return Table with col_widths settings applied
 #' @export
 #'
-#' @section Examples:
+#' @examples
 #'
-#' ```r
 #' gt::gtcars |>
 #'   dplyr::slice_head(n = 10) |>
 #'   dplyr::select(mfr, model, year, msrp, ctry_origin) |>
@@ -81,7 +80,6 @@ apply_scale.gt_group <- function(x, fontsize, tbl_scale, tbl_stub_pct) {
 #'       rowname_col = "mfr",
 #'       row_group_as_column = TRUE) |>
 #'   scale_gt(tbl_stub_pct = 0.4)
-#' ```
 #'
 scale_gt <- function(x,
                      tbl_stub_pct = 0.3

@@ -5,37 +5,34 @@
 #' @param ... additional args
 #'
 #' @return object to be included as-is in render engine
-#' @name prep_obj_tex
+#' @export
+#' @keywords internal
+#'
 #' @examples
 #' docorator <- gt::exibble |>
 #' gt::gt() |>
-#' as_docorator()
+#' as_docorator(footer = NULL)
 #'
 #' prepared_obj <- prep_obj_tex(docorator)
-NULL
-
-#' @name prep_obj_tex
-#' @export
-#' @keywords internal
 prep_obj_tex <- function (x, transform = NULL, ...) {
   UseMethod("prep_obj_tex", x$display)
 }
 
-#' @name prep_obj_tex
+#' @rdname prep_obj_tex
 #' @export
 #' @keywords internal
 prep_obj_tex.default <- function(x, transform = NULL, ...) {
   x$display
 }
 
-#' @name prep_obj_tex
+#' @rdname prep_obj_tex
 #' @export
 #' @keywords internal
 prep_obj_tex.character <- function(x, transform = NULL, ...) {
   cat(x$display)
 }
 
-#' @name prep_obj_tex
+#' @rdname prep_obj_tex
 #' @export
 #' @keywords internal
 prep_obj_tex.PNG <- function(x, transform = NULL, ... ) {
@@ -52,7 +49,7 @@ prep_obj_tex.PNG <- function(x, transform = NULL, ... ) {
   knitr::include_graphics(path = temp)
 }
 
-#' @name prep_obj_tex
+#' @rdname prep_obj_tex
 #' @export
 #' @keywords internal
 prep_obj_tex.gt_tbl <- function(x, transform = NULL, ...) {
@@ -61,7 +58,7 @@ prep_obj_tex.gt_tbl <- function(x, transform = NULL, ...) {
     cat()
 }
 
-#' @name prep_obj_tex
+#' @rdname prep_obj_tex
 #' @export
 #' @keywords internal
 prep_obj_tex.gt_group <- function(x, transform = NULL, ...) {
