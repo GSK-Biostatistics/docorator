@@ -17,10 +17,9 @@ Table with col_widths settings applied
 \description{
 Scale gt table contents for document
 }
-\section{Examples}{
+\examples{
 
-
-\if{html}{\out{<div class="sourceCode r">}}\preformatted{gt::gtcars |>
+gt::gtcars |>
   dplyr::slice_head(n = 10) |>
   dplyr::select(mfr, model, year, msrp, ctry_origin) |>
   gt::gt(
@@ -28,6 +27,5 @@ Scale gt table contents for document
       rowname_col = "mfr",
       row_group_as_column = TRUE) |>
   scale_gt(tbl_stub_pct = 0.4)
-}\if{html}{\out{</div>}}
-}
 
+}

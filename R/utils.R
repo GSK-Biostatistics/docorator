@@ -5,6 +5,10 @@
 #'
 #' @return character string
 #' @export
+#' @examples
+#' \dontrun{
+#'  doc_path(filename = "my_tbl.pdf", path = getwd())
+#'}
 doc_path <- function(filename = NULL, path = getwd()){
   doc_path <- thisfile(filename, path)
   if(length(doc_path)==0){
@@ -17,6 +21,10 @@ doc_path <- function(filename = NULL, path = getwd()){
 #'
 #' @return character string
 #' @export
+#' @examples
+#' \dontrun{
+#'  doc_datetime()
+#'}
 doc_datetime <- function(){
   as.POSIXct(Sys.time(), tz = "UTC") |>
     format("%d%B%Y %H:%M")
@@ -26,6 +34,10 @@ doc_datetime <- function(){
 #'
 #' @return character string containing latex code
 #' @export
+#' @examples
+#' \dontrun{
+#'  doc_pagenum()
+#'}
 doc_pagenum <- function(){
   "Page \\thepage\\ of \\pageref*{LastPage}"
 }
@@ -117,6 +129,10 @@ thisfile_rscript <- function() {
 #'
 #' @return object with png attribute
 #' @export
+#' @examples
+#' \dontrun{
+#' png_path <- png_path(path = "path_to_my_png.png")
+#' }
 png_path <- function(path = NULL){
   # path provided, is valid, is png
   if(is.null(path) | !file.exists(path) | toupper(tools::file_ext(path)) != "PNG"){
@@ -140,6 +156,13 @@ png_path <- function(path = NULL){
 #'
 #' @export
 #' @keywords internal
+#' @examples
+#' \dontrun{
+#' docorator <- gt::exibble |>
+#'   gt::gt() |>
+#'   as_docorator()
+#' create_chunk(docorator, transform = NULL)
+#' }
 create_chunk <- function(x, transform) {
   deparsed <- paste0(deparse(
     function() {

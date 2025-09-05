@@ -34,6 +34,18 @@
 #' @return This function is called for its side effects
 #' @export
 #'
+#' @examples
+#' \dontrun{
+#' gt::gtcars |>
+#'   dplyr::slice_head(n = 10) |>
+#'   dplyr::select(mfr, model, year, msrp) |>
+#'   gt::gt(groupname_col = "mfr",
+#'          row_group_as_column = TRUE) |>
+#'   docorate(
+#'    header = fancyhead(fancyrow("Header 1"), fancyrow("Header 2")),
+#'    filename = "mytbl.pdf")
+#'  }
+#'
 docorate <- function(x,
                      filename = NULL,
                      path = getwd(),
@@ -104,9 +116,9 @@ docorate <- function(x,
 #' @return docorator object
 #' @export
 #'
-#' @section Examples:
+#' @examples
 #'
-#' ```r
+#' \dontrun{
 #' gt::gtcars |>
 #'   dplyr::slice_head(n = 10) |>
 #'   dplyr::select(mfr, model, year, msrp) |>
@@ -114,9 +126,9 @@ docorate <- function(x,
 #'          row_group_as_column = TRUE) |>
 #'   as_docorator(
 #'    header = fancyhead(fancyrow("Header 1"), fancyrow("Header 2")),
-#'    display_name = "mytbl")
-#'
-#' ```
+#'    display_name = "mytbl",
+#'    footer = NULL)
+#' }
 #'
 as_docorator <- function(x,
                      display_name = "docorator",

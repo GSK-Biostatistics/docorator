@@ -1,4 +1,3 @@
-
 #' Process geometry for latex
 #'
 #' @param header Document header

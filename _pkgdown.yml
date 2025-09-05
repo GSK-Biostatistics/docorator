@@ -60,7 +60,6 @@ reference:
   - doc_datetime
   - doc_pagenum
   - doc_path
-  - hf_escape
 - title: Sizing helpers
   contents:
   - geom_set

@@ -5,20 +5,29 @@
 #' @param tbl_stub_pct percent of total width that should be dedicated to stub column(s). If more than 1 stub column then this is the total for both.
 #' @param fontsize document font size
 #' @return scaled gt object
+#' @name apply_scale
+#' @examples
+#' gt <- gt::exibble |>
+#' gt::gt()
+#'
+#' apply_scale(gt, fontsize = 10, tbl_scale = FALSE, tbl_stub_pct = "20%")
+NULL
+
+#' @name apply_scale
 #' @export
 #' @keywords internal
 apply_scale <- function (x, fontsize, tbl_scale, tbl_stub_pct) {
   UseMethod("apply_scale", x)
 }
 
-#' default
+#' @name apply_scale
 #' @export
 #' @keywords internal
 apply_scale.default <- function(x, fontsize, tbl_scale, tbl_stub_pct) {
   x
 }
 
-#' scale gt_tbl object
+#' @name apply_scale
 #' @export
 #' @keywords internal
 apply_scale.gt_tbl <- function(x, fontsize, tbl_scale, tbl_stub_pct) {
@@ -41,7 +50,7 @@ apply_scale.gt_tbl <- function(x, fontsize, tbl_scale, tbl_stub_pct) {
 
 }
 
-#' scale gt_group object
+#' @name apply_scale
 #' @export
 #' @keywords internal
 apply_scale.gt_group <- function(x, fontsize, tbl_scale, tbl_stub_pct) {
@@ -61,9 +70,8 @@ apply_scale.gt_group <- function(x, fontsize, tbl_scale, tbl_stub_pct) {
 #' @return Table with col_widths settings applied
 #' @export
 #'
-#' @section Examples:
+#' @examples
 #'
-#' ```r
 #' gt::gtcars |>
 #'   dplyr::slice_head(n = 10) |>
 #'   dplyr::select(mfr, model, year, msrp, ctry_origin) |>
@@ -72,7 +80,6 @@ apply_scale.gt_group <- function(x, fontsize, tbl_scale, tbl_stub_pct) {
 #'       rowname_col = "mfr",
 #'       row_group_as_column = TRUE) |>
 #'   scale_gt(tbl_stub_pct = 0.4)
-#' ```
 #'
 scale_gt <- function(x,
                      tbl_stub_pct = 0.3
@@ -135,7 +142,7 @@ scale_gt <- function(x,
 #' @return boolean true if needs rescaling, false otherwise.
 #' @noRd
 check_gt_widths <- function(x){
-  
+
   # preset table_width
   table_width <- "100%"
 
