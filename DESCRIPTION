@@ -7,7 +7,7 @@ Authors@R:
       person(given = "Seongbin", family = "Hong", email = "seongbin.x.hong@gsk.com", role = c("aut")),
       person("GlaxoSmithKline Research & Development Limited", role = c("cph", "fnd")))
 Description: Frame a table, listing, or figure with decorations and save to an output file.  
-License: file LICENSE
+License: Apache-2
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2

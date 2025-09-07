@@ -11,3 +11,4 @@ man/figures/
 ^cran-comments\.md$
 ^CRAN-SUBMISSION$
 ^\.github$
+^LICENSE$
