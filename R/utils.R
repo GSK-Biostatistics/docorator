@@ -163,7 +163,7 @@ png_path <- function(path = NULL){
 #' \donttest{
 #' docorator <- gt::exibble |>
 #'   gt::gt() |>
-#'   as_docorator()
+#'   as_docorator(save_object = FALSE)
 #' create_chunk(docorator, transform = NULL)
 #' }
 create_chunk <- function(x, transform) {

@@ -23,7 +23,7 @@ Taken from https://gist.github.com/MichaelJW/b4a3dd999a47b137d12f42a8f7562b11
 \donttest{
 docorator <- gt::exibble |>
   gt::gt() |>
-  as_docorator()
+  as_docorator(save_object = FALSE)
 create_chunk(docorator, transform = NULL)
 }
 }
