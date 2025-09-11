@@ -7,7 +7,7 @@
 as_docorator(
   x,
   display_name = "docorator",
-  display_loc = getwd(),
+  display_loc = NULL,
   header = fancyhead(fancyrow(right = doc_pagenum())),
   footer = fancyfoot(fancyrow(left = doc_path(display_name, display_loc), right =
     doc_datetime())),
@@ -26,7 +26,7 @@ as_docorator(
 
 \item{display_name}{name of file (excluding extension)}
 
-\item{display_loc}{path to save the output file to}
+\item{display_loc}{optional path to save the output file to}
 
 \item{header}{Document header. Accepts a \code{fancyhead} object. If \code{NULL}, no header will be displayed.}
 

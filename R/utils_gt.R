@@ -271,7 +271,7 @@ gg_to_gt <- function(x){
 #' @return filepath to snap of ggplot
 #' @keywords internal
 #' @noRd
-gg_to_image <- function(plot_object, fig_dim = c(5,8), path = getwd()) {
+gg_to_image <- function(plot_object, fig_dim = c(5,8), path = NULL) {
 
 
   # Upgrade x to a list if only a single ggplot object is provided

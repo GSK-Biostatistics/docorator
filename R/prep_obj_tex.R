@@ -39,7 +39,7 @@ prep_obj_tex.character <- function(x, transform = NULL, ...) {
 prep_obj_tex.PNG <- function(x, transform = NULL, ... ) {
 
   if (Sys.getenv("DOCORATOR_RENDER_ENGINE")=="qmd"){
-    tmpdir <- getwd()
+    tmpdir <- "."
   } else {
     tmpdir <- tempdir()
   }

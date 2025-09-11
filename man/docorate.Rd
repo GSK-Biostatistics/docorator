@@ -7,7 +7,7 @@
 docorate(
   x,
   filename = NULL,
-  path = getwd(),
+  path = NULL,
   header = fancyhead(fancyrow(right = doc_pagenum())),
   footer = fancyfoot(fancyrow(left = doc_path(filename, path), right = doc_datetime())),
   ...,
@@ -23,7 +23,7 @@ docorate(
 
 \item{filename}{name of file including extension (note: only PDF supported currently)}
 
-\item{path}{path to save the output pdf to}
+\item{path}{optional path to save the output pdf to}
 
 \item{header}{Document header. Accepts a \code{fancyhead} object. If \code{NULL}, no header will be displayed.}
 

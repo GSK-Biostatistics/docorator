@@ -1,7 +1,7 @@
 #' Render to pdf
 #'
 #' @param x `docorator` object
-#' @param display_loc path to save the output pdf to
+#' @param display_loc optional path to save the output pdf to
 #' @param transform optional latex transformation function to apply to a gt latex string
 #' @param header_latex optional .tex file of header latex
 #' @param keep_tex Boolean indicating if to keep resulting .tex file from latex conversion. Defaults to FALSE.
@@ -229,14 +229,20 @@ render_pdf_qmd <- function(x,
   }
 
   # create a full path
-  display_loc <- normalizePath(display_loc, winslash = "/")
+  if (!is.null(display_loc)){
+    display_loc <- normalizePath(display_loc, winslash = "/")
+  }
 
   qmd_name <- paste0(x$display_name,".qmd")
   pdf_name <- paste0(x$display_name, ".pdf")
   docorator_name <- paste0(x$display_name, "_docorator_obj.Rds")
 
   cur_dir <- getwd()
-  render_dir <- file.path(display_loc, paste0(x$display_name, "_docorator_files"))
+  if (!is.null(display_loc)){
+    render_dir <- file.path(display_loc, paste0(x$display_name, "_docorator_files"))
+  } else {
+    render_dir <- file.path(paste0(x$display_name, "_docorator_files"))
+  }
   if(!dir.exists(render_dir)){
     dir.create(render_dir)
   }
@@ -251,7 +257,6 @@ render_pdf_qmd <- function(x,
   withr::with_dir(
     new = render_dir,
     code = {
-
       # copy template qmd to a temp directory
       template <- system.file("template", "template.qmd", package = "docorator")
       file.copy(template, getwd(), overwrite = TRUE, recursive = TRUE)
@@ -265,7 +270,7 @@ render_pdf_qmd <- function(x,
           file.rename(file_name, "header.tex")
         }else{
           cli::cli_warn("The header_latex argument must point to a valid .tex file. No header options applied.",
-                   call = rlang::caller_env())
+                        call = rlang::caller_env())
         }
       }
 
@@ -284,21 +289,22 @@ render_pdf_qmd <- function(x,
             transform = NULL # disabled for quarto
           ),
           quiet = TRUE)
+    })
 
-      if (file.exists(pdf_name)){
-
-        out_path <- file.path(display_loc, pdf_name)
-        file_ok <- file.copy(from = pdf_name,
-                             to = out_path,
-                             overwrite = TRUE)
-
-        if (file_ok){
-          cli::cli_alert_success("Document created at: {out_path}")
-        }
-      }
-
+  if (file.exists(file.path(render_dir, pdf_name))){
+    if (!is.null(display_loc)){
+      out_path <- file.path(display_loc, pdf_name)
+    } else {
+      out_path <- pdf_name
     }
-  )
+    file_ok <- file.copy(from = file.path(render_dir, pdf_name),
+                         to = out_path,
+                         overwrite = TRUE)
+
+    if (file_ok){
+      cli::cli_alert_success("Document created at: {out_path}")
+    }
+  }
 
   # return docorator object for further renders
   invisible(x)

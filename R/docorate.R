@@ -8,7 +8,7 @@
 #'
 #' @param x object containing the display. See @details for more information.
 #' @param filename name of file including extension (note: only PDF supported currently)
-#' @param path path to save the output pdf to
+#' @param path optional path to save the output pdf to
 #' @param header Document header. Accepts a `fancyhead` object. If `NULL`, no header will be displayed.
 #' @param footer Document footer Accepts a `fancyfoot` object. If `NULL`, no footer will be displayed.
 #' @param ... These dots are for future extensions and must be empty.
@@ -48,7 +48,7 @@
 #'
 docorate <- function(x,
                      filename = NULL,
-                     path = getwd(),
+                     path = NULL,
                      header = fancyhead(fancyrow(right = doc_pagenum())),
                      footer = fancyfoot(fancyrow(left = doc_path(filename, path),
                                                  right = doc_datetime())),
@@ -88,7 +88,7 @@ docorate <- function(x,
 #'
 #' @param x object containing the display. See @details for more information.
 #' @param display_name name of file (excluding extension)
-#' @param display_loc path to save the output file to
+#' @param display_loc optional path to save the output file to
 #' @param header Document header. Accepts a `fancyhead` object. If `NULL`, no header will be displayed.
 #' @param footer Document footer Accepts a `fancyfoot` object. If `NULL`, no footer will be displayed.
 #' @param save_object Boolean indicating if a docorator object should be saved.
@@ -132,7 +132,7 @@ docorate <- function(x,
 #'
 as_docorator <- function(x,
                      display_name = "docorator",
-                     display_loc = getwd(),
+                     display_loc = NULL,
                      header = fancyhead(fancyrow(right = doc_pagenum())),
                      footer = fancyfoot(fancyrow(left = doc_path(display_name, display_loc),
                                                  right = doc_datetime())),

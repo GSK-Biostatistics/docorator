@@ -23,6 +23,9 @@ hf_process(x, escape_latex = TRUE)
 
 \item{escape_latex}{Boolean to escape latex in header/footer}
 }
+\value{
+character string containing headers and footers latex code
+}
 \description{
 Process headers/footers
 }
