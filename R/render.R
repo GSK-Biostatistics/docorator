@@ -66,7 +66,7 @@ render_pdf <- function(x,
 
   # if no path is given, use docorator path
   if(is.null(display_loc)){
-    display_loc <- x$display_loc
+    display_loc <- x$display_loc %||% "."
   }
 
   # set name if needed
@@ -157,7 +157,7 @@ render_rtf <- function(x, display_loc = NULL, remove_unicode_ws = TRUE, use_page
 
   # if no path is given, use docorator path
   if(is.null(display_loc)){
-    display_loc <- x$display_loc
+    display_loc <- x$display_loc %||% "."
   }
 
   # set name if needed

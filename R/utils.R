@@ -10,9 +10,7 @@
 #'  doc_path(filename = "my_tbl.pdf", path = NULL)
 #'}
 doc_path <- function(filename = NULL, path = NULL){
-  if (is.null(path)){
-    path <- "."
-  }
+  path <- path %||% "."
   doc_path <- thisfile(filename, path)
   if(length(doc_path)==0){
     return(NA)

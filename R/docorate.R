@@ -176,6 +176,7 @@ as_docorator <- function(x,
   # save docorator object
   if(save_object){
     object_filename <- paste0(display_name,".RDS")
+    object_loc <- object_loc %||% "."
     object_loc <- file.path(object_loc, object_filename)
     saveRDS(object = docorator_obj, file = object_loc)
   }
