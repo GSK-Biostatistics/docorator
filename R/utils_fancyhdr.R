@@ -189,6 +189,7 @@ as_tibble_fancyrow <- function(x, ...){
 #' @param x header or footer
 #' @param escape_latex Boolean to escape latex in header/footer
 #'
+#' @return character string containing headers and footers latex code
 #' @export
 #' @keywords internal
 #'

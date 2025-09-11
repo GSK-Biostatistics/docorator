@@ -13,7 +13,7 @@ character string
 Date and time of program run
 }
 \examples{
-\dontrun{
+\donttest{
  doc_datetime()
 }
 }

@@ -4,7 +4,7 @@
 \alias{doc_path}
 \title{Path of program}
 \usage{
-doc_path(filename = NULL, path = getwd())
+doc_path(filename = NULL, path = NULL)
 }
 \arguments{
 \item{filename}{Name of output file}
@@ -18,7 +18,7 @@ character string
 Path of program
 }
 \examples{
-\dontrun{
- doc_path(filename = "my_tbl.pdf", path = getwd())
+\donttest{
+ doc_path(filename = "my_tbl.pdf", path = NULL)
 }
 }

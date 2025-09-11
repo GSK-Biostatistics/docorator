@@ -13,7 +13,6 @@ character string containing latex code
 Automatic page numbering
 }
 \examples{
-\dontrun{
- doc_pagenum()
-}
+doc_pagenum()
+
 }
