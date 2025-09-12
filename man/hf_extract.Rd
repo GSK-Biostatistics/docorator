@@ -19,6 +19,7 @@ extract header footer info from docorator object
 docorator <- gt::exibble |>
   gt::gt()|>
   as_docorator(
+  display_name = "mytbl",
   header = fancyhead(
   fancyrow(left = "Protocol: 12345", right = doc_pagenum()),
   fancyrow(center = "Demographic Summary")

@@ -10,7 +10,9 @@
 #' @examples
 #' docorator <- gt::exibble |>
 #' gt::gt() |>
-#' as_docorator(footer=NULL,
+#' as_docorator(
+#' display_name = "my_tbl",
+#' footer=NULL,
 #' save_object = FALSE)
 #'
 #' prepared_obj <- prep_obj_rtf(docorator)

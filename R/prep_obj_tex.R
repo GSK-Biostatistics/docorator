@@ -11,7 +11,8 @@
 #' @examples
 #' docorator <- gt::exibble |>
 #' gt::gt() |>
-#' as_docorator(footer = NULL,
+#' as_docorator(
+#' display_name = "mytbl", footer = NULL,
 #' save_object = FALSE)
 #'
 #' prepared_obj <- prep_obj_tex(docorator)

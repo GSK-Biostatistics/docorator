@@ -14,6 +14,7 @@ test_that("prep_obj_rtf - ggplot", {
                        fancyrow(center = "this is the subtitle1"),
                        fancyrow(center = "this is the subtitle2")),
     footer = fancyfoot(fancyrow(left = "this is the docorator footnote")),
+    display_name = "mytbl",
     save_object = FALSE)
 
   gt_display <- prep_obj_rtf(docorator)
@@ -51,6 +52,7 @@ test_that("prep_obj_rtf - png", {
                        fancyrow(center = "this is the subtitle1"),
                        fancyrow(center = "this is the subtitle2")),
     footer = fancyfoot(fancyrow(left = "this is the docorator footnote")),
+    display_name = "mytbl",
     save_object = FALSE)
 
   gt_display <- prep_obj_rtf(docorator)
@@ -83,6 +85,7 @@ test_that("prep_obj_rtf - character", {
                        fancyrow(center = "this is the subtitle1"),
                        fancyrow(center = "this is the subtitle2")),
     footer = fancyfoot(fancyrow(left = "this is the docorator footnote")),
+    display_name = "mytbl",
     save_object = FALSE)
 
   gt_display <- prep_obj_rtf(docorator)
@@ -110,6 +113,7 @@ test_that("prep_obj_rtf - invalid", {
                        fancyrow(center = "this is the subtitle1"),
                        fancyrow(center = "this is the subtitle2")),
     footer = fancyfoot(fancyrow(left = "this is the docorator footnote")),
+    display_name = "mytbl",
     save_object = FALSE)
 
   expect_error(prep_obj_rtf(docorator), "For RTF render the display must be class character, gt_tbl, gt_group, PNG, or ggplot, not a number.")

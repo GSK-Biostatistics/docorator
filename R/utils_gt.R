@@ -15,6 +15,7 @@
 #' docorator <- gt::exibble |>
 #'   gt::gt()|>
 #'   as_docorator(
+#'   display_name = "my_tbl",
 #'   header = fancyhead(
 #'   fancyrow(left = "Protocol: 12345", right = doc_pagenum()),
 #'   fancyrow(center = "Demographic Summary")
@@ -122,6 +123,7 @@ hf_to_gt_group <- function(gt_group, header, subheader, footer){
 #' docorator <- gt::exibble |>
 #'   gt::gt()|>
 #'   as_docorator(
+#'   display_name = "mytbl",
 #'   header = fancyhead(
 #'   fancyrow(left = "Protocol: 12345", right = doc_pagenum()),
 #'   fancyrow(center = "Demographic Summary")

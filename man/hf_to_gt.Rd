@@ -20,6 +20,7 @@ Note: this function is only for use by downstream tools and is not intended for 
 docorator <- gt::exibble |>
   gt::gt()|>
   as_docorator(
+  display_name = "my_tbl",
   header = fancyhead(
   fancyrow(left = "Protocol: 12345", right = doc_pagenum()),
   fancyrow(center = "Demographic Summary")
