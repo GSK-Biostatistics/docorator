@@ -78,12 +78,15 @@ fancyfoot(
 ```
 # Putting it all together
 
-```r
+```{r}
+#| eval: false
 gt::gtcars |>
   dplyr::slice_head(n = 10) |>
   dplyr::select(mfr, model, year, msrp) |>
-  gt::gt(groupname_col = "mfr",
-         row_group_as_column = TRUE) |> 
+  gt::gt(
+    groupname_col = "mfr",
+    row_group_as_column = TRUE
+  ) |> 
   as_docorator( 
     display_name = "mytbl",
     header = fancyhead(
@@ -92,13 +95,21 @@ gt::gtcars |>
       fancyrow(left = NA, center = "My Table", right = NA)
     ),
     footer = fancyfoot(
-      fancyrow(left = "path/mytbl.pdf", center = NA, right = "Data as of 2025-01-01")
+      fancyrow(
+        left = "path/mytbl.pdf", center = NA, right = "Data as of 2025-01-01"
+      )
     ) 
   ) |> 
   render_pdf()
 ```
-<img src="../man/figures/doc_example.png" width="700px"/>
 
+```{r}
+#| echo: false
+#| fig-align: center
+#| out-width: 700px
+#| fig-alt: Docorator example
+knitr::include_graphics("img/doc_example.png")
+```
 
 # Note about sizing
 
