@@ -20,7 +20,7 @@ Create prep_obj_tex code chunks
 Taken from https://gist.github.com/MichaelJW/b4a3dd999a47b137d12f42a8f7562b11
 }
 \examples{
-\donttest{
+\dontrun{
 docorator <- gt::exibble |>
   gt::gt() |>
   as_docorator(save_object = FALSE)

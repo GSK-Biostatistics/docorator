@@ -158,7 +158,7 @@ png_path <- function(path = NULL){
 #' @export
 #' @keywords internal
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' docorator <- gt::exibble |>
 #'   gt::gt() |>
 #'   as_docorator(save_object = FALSE)

@@ -6,7 +6,7 @@ Authors@R:
       person(given = "Shannon", family = "Haughton", email = "shannon.l.haughton@gsk.com", role = c("aut")),
       person(given = "Seongbin", family = "Hong", email = "seongbin.x.hong@gsk.com", role = c("aut")),
       person("GlaxoSmithKline Research & Development Limited", role = c("cph", "fnd")))
-Description: A framework for creating production outputs. Users can frame a table, listing, or figure with decorations and save to an output file. Stores an intermediate 'docorator' object for reproducibility and rendering to multiple output types. Currently PDF and RTF are supported.  
+Description: A framework for creating production outputs. Users can frame a table, listing, or figure with headers and footers and save to an output file. Stores an intermediate 'docorator' object for reproducibility and rendering to multiple output types.
 License: Apache License 2.0
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
