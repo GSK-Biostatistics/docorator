@@ -25,14 +25,16 @@ A core feature of {docorator} is flexible header and footer options via the `hea
 The `header` argument accepts a `fancyhead` object. The `fancyhead` object accepts a series of `fancyrow` objects. These correspond to each line of text in the header. Within a `fancyrow`, you can optionally specify the left, center, and right text (`NA` indicates a blank position). Some examples are below.
 
 ## One line header 
-```r
+```{r}
+#| eval: false
 fancyhead(
   fancyrow(left = "My Study", center = NA, right = NA)
 )
 ```
 
 ## Multi-line header 
-```r
+```{r}
+#| eval: false
 fancyhead(
   fancyrow(left = "My Study", center = NA, right = "Date as of today"),
   fancyrow(left = "My Population", center = NA, right = NA),
@@ -45,14 +47,16 @@ fancyhead(
 The `footer` argument of `as_docorator()` accepts a `fancyfoot` object. This behaves identically to `fancyhead` above by accepting a series of `fancyrow` objects for each line of the footer. 
 
 ## One line footer 
-```r
+```{r}
+#| eval: false
 fancyfoot(
   fancyrow(left = "Date as of today", center = NA, right = NA)
 )
 ```
 
 ## Multi-line footer 
-```r
+```{r}
+#| eval: false
 fancyfoot(
   fancyrow(left = "General footer for the table", center = NA, right = NA),
   fancyrow(left = "Date as of today", center = NA, right = "path/to/docname.pdf")
@@ -64,14 +68,16 @@ fancyfoot(
 There are several functions available for features like page numbering and time stamps. These are prefixed with `doc_*()`. 
 
 ## Add automatic page numbering in upper left 
-```r
+```{r}
+#| eval: false
 fancyhead(
   fancyrow(left = "My study", center = NA, right = doc_pagenum())
 )
 ```
 
 ## Add file path in bottom left and datetime in bottom right
-```r
+```{r}
+#| eval: false
 fancyfoot(
   fancyrow(left = doc_path(), center = NA, right = doc_datetime())
 )
