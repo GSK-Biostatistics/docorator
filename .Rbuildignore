@@ -12,3 +12,4 @@ man/figures/
 ^CRAN-SUBMISSION$
 ^\.github$
 ^LICENSE$
+^README\.Rmd$
