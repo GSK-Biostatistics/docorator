@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# docorator <a href='https://gsk-biostatistics.github.io/docorator/'><img src="vignettes/img/docorator_hex.png" align="right" alt = "docorator logo" style="height:139px;"/></a>
+# docorator <a href='https://gsk-biostatistics.github.io/docorator/'><img src="man/figures/docorator_hex.png" align="right" alt = "docorator logo" style="height:139px;"/></a>
 
 <!-- badges: start -->
 
@@ -65,7 +65,7 @@ mytbl |>
   render_rtf()
 ```
 
-<img src="vignettes/img/doc_example.png" alt="Docorator example" width="700px" style="display: block; margin: auto;" />
+<img src="man/figures/doc_example.png" alt="Docorator example" width="700px" style="display: block; margin: auto;" />
 
 # Note
 
