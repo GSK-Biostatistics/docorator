@@ -13,7 +13,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-# docorator <a href='https://gsk-biostatistics.github.io/docorator/'><img src="vignettes/img/docorator_hex.png" align="right" alt = "docorator logo" style="height:139px;"/></a>
+# docorator <a href='https://gsk-biostatistics.github.io/docorator/'><img src="man/figures/docorator_hex.png" align="right" alt = "docorator logo" style="height:139px;"/></a>
 
 
 <!-- badges: start -->
@@ -80,7 +80,7 @@ mytbl |>
 #| fig-align: center
 #| out-width: 700px
 #| fig-alt: Docorator example
-knitr::include_graphics("vignettes/img/doc_example.png")
+knitr::include_graphics("man/figures/doc_example.png")
 ```
 
 
