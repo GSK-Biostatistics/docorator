@@ -69,10 +69,7 @@ render_pdf <- function(x,
     display_loc <- x$display_loc %||% "."
   }
 
-  # set name if needed
-  if (is.null(x$display_name)){
-    x$display_name <- "docorator"
-  }
+  # set filename
   filename <- paste0(x$display_name,".pdf")
 
   if(quarto){
@@ -160,12 +157,8 @@ render_rtf <- function(x, display_loc = NULL, remove_unicode_ws = TRUE, use_page
     display_loc <- x$display_loc %||% "."
   }
 
-  # set name if needed
-  if (is.null(x$display_name)){
-    filename <- "doc.rtf"
-  }else{
-    filename <- paste0(x$display_name,".rtf")
-  }
+  # set name
+  filename <- paste0(x$display_name,".rtf")
 
   # convert outputs to gt for rtf render
   gt <- prep_obj_rtf(x)

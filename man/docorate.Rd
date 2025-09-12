@@ -6,7 +6,7 @@
 \usage{
 docorate(
   x,
-  filename = NULL,
+  filename,
   path = NULL,
   header = fancyhead(fancyrow(right = doc_pagenum())),
   footer = fancyfoot(fancyrow(left = doc_path(filename, path), right = doc_datetime())),
@@ -21,7 +21,7 @@ docorate(
 \arguments{
 \item{x}{object containing the display. See @details for more information.}
 
-\item{filename}{name of file including extension (note: only PDF supported currently)}
+\item{filename}{required name of file including extension (note: only PDF supported currently)}
 
 \item{path}{optional path to save the output pdf to}
 

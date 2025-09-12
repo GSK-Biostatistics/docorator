@@ -6,7 +6,7 @@
 \usage{
 as_docorator(
   x,
-  display_name = "docorator",
+  display_name,
   display_loc = NULL,
   header = fancyhead(fancyrow(right = doc_pagenum())),
   footer = fancyfoot(fancyrow(left = doc_path(display_name, display_loc), right =
@@ -24,7 +24,7 @@ as_docorator(
 \arguments{
 \item{x}{object containing the display. See @details for more information.}
 
-\item{display_name}{name of file (excluding extension)}
+\item{display_name}{required name of file (excluding extension)}
 
 \item{display_loc}{optional path to save the output file to}
 

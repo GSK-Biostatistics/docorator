@@ -7,7 +7,7 @@
 #' i.e `render_pdf`
 #'
 #' @param x object containing the display. See @details for more information.
-#' @param filename name of file including extension (note: only PDF supported currently)
+#' @param filename required name of file including extension (note: only PDF supported currently)
 #' @param path optional path to save the output pdf to
 #' @param header Document header. Accepts a `fancyhead` object. If `NULL`, no header will be displayed.
 #' @param footer Document footer Accepts a `fancyfoot` object. If `NULL`, no footer will be displayed.
@@ -47,7 +47,7 @@
 #'  }
 #'
 docorate <- function(x,
-                     filename = NULL,
+                     filename,
                      path = NULL,
                      header = fancyhead(fancyrow(right = doc_pagenum())),
                      footer = fancyfoot(fancyrow(left = doc_path(filename, path),
@@ -66,6 +66,13 @@ docorate <- function(x,
     env = rlang::caller_env(),
     always = TRUE
   )
+
+  # check that name has been passed
+  if (missing(filename)) {
+    cli::cli_abort("The {.arg {rlang::caller_arg(filename)}} argument must be specified",
+                   call = rlang::caller_env(),
+                   .envir = parent.frame())
+  }
 
   as_docorator(x,
                display_name =  tools::file_path_sans_ext(filename),
@@ -87,7 +94,7 @@ docorate <- function(x,
 #' Create docorator object
 #'
 #' @param x object containing the display. See @details for more information.
-#' @param display_name name of file (excluding extension)
+#' @param display_name required name of file (excluding extension)
 #' @param display_loc optional path to save the output file to
 #' @param header Document header. Accepts a `fancyhead` object. If `NULL`, no header will be displayed.
 #' @param footer Document footer Accepts a `fancyfoot` object. If `NULL`, no footer will be displayed.
@@ -131,7 +138,7 @@ docorate <- function(x,
 #' }
 #'
 as_docorator <- function(x,
-                     display_name = "docorator",
+                     display_name,
                      display_loc = NULL,
                      header = fancyhead(fancyrow(right = doc_pagenum())),
                      footer = fancyfoot(fancyrow(left = doc_path(display_name, display_loc),
@@ -150,6 +157,13 @@ as_docorator <- function(x,
                    what = I("Support of character vectors as input to the `header` argument of `as_docorator()`"),
                    details = "Please provide a `fancyhdr` object instead.",
                    env = rlang::caller_env())
+  }
+
+  # check that name has been passed
+  if (missing(display_name)) {
+    cli::cli_abort("The {.arg {rlang::caller_arg(display_name)}} argument must be specified",
+                   call = rlang::caller_env(),
+                   .envir = parent.frame())
   }
 
   # check inputs
