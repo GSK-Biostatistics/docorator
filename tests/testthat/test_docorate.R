@@ -61,3 +61,48 @@ test_that("deprecated - docorate works", {
 
   })
 })
+
+test_that("Create docorator object without display_name errors",{
+
+  skip_on_cran()
+  skip_on_ci()
+
+  my_gt <- gt::exibble |>
+    gt::gt(
+      rowname_col = "row",
+      groupname_col = "group"
+    )
+
+  expect_error(
+    suppressMessages(
+      as_docorator(
+      x = my_gt,
+      header = fancyhead(
+        fancyrow("first line header")
+      ),
+      footer = NULL,
+      save_object = FALSE
+    )
+    ),
+    "The `display_name` argument must be specified"
+  )
+
+
+  withr::with_tempdir({
+
+    expect_error(
+      docorate(
+        x = my_gt,
+        header = fancyhead(
+          fancyrow("first line header"),
+          fancyrow("second line header")
+        ),
+        footer = NULL
+      ),
+      "The `filename` argument must be specified"
+    )
+
+  })
+
+
+})
