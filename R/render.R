@@ -230,7 +230,6 @@ render_pdf_qmd <- function(x,
   pdf_name <- paste0(x$display_name, ".pdf")
   docorator_name <- paste0(x$display_name, "_docorator_obj.Rds")
 
-  cur_dir <- getwd()
   if (!is.null(display_loc)){
     render_dir <- file.path(display_loc, paste0(x$display_name, "_docorator_files"))
   } else {
@@ -250,16 +249,16 @@ render_pdf_qmd <- function(x,
   withr::with_dir(
     new = render_dir,
     code = {
-      # copy template qmd to a temp directory
+      # copy template qmd to the render dir
       template <- system.file("template", "template.qmd", package = "docorator")
-      file.copy(template, getwd(), overwrite = TRUE, recursive = TRUE)
+      file.copy(template, ".", overwrite = TRUE, recursive = TRUE)
       file.rename("template.qmd", qmd_name)
 
-      # copy tex header to temp directory and rename if one exists
+      # copy tex header to render dir and rename if one exists
       if(!is.null(header_latex)){
         if(file.exists(header_latex) && tools::file_ext(header_latex) == "tex"){
           file_name <- basename(header_latex)
-          file.copy(header_latex, getwd(), overwrite = TRUE, recursive = TRUE)
+          file.copy(header_latex, ".", overwrite = TRUE, recursive = TRUE)
           file.rename(file_name, "header.tex")
         }else{
           cli::cli_warn("The header_latex argument must point to a valid .tex file. No header options applied.",
@@ -267,7 +266,7 @@ render_pdf_qmd <- function(x,
         }
       }
 
-      # save docorator obj to temp dir
+      # save docorator obj to render dir
       saveRDS(x, docorator_name)
 
       # render pdf
