@@ -91,7 +91,7 @@ test_that("Create docorator object without display_name errors",{
   withr::with_tempdir({
 
     expect_error(
-      suppressMessages(
+      suppressWarnings(
         docorate(
         x = my_gt,
         header = fancyhead(
@@ -99,9 +99,9 @@ test_that("Create docorator object without display_name errors",{
           fancyrow("second line header")
         ),
         footer = NULL
+      )
       ),
       "The `filename` argument must be specified"
-    )
     )
 
   })
