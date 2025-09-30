@@ -2,9 +2,30 @@
 % Please edit documentation in R/prep_obj_rtf.R
 \name{prep_obj_rtf}
 \alias{prep_obj_rtf}
+\alias{prep_obj_rtf.default}
+\alias{prep_obj_rtf.character}
+\alias{prep_obj_rtf.PNG}
+\alias{prep_obj_rtf.ggplot}
+\alias{prep_obj_rtf.gt_tbl}
+\alias{prep_obj_rtf.gt_group}
+\alias{prep_obj_rtf.list}
 \title{Prepare table, listing, figure object for output to rtf}
 \usage{
 prep_obj_rtf(x, ...)
+
+\method{prep_obj_rtf}{default}(x, ...)
+
+\method{prep_obj_rtf}{character}(x, ...)
+
+\method{prep_obj_rtf}{PNG}(x, ...)
+
+\method{prep_obj_rtf}{ggplot}(x, ...)
+
+\method{prep_obj_rtf}{gt_tbl}(x, ...)
+
+\method{prep_obj_rtf}{gt_group}(x, ...)
+
+\method{prep_obj_rtf}{list}(x, ...)
 }
 \arguments{
 \item{x}{docorator object containing display information}
@@ -12,9 +33,19 @@ prep_obj_rtf(x, ...)
 \item{...}{additional args}
 }
 \value{
-object to be included as-is render engine
+gt object to be included as-is to render engine
 }
 \description{
 Prepare table, listing, figure object for output to rtf
+}
+\examples{
+docorator <- gt::exibble |>
+gt::gt() |>
+as_docorator(
+display_name = "my_tbl",
+footer=NULL,
+save_object = FALSE)
+
+prepared_obj <- prep_obj_rtf(docorator)
 }
 \keyword{internal}

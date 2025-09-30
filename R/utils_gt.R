@@ -10,6 +10,20 @@
 #'
 #' @export
 #' @keywords internal
+#'
+#' @examples
+#' docorator <- gt::exibble |>
+#'   gt::gt()|>
+#'   as_docorator(
+#'   display_name = "my_tbl",
+#'   header = fancyhead(
+#'   fancyrow(left = "Protocol: 12345", right = doc_pagenum()),
+#'   fancyrow(center = "Demographic Summary")
+#'   ),
+#'   footer = NULL,
+#'   save_object = FALSE)
+#'
+#' hf_to_gt(docorator)
 
 hf_to_gt <- function(x) {
 
@@ -105,6 +119,19 @@ hf_to_gt_group <- function(gt_group, header, subheader, footer){
 #'
 #' @export
 #' @keywords internal
+#' @examples
+#' docorator <- gt::exibble |>
+#'   gt::gt()|>
+#'   as_docorator(
+#'   display_name = "mytbl",
+#'   header = fancyhead(
+#'   fancyrow(left = "Protocol: 12345", right = doc_pagenum()),
+#'   fancyrow(center = "Demographic Summary")
+#'   ),
+#'   footer = NULL,
+#'   save_object = FALSE)
+#'
+#' hf_extract(docorator)
 hf_extract <- function(x){
   # get header and footer information
   header <- x$header
@@ -173,7 +200,7 @@ apply_to_grp <- function(func, args, call = rlang::caller_env()){
 
 #' Convert png object to gt from docorator object
 #' @param x docorator object
-#' @export
+#' @noRd
 #' @keywords internal
 png_to_gt <- function(x){
 
@@ -202,7 +229,7 @@ png_to_gt <- function(x){
 
 #' Convert ggplot object to gt from docorator object
 #' @param x docorator object
-#' @export
+#' @noRd
 #' @keywords internal
 gg_to_gt <- function(x){
 
@@ -245,7 +272,8 @@ gg_to_gt <- function(x){
 #' @param path file path including the png location to save the output to
 #' @return filepath to snap of ggplot
 #' @keywords internal
-gg_to_image <- function(plot_object, fig_dim = c(5,8), path = getwd()) {
+#' @noRd
+gg_to_image <- function(plot_object, fig_dim = c(5,8), path = NULL) {
 
 
   # Upgrade x to a list if only a single ggplot object is provided
@@ -287,7 +315,7 @@ gg_to_image <- function(plot_object, fig_dim = c(5,8), path = getwd()) {
 #'
 #' @return list of header footer info
 #'
-#' @export
+#' @noRd
 #' @keywords internal
 hf_strip <- function(x){
 

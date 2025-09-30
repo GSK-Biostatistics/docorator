@@ -17,7 +17,7 @@ render_pdf(
 \arguments{
 \item{x}{\code{docorator} object}
 
-\item{display_loc}{path to save the output pdf to}
+\item{display_loc}{optional path to save the output pdf to}
 
 \item{transform}{optional latex transformation function to apply to a gt latex string}
 

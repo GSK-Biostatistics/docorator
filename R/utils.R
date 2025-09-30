@@ -5,7 +5,12 @@
 #'
 #' @return character string
 #' @export
-doc_path <- function(filename = NULL, path = getwd()){
+#' @examples
+#' \donttest{
+#'  doc_path(filename = "my_tbl.pdf", path = NULL)
+#'}
+doc_path <- function(filename = NULL, path = NULL){
+  path <- path %||% "."
   doc_path <- thisfile(filename, path)
   if(length(doc_path)==0){
     return(NA)
@@ -17,6 +22,10 @@ doc_path <- function(filename = NULL, path = getwd()){
 #'
 #' @return character string
 #' @export
+#' @examples
+#' \donttest{
+#'  doc_datetime()
+#'}
 doc_datetime <- function(){
   as.POSIXct(Sys.time(), tz = "UTC") |>
     format("%d%B%Y %H:%M")
@@ -26,6 +35,9 @@ doc_datetime <- function(){
 #'
 #' @return character string containing latex code
 #' @export
+#' @examples
+#' doc_pagenum()
+#'
 doc_pagenum <- function(){
   "Page \\thepage\\ of \\pageref*{LastPage}"
 }
@@ -117,6 +129,10 @@ thisfile_rscript <- function() {
 #'
 #' @return object with png attribute
 #' @export
+#' @examples
+#' \dontrun{
+#' png_path <- png_path(path = "path_to_my_png.png")
+#' }
 png_path <- function(path = NULL){
   # path provided, is valid, is png
   if(is.null(path) | !file.exists(path) | toupper(tools::file_ext(path)) != "PNG"){
@@ -138,8 +154,16 @@ png_path <- function(path = NULL){
 #' @param x docorator object
 #' @param transform optional latex transformation function to apply to a gt latex string
 #'
+#' @return printed code chunk to be included as-is in the render engine
 #' @export
 #' @keywords internal
+#' @examples
+#' \dontrun{
+#' docorator <- gt::exibble |>
+#'   gt::gt() |>
+#'   as_docorator(save_object = FALSE)
+#' create_chunk(docorator, transform = NULL)
+#' }
 create_chunk <- function(x, transform) {
   deparsed <- paste0(deparse(
     function() {

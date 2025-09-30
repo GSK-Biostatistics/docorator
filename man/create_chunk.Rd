@@ -12,8 +12,19 @@ create_chunk(x, transform)
 
 \item{transform}{optional latex transformation function to apply to a gt latex string}
 }
+\value{
+printed code chunk to be included as-is in the render engine
+}
 \description{
 Create prep_obj_tex code chunks
 Taken from https://gist.github.com/MichaelJW/b4a3dd999a47b137d12f42a8f7562b11
+}
+\examples{
+\dontrun{
+docorator <- gt::exibble |>
+  gt::gt() |>
+  as_docorator(save_object = FALSE)
+create_chunk(docorator, transform = NULL)
+}
 }
 \keyword{internal}

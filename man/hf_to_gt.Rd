@@ -16,4 +16,18 @@ gt object (either tbl or group)
 Pulls headers and footnotes from the docorator object and applies them to the gt object
 Note: this function is only for use by downstream tools and is not intended for general users
 }
+\examples{
+docorator <- gt::exibble |>
+  gt::gt()|>
+  as_docorator(
+  display_name = "my_tbl",
+  header = fancyhead(
+  fancyrow(left = "Protocol: 12345", right = doc_pagenum()),
+  fancyrow(center = "Demographic Summary")
+  ),
+  footer = NULL,
+  save_object = FALSE)
+
+hf_to_gt(docorator)
+}
 \keyword{internal}

@@ -15,4 +15,18 @@ list of header footer info
 \description{
 extract header footer info from docorator object
 }
+\examples{
+docorator <- gt::exibble |>
+  gt::gt()|>
+  as_docorator(
+  display_name = "mytbl",
+  header = fancyhead(
+  fancyrow(left = "Protocol: 12345", right = doc_pagenum()),
+  fancyrow(center = "Demographic Summary")
+  ),
+  footer = NULL,
+  save_object = FALSE)
+
+hf_extract(docorator)
+}
 \keyword{internal}

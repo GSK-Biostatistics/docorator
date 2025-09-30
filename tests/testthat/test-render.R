@@ -9,81 +9,64 @@ test_that("render to pdf works", {
       groupname_col = "group"
     )
 
-  temp_dir_path <- file.path(rprojroot::is_testthat$find_file(), "tempdir")
-  if (!dir.exists(temp_dir_path)){
-    dir.create(file.path(rprojroot::is_testthat$find_file(), "tempdir"))
-  }
-
   docorator <- as_docorator(
     x = my_gt,
     header = fancyhead(fancyrow("first line header"), fancyrow("second line header")),
     footer = NULL,
     display_name = "my_first_gt",
-    display_loc = temp_dir_path,
+    display_loc = NULL,
     save_object = FALSE
   )
 
-  res <- suppressMessages( docorator |> render_pdf()
-  )
+  # path set to NULL
+  withr::with_tempdir({
+    res <- suppressMessages( docorator |> render_pdf()
+    )
 
-  expect_true(file.exists(file.path(temp_dir_path, "my_first_gt.pdf")))
+    expect_true(file.exists("my_first_gt.pdf"))
+  })
 
   # with path supplied
-  temp_dir_path2 <- file.path(rprojroot::is_testthat$find_file(), "tempdir2")
+  withr::with_tempdir({
+    dir.create("tempdir2")
+    res <- suppressMessages(docorator |> render_pdf(
+      display_loc = "tempdir2"
+    )
+    )
 
-  res <- suppressMessages(docorator |> render_pdf(
-    display_loc = temp_dir_path2
-  )
-  )
-
-  expect_true(file.exists(file.path(temp_dir_path2, "my_first_gt.pdf")))
+    expect_true(file.exists(file.path("tempdir2", "my_first_gt.pdf")))
+  })
 
   # quarto render with path supplied
-  temp_dir_path3 <- file.path(rprojroot::is_testthat$find_file(), "tempdir3")
-  if (!dir.exists(temp_dir_path3)){
-    dir.create(file.path(rprojroot::is_testthat$find_file(), "tempdir3"))
-  }
-  withr::with_dir(
-    rprojroot::is_testthat$find_file(),
-    code = {
+  withr::with_tempdir({
 
-      res <- suppressMessages( docorator |> render_pdf(
-        quarto = TRUE,
-        display_loc = "tempdir3"
-      )
-      )
-    })
-  expect_true(file.exists(file.path(temp_dir_path3, "my_first_gt.pdf")))
+    dir.create("tempdir3")
+
+    res <- suppressMessages( docorator |> render_pdf(
+      quarto = TRUE,
+      display_loc = "tempdir3"
+    )
+    )
+    expect_true(file.exists(file.path("tempdir3", "my_first_gt.pdf")))
+  })
 
   # quarto render with no path supplied
-  temp_dir_path4 <- file.path(rprojroot::is_testthat$find_file(), "tempdir4")
-  if (!dir.exists(temp_dir_path4)){
-    dir.create(file.path(rprojroot::is_testthat$find_file(), "tempdir4"))
-  }
+  withr::with_tempdir({
+    docorator <- as_docorator(
+      x = my_gt,
+      header = fancyhead(fancyrow("first line header"), fancyrow("second line header")),
+      footer = NULL,
+      display_name = "my_first_gt",
+      save_object = FALSE
+    )
+    res <- suppressMessages( docorator |> render_pdf(
+      quarto = TRUE
+    )
+    )
 
-  withr::with_dir(
-    file.path(rprojroot::is_testthat$find_file(), "tempdir4"),
-    code = {
-      docorator <- as_docorator(
-        x = my_gt,
-        header = fancyhead(fancyrow("first line header"), fancyrow("second line header")),
-        footer = NULL,
-        display_name = "my_first_gt",
-        save_object = FALSE
-      )
-      res <- suppressMessages( docorator |> render_pdf(
-        quarto = TRUE
-      )
-      )
-    })
-  expect_true(file.exists(file.path(temp_dir_path4, "my_first_gt.pdf")))
+    expect_true(file.exists("my_first_gt.pdf"))
 
-  unlink(temp_dir_path, recursive = TRUE)
-  unlink(temp_dir_path2, recursive = TRUE)
-  unlink(temp_dir_path3, recursive = TRUE)
-  unlink(temp_dir_path4, recursive = TRUE)
-
-
+  })
 })
 
 test_that("render to pdf, lists", {
@@ -99,45 +82,43 @@ test_that("render to pdf, lists", {
   ggplot2 <- ggplot2::ggplot(data = mtcars, ggplot2::aes(x=cyl, y=mpg)) +
     ggplot2::geom_point()
 
-  temp_dir_path <- file.path(rprojroot::is_testthat$find_file(), "tempdir")
-  if (!dir.exists(temp_dir_path)){
-    dir.create(file.path(rprojroot::is_testthat$find_file(), "tempdir"))
-  }
 
-  # list of pngs
-  docorator <- as_docorator(
-    x = list(png_obj1, png_obj2),
-    header = fancyhead(fancyrow("first line header"), fancyrow("second line header")),
-    footer = NULL,
-    display_name = "my_first_list",
-    display_loc = temp_dir_path,
-    save_object = FALSE
-  )
+  withr::with_tempdir({
 
-  # list of ggplots
-  docorator2 <- as_docorator(
-    x = list(ggplot1, ggplot2),
-    header = fancyhead(fancyrow("first line header"), fancyrow("second line header")),
-    footer = NULL,
-    display_name = "my_first_ggplot_list",
-    display_loc = temp_dir_path,
-    save_object = FALSE
-  )
+    # list of pngs
+    docorator <- as_docorator(
+      x = list(png_obj1, png_obj2),
+      header = fancyhead(fancyrow("first line header"), fancyrow("second line header")),
+      footer = NULL,
+      display_name = "my_first_list",
+      display_loc = NULL,
+      save_object = FALSE
+    )
+
+    # list of ggplots
+    docorator2 <- as_docorator(
+      x = list(ggplot1, ggplot2),
+      header = fancyhead(fancyrow("first line header"), fancyrow("second line header")),
+      footer = NULL,
+      display_name = "my_first_ggplot_list",
+      display_loc = NULL,
+      save_object = FALSE
+    )
 
 
-  res <- suppressMessages( docorator |> render_pdf()
-  )
-  res2 <- suppressMessages( docorator2 |> render_pdf()
-  )
+    res <- suppressMessages( docorator |> render_pdf()
+    )
+    res2 <- suppressMessages( docorator2 |> render_pdf()
+    )
 
-  expect_true(file.exists(file.path(temp_dir_path, "my_first_list.pdf")))
-  expect_true(file.exists(file.path(temp_dir_path, "my_first_ggplot_list.pdf")))
+    expect_true(file.exists("my_first_list.pdf"))
+    expect_true(file.exists("my_first_ggplot_list.pdf"))
 
-  # 2 pages
-  expect_equal(pdftools::pdf_info(file.path(temp_dir_path, "my_first_list.pdf"))$pages,2)
-  expect_equal(pdftools::pdf_info(file.path(temp_dir_path, "my_first_ggplot_list.pdf"))$pages,2)
+    # 2 pages
+    expect_equal(pdftools::pdf_info("my_first_list.pdf")$pages,2)
+    expect_equal(pdftools::pdf_info("my_first_ggplot_list.pdf")$pages,2)
+  })
 
-  unlink(temp_dir_path, recursive = TRUE)
 })
 
 test_that("render to pdf, lists - quarto", {
@@ -153,50 +134,42 @@ test_that("render to pdf, lists - quarto", {
   ggplot2 <- ggplot2::ggplot(data = mtcars, ggplot2::aes(x=cyl, y=mpg)) +
     ggplot2::geom_point()
 
-  temp_dir_path <- file.path(rprojroot::is_testthat$find_file(), "tempdir3")
-  if (!dir.exists(temp_dir_path)){
-    dir.create(file.path(rprojroot::is_testthat$find_file(), "tempdir3"))
+  withr::with_tempdir({
+
+    docorator <- as_docorator(
+      x = list(png_obj1, png_obj2),
+      header = fancyhead(fancyrow("first line header"), fancyrow("second line header")),
+      footer = NULL,
+      display_name = "my_first_list",
+      display_loc = NULL,
+      save_object = FALSE
+    )
+
+    # list of ggplots
+    docorator2 <- as_docorator(
+      x = list(ggplot1, ggplot2),
+      header = fancyhead(fancyrow("first line header"), fancyrow("second line header")),
+      footer = NULL,
+      display_name = "my_first_ggplot_list",
+      display_loc = NULL,
+      save_object = FALSE
+    )
+
+
+    res <- suppressMessages( docorator |> render_pdf(quarto = TRUE))
+
+    res2 <- suppressMessages( docorator2 |> render_pdf(quarto = TRUE))
+
+
+    expect_true(file.exists("my_first_list.pdf"))
+    expect_true(file.exists("my_first_ggplot_list.pdf"))
+
+    # 2 pages
+    expect_equal(pdftools::pdf_info("my_first_list.pdf")$pages,2)
+    expect_equal(pdftools::pdf_info("my_first_ggplot_list.pdf")$pages,2)
   }
-
-  withr::with_dir(
-    rprojroot::is_testthat$find_file(),
-    code = {
-      docorator <- as_docorator(
-        x = list(png_obj1, png_obj2),
-        header = fancyhead(fancyrow("first line header"), fancyrow("second line header")),
-        footer = NULL,
-        display_name = "my_first_list",
-        display_loc = "tempdir3",
-        save_object = FALSE
-      )
-
-      # list of ggplots
-      docorator2 <- as_docorator(
-        x = list(ggplot1, ggplot2),
-        header = fancyhead(fancyrow("first line header"), fancyrow("second line header")),
-        footer = NULL,
-        display_name = "my_first_ggplot_list",
-        display_loc = "tempdir3",
-        save_object = FALSE
-      )
-
-
-      res <- suppressMessages( docorator |> render_pdf(quarto = TRUE))
-
-      res2 <- suppressMessages( docorator2 |> render_pdf(quarto = TRUE))
-
-
-    }
   )
 
-  expect_true(file.exists(file.path(temp_dir_path, "my_first_list.pdf")))
-  expect_true(file.exists(file.path(temp_dir_path, "my_first_ggplot_list.pdf")))
-
-  # 2 pages
-  expect_equal(pdftools::pdf_info(file.path(temp_dir_path, "my_first_list.pdf"))$pages,2)
-  expect_equal(pdftools::pdf_info(file.path(temp_dir_path, "my_first_ggplot_list.pdf"))$pages,2)
-
-  unlink(temp_dir_path, recursive = TRUE)
 })
 
 test_that("render to pdf - transform", {
@@ -212,51 +185,43 @@ test_that("render to pdf - transform", {
 
   transform <- function(x){stringr::str_replace_all(x,"num", "NUM")}
 
-  temp_dir_path <- file.path(rprojroot::is_testthat$find_file(), "tempdir")
-  if (!dir.exists(temp_dir_path)){
-    dir.create(file.path(rprojroot::is_testthat$find_file(), "tempdir"))
-  }
+  withr::with_tempdir({
 
-  docorator <- as_docorator(
-    x = my_gt,
-    header = fancyhead(fancyrow("first line header"), fancyrow("second line header")),
-    footer = NULL,
-    display_name = "my_first_gt",
-    display_loc = temp_dir_path,
-    save_object = FALSE
-  )
+    docorator <- as_docorator(
+      x = my_gt,
+      header = fancyhead(fancyrow("first line header"), fancyrow("second line header")),
+      footer = NULL,
+      display_name = "my_first_gt",
+      display_loc = NULL,
+      save_object = FALSE
+    )
 
-  res <- suppressMessages( docorator |> render_pdf(transform = transform)
-  )
+    res <- suppressMessages( docorator |> render_pdf(transform = transform)
+    )
 
-  expect_true(file.exists(file.path(temp_dir_path, "my_first_gt.pdf")))
-  expect_true(stringr::str_detect(pdftools::pdf_text(file.path(temp_dir_path, "my_first_gt.pdf")),"NUM"))
-  expect_false(stringr::str_detect(pdftools::pdf_text(file.path(temp_dir_path, "my_first_gt.pdf")),"num"))
+    expect_true(file.exists("my_first_gt.pdf"))
+    expect_true(stringr::str_detect(pdftools::pdf_text("my_first_gt.pdf"),"NUM"))
+    expect_false(stringr::str_detect(pdftools::pdf_text("my_first_gt.pdf"),"num"))
+
+  })
 
   # quarto render
-  temp_dir_path2 <- file.path(rprojroot::is_testthat$find_file(), "tempdir2")
-  if (!dir.exists(temp_dir_path2)){
-    dir.create(file.path(rprojroot::is_testthat$find_file(), "tempdir2"))
-  }
+  withr::with_tempdir({
 
-  withr::with_dir(
-    file.path(rprojroot::is_testthat$find_file(), "tempdir2"),
-    code = {
-      docorator <- as_docorator(
-        x = my_gt,
-        header = fancyhead(fancyrow("first line header"), fancyrow("second line header")),
-        footer = NULL,
-        display_name = "my_first_gt",
-        save_object = FALSE
-      )
-      expect_warning(suppressMessages( docorator |> render_pdf(
-        quarto = TRUE, transform = transform
-      )))
-    })
-  expect_true(file.exists(file.path(temp_dir_path2, "my_first_gt.pdf")))
+    docorator <- as_docorator(
+      x = my_gt,
+      header = fancyhead(fancyrow("first line header"), fancyrow("second line header")),
+      footer = NULL,
+      display_name = "my_first_gt",
+      save_object = FALSE
+    )
+    expect_warning(suppressMessages( docorator |> render_pdf(
+      quarto = TRUE, transform = transform
+    )))
 
-  unlink(temp_dir_path, recursive = TRUE)
-  unlink(temp_dir_path2, recursive = TRUE)
+    expect_true(file.exists("my_first_gt.pdf"))
+
+   })
 })
 
 test_that("render to rtf works", {
@@ -270,40 +235,22 @@ test_that("render to rtf works", {
       groupname_col = "group"
     )
 
-  temp_dir_path <- file.path(rprojroot::is_testthat$find_file(), "tempdir")
-  if (!dir.exists(temp_dir_path)){
-    dir.create(file.path(rprojroot::is_testthat$find_file(), "tempdir"))
-  }
+  withr::with_tempdir({
 
-  docorator <- as_docorator(
-    x = my_gt,
-    header = fancyhead(fancyrow(left = "first line header"), fancyrow(center = "second line header")),
-    footer = NULL,
-    display_name = "my_first_gt",
-    display_loc = temp_dir_path,
-    save_object = FALSE
-  )
+    docorator <- as_docorator(
+      x = my_gt,
+      header = fancyhead(fancyrow(left = "first line header"), fancyrow(center = "second line header")),
+      footer = NULL,
+      display_name = "my_first_gt",
+      display_loc = NULL,
+      save_object = FALSE
+    )
 
-  res <- suppressMessages( docorator |> render_rtf()
-  )
+    res <- suppressMessages( docorator |> render_rtf()
+    )
 
-  expect_true(file.exists(file.path(temp_dir_path, "my_first_gt.rtf")))
-
-  # with path supplied
-  temp_dir_path2 <- file.path(rprojroot::is_testthat$find_file(), "tempdir2")
-  if (!dir.exists(temp_dir_path2)){
-    dir.create(file.path(rprojroot::is_testthat$find_file(), "tempdir2"))
-  }
-
-  res <- suppressMessages(docorator |> render_rtf(
-    display_loc = temp_dir_path2
-  )
-  )
-
-  expect_true(file.exists(file.path(temp_dir_path2, "my_first_gt.rtf")))
-
-  unlink(temp_dir_path, recursive = TRUE)
-  unlink(temp_dir_path2, recursive = TRUE)
+    expect_true(file.exists("my_first_gt.rtf"))
+  })
 
 })
 
@@ -322,29 +269,26 @@ test_that("rtf unicode characters",{
       }
     )
 
-  temp_dir_path <- file.path(rprojroot::is_testthat$find_file(), "tempdir")
-  if (!dir.exists(temp_dir_path)){
-    dir.create(file.path(rprojroot::is_testthat$find_file(), "tempdir"))
-  }
+  withr::with_tempdir({
 
-  docorator <- as_docorator(
-    x = my_gt,
-    display_name = "my_gt_with_spaces",
-    display_loc = temp_dir_path,
-    save_object = FALSE
-  )
+    docorator <- as_docorator(
+      x = my_gt,
+      display_name = "my_gt_with_spaces",
+      display_loc = NULL,
+      save_object = FALSE
+    )
 
-  # unicode spaces have been replaced with actual spaces
-  res <- suppressMessages( docorator |> render_rtf())
-  doc <- readLines(file.path(temp_dir_path, "my_gt_with_spaces.rtf"))|> paste0(collapse = "")
-  expect_false(grepl("\u00A0", doc, perl = TRUE))
+    # unicode spaces have been replaced with actual spaces
+    res <- suppressMessages( docorator |> render_rtf())
+    doc <- readLines("my_gt_with_spaces.rtf")|> paste0(collapse = "")
+    expect_false(grepl("\u00A0", doc, perl = TRUE))
 
-  # unicode spaces are still present
-  res <- suppressMessages( docorator |> render_rtf(remove_unicode_ws = FALSE))
-  doc <- readLines(file.path(temp_dir_path, "my_gt_with_spaces.rtf")) |> paste0(collapse = "")
-  expect_true(grepl("\u00A0", doc, perl = TRUE))
+    # unicode spaces are still present
+    res <- suppressMessages( docorator |> render_rtf(remove_unicode_ws = FALSE))
+    doc <- readLines("my_gt_with_spaces.rtf") |> paste0(collapse = "")
+    expect_true(grepl("\u00A0", doc, perl = TRUE))
+  })
 
-  unlink(temp_dir_path, recursive = TRUE)
 })
 
 test_that("rtf headers",{
@@ -358,28 +302,24 @@ test_that("rtf headers",{
       page.header.use_tbl_headings = TRUE
     )
 
-  temp_dir_path <- file.path(rprojroot::is_testthat$find_file(), "tempdir")
-  if (!dir.exists(temp_dir_path)){
-    dir.create(file.path(rprojroot::is_testthat$find_file(), "tempdir"))
-  }
+  withr::with_tempdir({
+    docorator <- as_docorator(
+      x = my_gt,
+      display_name = "my_gt_header",
+      display_loc = NULL,
+      save_object = FALSE,
+      header = fancyhead(fancyrow(center = "Header 1")),
+      footer = fancyfoot(fancyrow("test footnote"))
+    )
 
-  docorator <- as_docorator(
-    x = my_gt,
-    display_name = "my_gt_header",
-    display_loc = temp_dir_path,
-    save_object = FALSE,
-    header = fancyhead(fancyrow(center = "Header 1")),
-    footer = fancyfoot(fancyrow("test footnote"))
-  )
+    res <- suppressMessages( docorator |> render_rtf())
+    doc <- readLines("my_gt_header.rtf") |> paste0(collapse="")
+    expect_false(grepl("\\{\\\\header",doc))
+    res2 <- suppressMessages( docorator |> render_rtf(use_page_header = TRUE))
+    doc2 <- readLines("my_gt_header.rtf")|> paste0(collapse="")
+    expect_true(grepl("\\{\\\\header",doc2))
 
-  res <- suppressMessages( docorator |> render_rtf())
-  doc <- readLines(file.path(temp_dir_path, "my_gt_header.rtf")) |> paste0(collapse="")
-  expect_false(grepl("\\{\\\\header",doc))
-  res2 <- suppressMessages( docorator |> render_rtf(use_page_header = TRUE))
-  doc2 <- readLines(file.path(temp_dir_path, "my_gt_header.rtf"))|> paste0(collapse="")
-  expect_true(grepl("\\{\\\\header",doc2))
-
-  unlink(temp_dir_path, recursive = TRUE)
+  })
 })
 
 test_that("render to rtf, lists of figures", {
@@ -397,41 +337,40 @@ test_that("render to rtf, lists of figures", {
     ggplot2::geom_point() +
     ggplot2::labs(title = "title2", subtitle = "subtitle2", tag = "tag2", caption = "footnote2")
 
-  temp_dir_path <- file.path(rprojroot::is_testthat$find_file(), "tempdir")
-  if (!dir.exists(temp_dir_path)){
-    dir.create(file.path(rprojroot::is_testthat$find_file(), "tempdir"))
-  }
 
-  # list of pngs
-  docorator <- as_docorator(
-    x = list(png_obj1, png_obj2),
-    header = fancyhead(fancyrow(center = "first line header"), fancyrow(center = "second line header")),
-    footer = NULL,
-    display_name = "my_first_list",
-    display_loc = temp_dir_path,
-    save_object = FALSE
-  )
+  withr::with_tempdir({
 
-  # list of ggplots
-  docorator2 <- as_docorator(
-    x = list(ggplot1, ggplot2),
-    header = fancyhead(fancyrow(center = "first line header"), fancyrow(center = "second line header")),
-    footer = NULL,
-    display_name = "my_first_ggplot_list",
-    display_loc = temp_dir_path,
-    save_object = FALSE
-  )
+    # list of pngs
+    docorator <- as_docorator(
+      x = list(png_obj1, png_obj2),
+      header = fancyhead(fancyrow(center = "first line header"), fancyrow(center = "second line header")),
+      footer = NULL,
+      display_name = "my_first_list",
+      display_loc = NULL,
+      save_object = FALSE
+    )
 
-  # warnings as gt cannot handle rtf figures yet
-  res <- suppressWarnings(suppressMessages( docorator |> render_rtf()
-  ))
-  res2 <- suppressWarnings(suppressMessages( docorator2 |> render_rtf()
-  ))
+    # list of ggplots
+    docorator2 <- as_docorator(
+      x = list(ggplot1, ggplot2),
+      header = fancyhead(fancyrow(center = "first line header"), fancyrow(center = "second line header")),
+      footer = NULL,
+      display_name = "my_first_ggplot_list",
+      display_loc = NULL,
+      save_object = FALSE
+    )
 
-  expect_true(file.exists(file.path(temp_dir_path, "my_first_list.rtf")))
-  expect_true(file.exists(file.path(temp_dir_path, "my_first_ggplot_list.rtf")))
+    # warnings as gt cannot handle rtf figures yet
+    res <- suppressWarnings(suppressMessages( docorator |> render_rtf()
+    ))
+    res2 <- suppressWarnings(suppressMessages( docorator2 |> render_rtf()
+    ))
 
-  unlink(temp_dir_path, recursive = TRUE)
+    expect_true(file.exists("my_first_list.rtf"))
+    expect_true(file.exists("my_first_ggplot_list.rtf"))
+
+  })
+
 })
 
 test_that("pipe together renders",{
@@ -445,27 +384,23 @@ test_that("pipe together renders",{
       groupname_col = "group"
     )
 
-  temp_dir_path <- file.path(rprojroot::is_testthat$find_file(), "tempdir")
-  if (!dir.exists(temp_dir_path)){
-    dir.create(file.path(rprojroot::is_testthat$find_file(), "tempdir"))
-  }
+  withr::with_tempdir({
 
-  docorator <- as_docorator(
-    x = my_gt,
-    header = fancyhead(fancyrow(left = "first line header"), fancyrow(center = "second line header")),
-    footer = NULL,
-    display_name = "my_first_gt",
-    display_loc = temp_dir_path,
-    save_object = FALSE
-  )
+    docorator <- as_docorator(
+      x = my_gt,
+      header = fancyhead(fancyrow(left = "first line header"), fancyrow(center = "second line header")),
+      footer = NULL,
+      display_name = "my_first_gt",
+      display_loc = NULL,
+      save_object = FALSE
+    )
 
-  res <- suppressMessages( docorator |> render_rtf() |> render_pdf()
-  )
+    res <- suppressMessages( docorator |> render_rtf() |> render_pdf()
+    )
 
-  expect_true(file.exists(file.path(temp_dir_path, "my_first_gt.rtf")))
-  expect_true(file.exists(file.path(temp_dir_path, "my_first_gt.pdf")))
-
-  unlink(temp_dir_path, recursive = TRUE)
+    expect_true(file.exists("my_first_gt.rtf"))
+    expect_true(file.exists("my_first_gt.pdf"))
+  })
 })
 
 test_that("render non docorator object fails", {
@@ -492,24 +427,20 @@ test_that("render invalid transform", {
       groupname_col = "group"
     )
 
-  temp_dir_path <- file.path(rprojroot::is_testthat$find_file(), "tempdir")
-  if (!dir.exists(temp_dir_path)){
-    dir.create(file.path(rprojroot::is_testthat$find_file(), "tempdir"))
-  }
+  withr::with_tempdir({
+    docorator <- as_docorator(
+      x = my_gt,
+      header = fancyhead(fancyrow("first line header"), fancyrow("second line header")),
+      footer = NULL,
+      display_name = "my_first_gt",
+      display_loc = NULL,
+      save_object = FALSE
+    )
 
-  docorator <- as_docorator(
-    x = my_gt,
-    header = fancyhead(fancyrow("first line header"), fancyrow("second line header")),
-    footer = NULL,
-    display_name = "my_first_gt",
-    display_loc = temp_dir_path,
-    save_object = FALSE
-  )
+    expect_warning(suppressMessages( docorator |> render_pdf(transform = "INVALID_TRANSFORM")), "The transform argument must be a function, not a string. No transform applied.")
+    expect_true(file.exists("my_first_gt.pdf"))
 
-  expect_warning(suppressMessages( docorator |> render_pdf(transform = "INVALID_TRANSFORM")), "The transform argument must be a function, not a string. No transform applied.")
-  expect_true(file.exists(file.path(temp_dir_path, "my_first_gt.pdf")))
-
-  unlink(temp_dir_path, recursive = TRUE)
+  })
 })
 
 test_that("render invalid header_latex", {
@@ -522,24 +453,20 @@ test_that("render invalid header_latex", {
       groupname_col = "group"
     )
 
-  temp_dir_path <- file.path(rprojroot::is_testthat$find_file(), "tempdir")
-  if (!dir.exists(temp_dir_path)){
-    dir.create(file.path(rprojroot::is_testthat$find_file(), "tempdir"))
-  }
+  withr::with_tempdir({
+    docorator <- as_docorator(
+      x = my_gt,
+      header = fancyhead(fancyrow("first line header"), fancyrow("second line header")),
+      footer = NULL,
+      display_name = "my_first_gt",
+      display_loc = NULL,
+      save_object = FALSE
+    )
 
-  docorator <- as_docorator(
-    x = my_gt,
-    header = fancyhead(fancyrow("first line header"), fancyrow("second line header")),
-    footer = NULL,
-    display_name = "my_first_gt",
-    display_loc = temp_dir_path,
-    save_object = FALSE
-  )
+    expect_warning(suppressMessages( docorator |> render_pdf(header_latex = "INVALID_TRANSFORM.R")), "The header_latex argument must point to a valid .tex file. No header options applied.")
+    expect_true(file.exists("my_first_gt.pdf"))
 
-  expect_warning(suppressMessages( docorator |> render_pdf(header_latex = "INVALID_TRANSFORM.R")), "The header_latex argument must point to a valid .tex file. No header options applied.")
-  expect_true(file.exists(file.path(temp_dir_path, "my_first_gt.pdf")))
-
-  unlink(temp_dir_path, recursive = TRUE)
+  })
 })
 
 test_that("render header_latex", {
@@ -552,37 +479,34 @@ test_that("render header_latex", {
       groupname_col = "group"
     )
 
-  temp_dir_path <- file.path(rprojroot::is_testthat$find_file(), "tempdir")
-  if (!dir.exists(temp_dir_path)){
-    dir.create(file.path(rprojroot::is_testthat$find_file(), "tempdir"))
-  }
+  withr::with_tempdir({
 
-  # write .tex header file
-  latex_commands <- c(
-    "\\begin{document}",
-    "This will be the only content in the document",
-    "\\end{document}"
-  )
-  writeLines(latex_commands, file.path(temp_dir_path,"latex_header_file.tex"))
+    # write .tex header file
+    latex_commands <- c(
+      "\\begin{document}",
+      "This will be the only content in the document",
+      "\\end{document}"
+    )
+    writeLines(latex_commands, "latex_header_file.tex")
 
-  docorator <- as_docorator(
-    x = my_gt,
-    header = fancyhead(fancyrow("first line header"), fancyrow("second line header")),
-    footer = NULL,
-    display_name = "my_first_gt",
-    display_loc = temp_dir_path,
-    save_object = FALSE
-  )
+    docorator <- as_docorator(
+      x = my_gt,
+      header = fancyhead(fancyrow("first line header"), fancyrow("second line header")),
+      footer = NULL,
+      display_name = "my_first_gt",
+      display_loc = NULL,
+      save_object = FALSE
+    )
 
-  res <- suppressMessages( docorator |> render_pdf(header_latex = file.path(temp_dir_path,"latex_header_file.tex"))
-  )
+    res <- suppressMessages( docorator |> render_pdf(header_latex = "latex_header_file.tex")
+    )
 
-  expect_true(file.exists(file.path(temp_dir_path, "my_first_gt.pdf")))
+    expect_true(file.exists("my_first_gt.pdf"))
 
-  pdf_text <- pdftools::pdf_text(file.path(temp_dir_path, "my_first_gt.pdf"))
-  expect_true(stringr::str_detect(pdf_text,"This will be the only content in the document"))
+    pdf_text <- pdftools::pdf_text("my_first_gt.pdf")
+    expect_true(stringr::str_detect(pdf_text,"This will be the only content in the document"))
 
-  unlink(temp_dir_path, recursive = TRUE)
+  })
 })
 
 
@@ -596,31 +520,27 @@ test_that("render keep tex file", {
       groupname_col = "group"
     )
 
-  temp_dir_path <- file.path(rprojroot::is_testthat$find_file(), "tempdir")
-  if (!dir.exists(temp_dir_path)){
-    dir.create(file.path(rprojroot::is_testthat$find_file(), "tempdir"))
-  }
+  withr::with_tempdir({
+    docorator <- as_docorator(
+      x = my_gt,
+      header = fancyhead(fancyrow("first line header"), fancyrow("second line header")),
+      footer = NULL,
+      display_name = "my_first_gt",
+      display_loc = NULL,
+      save_object = FALSE
+    )
 
-  docorator <- as_docorator(
-    x = my_gt,
-    header = fancyhead(fancyrow("first line header"), fancyrow("second line header")),
-    footer = NULL,
-    display_name = "my_first_gt",
-    display_loc = temp_dir_path,
-    save_object = FALSE
-  )
+    res <- suppressMessages( docorator |> render_pdf()
+    )
 
-  res <- suppressMessages( docorator |> render_pdf()
-  )
+    expect_false(file.exists("my_first_gt.tex"))
 
-  expect_false(file.exists(file.path(temp_dir_path, "my_first_gt.tex")))
+    res <- suppressMessages( docorator |> render_pdf(keep_tex = TRUE)
+    )
 
-  res <- suppressMessages( docorator |> render_pdf(keep_tex = TRUE)
-  )
+    expect_true(file.exists("my_first_gt.tex"))
+  })
 
-  expect_true(file.exists(file.path(temp_dir_path, "my_first_gt.tex")))
-
-  unlink(temp_dir_path, recursive = TRUE)
 })
 
 

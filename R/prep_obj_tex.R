@@ -1,4 +1,3 @@
-
 #' Prepare table, listing, figure object for inclusion in the template Rmd
 #'
 #' @param x docorator object containing info about the table, listing or figure
@@ -8,31 +7,40 @@
 #' @return object to be included as-is in render engine
 #' @export
 #' @keywords internal
+#'
+#' @examples
+#' docorator <- gt::exibble |>
+#' gt::gt() |>
+#' as_docorator(
+#' display_name = "mytbl", footer = NULL,
+#' save_object = FALSE)
+#'
+#' prepared_obj <- prep_obj_tex(docorator)
 prep_obj_tex <- function (x, transform = NULL, ...) {
   UseMethod("prep_obj_tex", x$display)
 }
 
-#' default
+#' @rdname prep_obj_tex
 #' @export
 #' @keywords internal
 prep_obj_tex.default <- function(x, transform = NULL, ...) {
   x$display
 }
 
-#' prep object that is a character string (presumably latex code)
+#' @rdname prep_obj_tex
 #' @export
 #' @keywords internal
 prep_obj_tex.character <- function(x, transform = NULL, ...) {
   cat(x$display)
 }
 
-#' prep object that is a path to a PNG
+#' @rdname prep_obj_tex
 #' @export
 #' @keywords internal
 prep_obj_tex.PNG <- function(x, transform = NULL, ... ) {
 
   if (Sys.getenv("DOCORATOR_RENDER_ENGINE")=="qmd"){
-    tmpdir <- getwd()
+    tmpdir <- "."
   } else {
     tmpdir <- tempdir()
   }
@@ -43,7 +51,7 @@ prep_obj_tex.PNG <- function(x, transform = NULL, ... ) {
   knitr::include_graphics(path = temp)
 }
 
-#' prep gt_tbl object
+#' @rdname prep_obj_tex
 #' @export
 #' @keywords internal
 prep_obj_tex.gt_tbl <- function(x, transform = NULL, ...) {
@@ -52,7 +60,7 @@ prep_obj_tex.gt_tbl <- function(x, transform = NULL, ...) {
     cat()
 }
 
-#' prep gt_group object
+#' @rdname prep_obj_tex
 #' @export
 #' @keywords internal
 prep_obj_tex.gt_group <- function(x, transform = NULL, ...) {
