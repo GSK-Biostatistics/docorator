@@ -1,4 +1,4 @@
-# docorator development version
+# docorator 0.5.0
 
 Improvements
 * Add `qmd` PDF engine
