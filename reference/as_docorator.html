@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">docorator</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.0.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -49,8 +49,8 @@
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">as_docorator</span><span class="op">(</span></span>
 <span>  <span class="va">x</span>,</span>
-<span>  display_name <span class="op">=</span> <span class="st">"docorator"</span>,</span>
-<span>  display_loc <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  <span class="va">display_name</span>,</span>
+<span>  display_loc <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  header <span class="op">=</span> <span class="fu"><a href="fancyhead.html">fancyhead</a></span><span class="op">(</span><span class="fu"><a href="fancyrow.html">fancyrow</a></span><span class="op">(</span>right <span class="op">=</span> <span class="fu"><a href="doc_pagenum.html">doc_pagenum</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>  footer <span class="op">=</span> <span class="fu"><a href="fancyfoot.html">fancyfoot</a></span><span class="op">(</span><span class="fu"><a href="fancyrow.html">fancyrow</a></span><span class="op">(</span>left <span class="op">=</span> <span class="fu"><a href="doc_path.html">doc_path</a></span><span class="op">(</span><span class="va">display_name</span>, <span class="va">display_loc</span><span class="op">)</span>, right <span class="op">=</span></span>
 <span>    <span class="fu"><a href="doc_datetime.html">doc_datetime</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>,</span>
@@ -74,11 +74,11 @@
 
 
 <dt id="arg-display-name">display_name<a class="anchor" aria-label="anchor" href="#arg-display-name"></a></dt>
-<dd><p>name of file (excluding extension)</p></dd>
+<dd><p>required name of file (excluding extension)</p></dd>
 
 
 <dt id="arg-display-loc">display_loc<a class="anchor" aria-label="anchor" href="#arg-display-loc"></a></dt>
-<dd><p>path to save the output file to</p></dd>
+<dd><p>optional path to save the output file to</p></dd>
 
 
 <dt id="arg-header">header<a class="anchor" aria-label="anchor" href="#arg-header"></a></dt>
@@ -137,28 +137,30 @@ following classes/types are recommended:</p><ul><li><p><code>gt</code></p></li>
 <li><p>path to PNG file created via <code><a href="png_path.html">png_path()</a></code></p></li>
 <li><p>list of paths to PNG files created via <code><a href="png_path.html">png_path()</a></code></p></li>
 </ul></div>
+
     <div class="section level2">
-    <h2 id="examples">Examples<a class="anchor" aria-label="anchor" href="#examples"></a></h2>
-
-
-
-<p></p><div class="sourceCode r"><pre><code><span><span class="fu">gt</span><span class="fu">::</span><span class="va"><a href="https://gt.rstudio.com/reference/gtcars.html" class="external-link">gtcars</a></span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html" class="external-link">slice_head</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">10</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">mfr</span>, <span class="va">model</span>, <span class="va">year</span>, <span class="va">msrp</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">gt</span><span class="fu">::</span><span class="fu"><a href="https://gt.rstudio.com/reference/gt.html" class="external-link">gt</a></span><span class="op">(</span>groupname_col <span class="op">=</span> <span class="st">"mfr"</span>,</span>
-<span>         row_group_as_column <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="../reference/as_docorator.html">as_docorator</a></span><span class="op">(</span></span>
-<span>   header <span class="op">=</span> <span class="fu"><a href="../reference/fancyhead.html">fancyhead</a></span><span class="op">(</span><span class="fu"><a href="../reference/fancyrow.html">fancyrow</a></span><span class="op">(</span><span class="st">"Header 1"</span><span class="op">)</span>, <span class="fu"><a href="../reference/fancyrow.html">fancyrow</a></span><span class="op">(</span><span class="st">"Header 2"</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>   display_name <span class="op">=</span> <span class="st">"mytbl"</span><span class="op">)</span></span>
-<span></span></code></pre><p></p></div>
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
+<span class="r-in"><span><span class="fu">gt</span><span class="fu">::</span><span class="va"><a href="https://gt.rstudio.com/reference/gtcars.html" class="external-link">gtcars</a></span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html" class="external-link">slice_head</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">10</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">mfr</span>, <span class="va">model</span>, <span class="va">year</span>, <span class="va">msrp</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>  <span class="fu">gt</span><span class="fu">::</span><span class="fu"><a href="https://gt.rstudio.com/reference/gt.html" class="external-link">gt</a></span><span class="op">(</span>groupname_col <span class="op">=</span> <span class="st">"mfr"</span>,</span></span>
+<span class="r-in"><span>         row_group_as_column <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>  <span class="fu">as_docorator</span><span class="op">(</span></span></span>
+<span class="r-in"><span>   header <span class="op">=</span> <span class="fu"><a href="fancyhead.html">fancyhead</a></span><span class="op">(</span><span class="fu"><a href="fancyrow.html">fancyrow</a></span><span class="op">(</span><span class="st">"Header 1"</span><span class="op">)</span>, <span class="fu"><a href="fancyrow.html">fancyrow</a></span><span class="op">(</span><span class="st">"Header 2"</span><span class="op">)</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>   display_name <span class="op">=</span> <span class="st">"mytbl"</span>,</span></span>
+<span class="r-in"><span>   footer <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
+<span class="r-in"><span></span></span>
+</code></pre></div>
     </div>
-
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Becca Krouse, Shannon Haughton, Seongbin Hong, GlaxoSmithKline Research &amp; Development Limited.</p>
+  <p>Developed by Becca Krouse, Shannon Haughton, Seongbin Hong, Dragoș Moldovan-Grünfeld, GlaxoSmithKline Research &amp; Development Limited.</p>
 </div>
 
 <div class="pkgdown-footer-right">

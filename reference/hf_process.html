@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">docorator</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.0.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -62,12 +62,40 @@
 <span><span class="fu">hf_process</span><span class="op">(</span><span class="va">x</span>, escape_latex <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
+    <div class="section level2">
+    <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
 
-  </main></div>
+
+<dl><dt id="arg-x">x<a class="anchor" aria-label="anchor" href="#arg-x"></a></dt>
+<dd><p>header or footer</p></dd>
+
+
+<dt id="arg-escape-latex">escape_latex<a class="anchor" aria-label="anchor" href="#arg-escape-latex"></a></dt>
+<dd><p>Boolean to escape latex in header/footer</p></dd>
+
+</dl></div>
+    <div class="section level2">
+    <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
+    <p>character string containing headers and footers latex code</p>
+    </div>
+
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">header</span> <span class="op">&lt;-</span> <span class="fu"><a href="fancyhead.html">fancyhead</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="fancyrow.html">fancyrow</a></span><span class="op">(</span>left <span class="op">=</span> <span class="st">"Protocol: 12345"</span>, right <span class="op">=</span> <span class="fu"><a href="doc_pagenum.html">doc_pagenum</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span><span class="fu"><a href="fancyrow.html">fancyrow</a></span><span class="op">(</span>center <span class="op">=</span> <span class="st">"Demographic Summary"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">hf_process</span><span class="op">(</span><span class="va">header</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "\\fancyhead[L]{\\begin{tabular}[b]{@{}l@{}}Protocol: 12345\\\\\\phantom{}\\end{tabular}}\\fancyhead[C]{\\begin{tabular}[b]{@{}c@{}}\\phantom{}\\\\Demographic Summary\\end{tabular}}\\fancyhead[R]{\\begin{tabular}[b]{@{}r@{}}Page \\thepage\\ of \\pageref*{LastPage}\\\\\\phantom{}\\end{tabular}}"</span>
+<span class="r-in"><span></span></span>
+</code></pre></div>
+    </div>
+  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
+    </nav></aside></div>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Becca Krouse, Shannon Haughton, Seongbin Hong, GlaxoSmithKline Research &amp; Development Limited.</p>
+  <p>Developed by Becca Krouse, Shannon Haughton, Seongbin Hong, Dragoș Moldovan-Grünfeld, GlaxoSmithKline Research &amp; Development Limited.</p>
 </div>
 
 <div class="pkgdown-footer-right">

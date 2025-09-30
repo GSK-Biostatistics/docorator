@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">docorator</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.0.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -47,7 +47,22 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">prep_obj_tex</span><span class="op">(</span><span class="va">x</span>, transform <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">prep_obj_tex</span><span class="op">(</span><span class="va">x</span>, transform <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Default S3 method</span></span>
+<span><span class="fu">prep_obj_tex</span><span class="op">(</span><span class="va">x</span>, transform <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for class 'character'</span></span>
+<span><span class="fu">prep_obj_tex</span><span class="op">(</span><span class="va">x</span>, transform <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for class 'PNG'</span></span>
+<span><span class="fu">prep_obj_tex</span><span class="op">(</span><span class="va">x</span>, transform <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for class 'gt_tbl'</span></span>
+<span><span class="fu">prep_obj_tex</span><span class="op">(</span><span class="va">x</span>, transform <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for class 'gt_group'</span></span>
+<span><span class="fu">prep_obj_tex</span><span class="op">(</span><span class="va">x</span>, transform <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -71,12 +86,41 @@
     <p>object to be included as-is in render engine</p>
     </div>
 
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">docorator</span> <span class="op">&lt;-</span> <span class="fu">gt</span><span class="fu">::</span><span class="va"><a href="https://gt.rstudio.com/reference/exibble.html" class="external-link">exibble</a></span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span><span class="fu">gt</span><span class="fu">::</span><span class="fu"><a href="https://gt.rstudio.com/reference/gt.html" class="external-link">gt</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="as_docorator.html">as_docorator</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>display_name <span class="op">=</span> <span class="st">"mytbl"</span>, footer <span class="op">=</span> <span class="cn">NULL</span>,</span></span>
+<span class="r-in"><span>save_object <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">prepared_obj</span> <span class="op">&lt;-</span> <span class="fu">prep_obj_tex</span><span class="op">(</span><span class="va">docorator</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> \begingroup</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> \setlength\LTleft{0\linewidth}</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> \setlength\LTright{0\linewidth}\fontsize{10.0pt}{12.0pt}\selectfont</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> \begin{longtable}{@{\extracolsep{\fill}}&gt;{\raggedleft\arraybackslash}p{\dimexpr 0.11\linewidth -2\tabcolsep-1.5\arrayrulewidth}&gt;{\raggedright\arraybackslash}p{\dimexpr 0.11\linewidth -2\tabcolsep-1.5\arrayrulewidth}&gt;{\centering\arraybackslash}p{\dimexpr 0.11\linewidth -2\tabcolsep-1.5\arrayrulewidth}&gt;{\raggedleft\arraybackslash}p{\dimexpr 0.11\linewidth -2\tabcolsep-1.5\arrayrulewidth}&gt;{\raggedleft\arraybackslash}p{\dimexpr 0.11\linewidth -2\tabcolsep-1.5\arrayrulewidth}&gt;{\raggedleft\arraybackslash}p{\dimexpr 0.11\linewidth -2\tabcolsep-1.5\arrayrulewidth}&gt;{\raggedleft\arraybackslash}p{\dimexpr 0.11\linewidth -2\tabcolsep-1.5\arrayrulewidth}&gt;{\raggedright\arraybackslash}p{\dimexpr 0.11\linewidth -2\tabcolsep-1.5\arrayrulewidth}&gt;{\raggedright\arraybackslash}p{\dimexpr 0.11\linewidth -2\tabcolsep-1.5\arrayrulewidth}}</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> \toprule</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> num &amp; char &amp; fctr &amp; date &amp; time &amp; datetime &amp; currency &amp; row &amp; group \\ </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> \midrule\endhead\addlinespace[2.5pt]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1.111e-01 &amp; apricot &amp; one &amp; 2015-01-15 &amp; 13:35 &amp; 2018-01-01 02:22 &amp; 49.950 &amp; row\_1 &amp; grp\_a \\ </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2.222e+00 &amp; banana &amp; two &amp; 2015-02-15 &amp; 14:40 &amp; 2018-02-02 14:33 &amp; 17.950 &amp; row\_2 &amp; grp\_a \\ </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3.333e+01 &amp; coconut &amp; three &amp; 2015-03-15 &amp; 15:45 &amp; 2018-03-03 03:44 &amp; 1.390 &amp; row\_3 &amp; grp\_a \\ </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4.444e+02 &amp; durian &amp; four &amp; 2015-04-15 &amp; 16:50 &amp; 2018-04-04 15:55 &amp; 65100.000 &amp; row\_4 &amp; grp\_a \\ </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5.550e+03 &amp; NA &amp; five &amp; 2015-05-15 &amp; 17:55 &amp; 2018-05-05 04:00 &amp; 1325.810 &amp; row\_5 &amp; grp\_b \\ </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> NA &amp; fig &amp; six &amp; 2015-06-15 &amp; NA &amp; 2018-06-06 16:11 &amp; 13.255 &amp; row\_6 &amp; grp\_b \\ </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7.770e+05 &amp; grapefruit &amp; seven &amp; NA &amp; 19:10 &amp; 2018-07-07 05:22 &amp; NA &amp; row\_7 &amp; grp\_b \\ </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8.880e+06 &amp; honeydew &amp; eight &amp; 2015-08-15 &amp; 20:20 &amp; NA &amp; 0.440 &amp; row\_8 &amp; grp\_b \\ </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> \bottomrule</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> \end{longtable}</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> \endgroup</span>
+</code></pre></div>
+    </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Becca Krouse, Shannon Haughton, Seongbin Hong, GlaxoSmithKline Research &amp; Development Limited.</p>
+  <p>Developed by Becca Krouse, Shannon Haughton, Seongbin Hong, Dragoș Moldovan-Grünfeld, GlaxoSmithKline Research &amp; Development Limited.</p>
 </div>
 
 <div class="pkgdown-footer-right">
