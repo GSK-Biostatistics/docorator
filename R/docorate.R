@@ -182,7 +182,8 @@ as_docorator <- function(x,
       footer = footer,
       fontsize = fontsize,
       geometry = geometry,
-      fig_dim = fig_dim
+      fig_dim = fig_dim,
+      session_info = sessionInfo()
     ),
     class = "docorator"
   )
