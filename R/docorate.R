@@ -61,7 +61,7 @@ docorate <- function(x,
 
   lifecycle::deprecate_warn(
     when = "0.3.0",
-    what = "docorate()",
+    what = "docorator::docorate()",
     details = "Please use `as_docorator()` and the required render function, i.e `render_pdf()`",
     env = rlang::caller_env(),
     always = TRUE
