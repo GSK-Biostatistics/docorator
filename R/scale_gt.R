@@ -85,27 +85,25 @@ scale_gt <- function(x,
                      tbl_stub_pct = 0.3
 ){
 
-  # will there be 2 stub columns?
+  # will group add to stub?
   row_grp_as_column <- x$`_options` |>
     dplyr::filter(.data$parameter=="row_group_as_column") |>
     dplyr::pull(.data$value) |>
     unlist()
 
   # total # of columns in table
-  n_cols <- x[["_boxhead"]] |>
-    dplyr::filter(!.data$type=="hidden") |>
-    nrow()
+  boxhead <- x[["_boxhead"]] |>
+    dplyr::filter(!.data$type=="hidden")
+  n_cols <- nrow(boxhead)
 
   # # of stub columns in table
-  n_stubs <- x$`_stub_df` |>
-    dplyr::select("row_id", "group_id") |>
-    dplyr::select(dplyr::where(~!all(is.na(.x)))) |>
-    ncol()
+  n_stubs <- boxhead |>
+    dplyr::filter(type %in% c("stub", "row_group")) |>
+    nrow()
 
-  # if 2 stub columns
-  if (n_stubs>1 && !row_grp_as_column) {
-    # if row group is not column, then there is actually 1 stub
-    n_stubs <- 1
+  # account for row_grp NOT as column
+  if (n_stubs>0 && "row_group" %in% boxhead$type && !row_grp_as_column) {
+    n_stubs <- n_stubs-1
   }
 
   if (n_stubs==0) tbl_stub_pct <- 0
