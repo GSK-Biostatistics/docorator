@@ -1,5 +1,8 @@
 # docorator development version
 
+Bug fixes
+* Fix issue where gt scaling did not support multiple rowname columns in the gt (#48)
+
 # docorator 0.5.0
 
 Improvements
