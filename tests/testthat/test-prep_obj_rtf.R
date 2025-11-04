@@ -32,11 +32,11 @@ test_that("prep_obj_rtf - ggplot", {
   expect_equal(unlist(gt_2$`_footnotes`$footnotes), c("footnote2", "this is the docorator footnote"))
 
   # title should be docorator title
-  # subtitle should be docorator subtitles then ggplot subtitle then tag
+  # subtitle should be docorator subtitles then ggplot title, subtitle then tag
   expect_equal(gt_1$`_heading`$title, "this is the title")
-  expect_equal(as.character(gt_1$`_heading`$subtitle), "this is the subtitle1<br>this is the subtitle2<br>subtitle1<br>tag1")
+  expect_equal(as.character(gt_1$`_heading`$subtitle), "this is the subtitle1<br>this is the subtitle2<br>title1<br>subtitle1<br>tag1")
   expect_equal(gt_2$`_heading`$title, "this is the title")
-  expect_equal(as.character(gt_2$`_heading`$subtitle), "this is the subtitle1<br>this is the subtitle2<br>subtitle2<br>tag2")
+  expect_equal(as.character(gt_2$`_heading`$subtitle), "this is the subtitle1<br>this is the subtitle2<br>title2<br>subtitle2<br>tag2")
 
 })
 

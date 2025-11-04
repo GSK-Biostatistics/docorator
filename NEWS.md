@@ -1,5 +1,8 @@
 # docorator development version
 
+Improvements
+* Change logic in prep_obj_rtf to include any headers in the gt object as subtitles in the rtf
+
 # docorator 0.5.0
 
 Improvements
