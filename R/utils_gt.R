@@ -62,19 +62,27 @@ hf_to_gt <- function(x) {
 #' @noRd
 hf_to_gt_tbl <- function(gt, header, subheader, footer){
   if(inherits(gt, "gt_tbl")){
-    subtitle <- NULL
 
-    # check if existing subtitle exists
-    if(length(gt$`_heading`$subtitle)>0){
-      old_sub <- gt$`_heading`$subtitle
-      # add subtitle text on top of groups if exists
-      if(length(subheader)>0){
-        subtitle = gt::md(paste0(paste0(subheader, collapse = "<br>"), "<br>",paste0(old_sub, collapse = "<br>")))
-      }else{
-        subtitle = gt::md(old_sub)
-      }
-    }else if(length(subheader)>0){
-      subtitle = gt::md(paste0(subheader, collapse = "<br>"))
+    # order of titles should be: all docorator headers (header and subheader) then gt title, then gt subtitles.
+    subtitle <- NULL # will create a vector of new subtitles and split with <br> characters
+    gt_headers <- NULL # vector of existing gt headers to be added at the end of docorator headers
+
+    # check title and subtitle arent empty strings and add to gt_headers.
+    if(!is.null(gt$`_heading`$title) && !identical(gt$`_heading`$title, "")){
+      gt_headers <- gt$`_heading`$title
+    }
+
+    # check if existing subtitle exists, if so add to gt_headers
+    if(!is.null(gt$`_heading`$subtitle) && !identical(gt$`_heading`$subtitle, "")){
+      gt_headers <- c(gt_headers,gt$`_heading`$subtitle)
+    }
+
+    # add docorator subtitle text before old gt headers.
+    subtitle <- c(subheader, gt_headers)
+
+    # if not null or empty, add breaks and md()
+    if(!is.null(subtitle) && !identical(subtitle,"")){
+      subtitle <- gt::md(paste0(subtitle, collapse = "<br>"))
     }
     # header
     if(length(header)>0 | length(subtitle)>0){
@@ -147,7 +155,11 @@ hf_extract <- function(x){
   head_data <- all_headers[1]
 
   # subheaders
-  subhead_data <- all_headers[-1]
+  if(length(all_headers[-1])>0){
+    subhead_data <- all_headers[-1]
+  }else{
+    subhead_data <- NULL
+  }
 
   # Take footers that are alignment left, remove any missing
   foot_data <- unlist(lapply(footer, function(x){

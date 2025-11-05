@@ -79,7 +79,7 @@ test_that("add footnotes and headers - gt_group",{
 
 })
 
-test_that("add footnotes and headers - existing group info",{
+test_that("add footnotes and headers - existing subtitle info",{
   # create docorator object
   my_gt <- gt::exibble |>
     gt::gt(
@@ -126,6 +126,100 @@ test_that("add footnotes and headers - existing group info",{
 
 })
 
+test_that("add footnotes and headers - existing title info, no subtitle",{
+  # create docorator object
+  my_gt <- gt::exibble |>
+    gt::gt(
+      rowname_col = "row",
+      groupname_col = "group"
+    ) |>
+    gt::tab_header(title = "existing title")
+
+
+
+  docorator <- as_docorator(
+    x = my_gt,
+    header = fancyhead(
+      fancyrow(center = "first line header"),
+      fancyrow(left = "left header"),
+      fancyrow(center = "second line header"),
+      fancyrow(center = "third line header")
+    ),
+    footer = fancyfoot(
+      fancyrow(left = "footnote 1"),
+      fancyrow(left = "footnote 2"),
+      fancyrow(right = "timestamp")),
+    display_name = "my_first_gt",
+    save_object = FALSE
+
+  )
+
+  head_foot_gt <- hf_to_gt(docorator)
+
+  # subtitle
+  expect_equal(head_foot_gt$`_heading`$subtitle, gt::md("second line header<br>third line header<br>existing title"))
+
+  # no additional subtitles
+  docorator2 <- as_docorator(
+    x = my_gt,
+    display_name = "my_first_gt",
+    save_object = FALSE
+  )
+
+  head_foot_gt2 <- hf_to_gt(docorator2)
+
+  # subtitle
+  expect_equal(head_foot_gt2$`_heading`$subtitle, gt::md("existing title"))
+
+})
+
+test_that("add footnotes and headers - existing title + subtitle info",{
+  # create docorator object
+  my_gt <- gt::exibble |>
+    gt::gt(
+      rowname_col = "row",
+      groupname_col = "group"
+    ) |>
+    gt::tab_header(title = "existing title",subtitle = "TRT = Placebo, <br>X = Y")
+
+
+
+  docorator <- as_docorator(
+    x = my_gt,
+    header = fancyhead(
+      fancyrow(center = "first line header"),
+      fancyrow(left = "left header"),
+      fancyrow(center = "second line header"),
+      fancyrow(center = "third line header")
+    ),
+    footer = fancyfoot(
+      fancyrow(left = "footnote 1"),
+      fancyrow(left = "footnote 2"),
+      fancyrow(right = "timestamp")),
+    display_name = "my_first_gt",
+    save_object = FALSE
+
+  )
+
+  head_foot_gt <- hf_to_gt(docorator)
+
+  # subtitle
+  expect_equal(head_foot_gt$`_heading`$subtitle, gt::md("second line header<br>third line header<br>existing title<br>TRT = Placebo, <br>X = Y"))
+
+  # no additional subtitles
+  docorator2 <- as_docorator(
+    x = my_gt,
+    display_name = "my_first_gt",
+    save_object = FALSE
+  )
+
+  head_foot_gt2 <- hf_to_gt(docorator2)
+
+  # subtitle
+  expect_equal(head_foot_gt2$`_heading`$subtitle, gt::md("existing title<br>TRT = Placebo, <br>X = Y"))
+
+})
+
 
 test_that("no footnotes or headers",{
   my_gt <- gt::exibble |>
@@ -137,11 +231,11 @@ test_that("no footnotes or headers",{
 
   docorator <- as_docorator(
     x = my_gt,
+    header = NULL,
     footer = NULL,
     display_loc ="test",
     display_name = "my_first_gt",
     save_object = FALSE
-
   )
 
   head_foot_gt <- hf_to_gt(docorator)
