@@ -8,7 +8,8 @@ render_rtf(
   x,
   display_loc = NULL,
   remove_unicode_ws = TRUE,
-  use_page_header = FALSE
+  use_page_header = FALSE,
+  version_check = TRUE
 )
 }
 \arguments{

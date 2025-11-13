@@ -11,7 +11,8 @@ render_pdf(
   header_latex = NULL,
   keep_tex = FALSE,
   escape_latex = TRUE,
-  quarto = FALSE
+  quarto = FALSE,
+  version_check = TRUE
 )
 }
 \arguments{
