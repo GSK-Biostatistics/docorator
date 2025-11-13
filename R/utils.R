@@ -186,6 +186,7 @@ create_chunk <- function(x, transform) {
 #' Check package versions for docorator object are the same as loaded
 #'
 #' @param x docorator object
+#' @keywords internal
 check_pkg_version <- function(x) {
 
   if (rlang::inherits_any(x$display, c("gt_tbl", "gt_group"))) {

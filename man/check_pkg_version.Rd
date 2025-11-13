@@ -12,3 +12,4 @@ check_pkg_version(x)
 \description{
 Check package versions for docorator object are the same as loaded
 }
+\keyword{internal}
