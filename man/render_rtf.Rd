@@ -19,6 +19,8 @@ render_rtf(
 \item{remove_unicode_ws}{Option to remove unicode white space from text.}
 
 \item{use_page_header}{If \code{TRUE} then all table headings will be migrated to the page header. See https://gt.rstudio.com/reference/tab_options.html#arg-page-header-use-tbl-headings}
+
+\item{version_check}{Boolean indicating whether to print a note if gt or ggplot versions dont match from docorator obj to render}
 }
 \value{
 This function saves an rtf to a specified location

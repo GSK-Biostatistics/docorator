@@ -1,4 +1,5 @@
 # docorator development version
+* Use sessionInfo to check gt and ggplot versions between as_docorator run and render
 
 # docorator 0.5.0
 

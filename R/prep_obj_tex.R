@@ -55,7 +55,6 @@ prep_obj_tex.PNG <- function(x, transform = NULL, ... ) {
 #' @export
 #' @keywords internal
 prep_obj_tex.gt_tbl <- function(x, transform = NULL, ...) {
-
   gt_to_tex(x$display, transform) |>
     cat()
 }

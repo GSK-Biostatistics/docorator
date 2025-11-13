@@ -181,3 +181,25 @@ create_chunk <- function(x, transform) {
 
   cat(knitr::knit(text = knitr::knit_expand(text = new_chunk), quiet = TRUE))
 }
+
+
+#' Check package versions for docorator object are the same as loaded
+#'
+#' @param x docorator object
+check_pkg_version <- function(x) {
+
+  if (rlang::inherits_any(x$display, c("gt_tbl", "gt_group"))) {
+    pkg = "gt"
+  }else if (inherits(x$display,"ggplot")) {
+    pkg = "ggplot"
+  }else{
+    return()
+  }
+
+ package_list <- append(x$session_info$otherPkgs,x$session_info$loadedOnly)
+ pkg_version <- package_list[[pkg]][["Version"]]
+ current_version <- as.character(utils::packageVersion(pkg))
+ if(utils::compareVersion(current_version, pkg_version)!= 0){
+   cli::cli_alert_info(paste0("Note: docorator object was created with ", pkg," ", pkg_version,". You are now running ", pkg," ", current_version,". There may be issues rendering your document."))
+ }
+}

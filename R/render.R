@@ -7,6 +7,7 @@
 #' @param keep_tex Boolean indicating if to keep resulting .tex file from latex conversion. Defaults to FALSE.
 #' @param escape_latex Boolean indicating if headers and footers of a gt table should be escaped with gt::escape_latex
 #' @param quarto Boolean indicating whether to use Quarto as the rendering
+#' @param version_check Boolean indicating whether to print a note if gt or ggplot versions dont match from docorator obj to render
 #'   engine. Defaults to `FALSE`, which uses Rmarkdown to render. `r lifecycle::badge("experimental")`
 #'
 #' @returns This function saves a pdf to a specified location
@@ -32,11 +33,17 @@ render_pdf <- function(x,
                        header_latex = NULL,
                        keep_tex = FALSE,
                        escape_latex = TRUE,
-                       quarto = FALSE){
+                       quarto = FALSE,
+                       version_check = TRUE){
 
   if (!inherits(x, "docorator")) {
     cli::cli_abort("The {.arg {rlang::caller_arg(x)}} argument must be class docorator, not {.obj_type_friendly {x}}. See documentation for `as_docorator`.",
               call = rlang::caller_env())
+  }
+
+  # check package versions
+  if(isTRUE(version_check)){
+    check_pkg_version(x)
   }
 
   # check transform is a function if not convert to NULL
@@ -118,6 +125,7 @@ render_pdf <- function(x,
 #' @param display_loc path to save the output rtf to
 #' @param remove_unicode_ws Option to remove unicode white space from text.
 #' @param use_page_header If `TRUE` then all table headings will be migrated to the page header. See https://gt.rstudio.com/reference/tab_options.html#arg-page-header-use-tbl-headings
+#' @param version_check Boolean indicating whether to print a note if gt or ggplot versions dont match from docorator obj to render
 #'
 #' @details Option `remove_unicode_ws` serves as a workaround for this
 #'   [issue](https://github.com/rstudio/gt/issues/1437) in gt
@@ -139,11 +147,16 @@ render_pdf <- function(x,
 #'  render_rtf()
 #' ```
 #'
-render_rtf <- function(x, display_loc = NULL, remove_unicode_ws = TRUE, use_page_header = FALSE){
+render_rtf <- function(x, display_loc = NULL, remove_unicode_ws = TRUE, use_page_header = FALSE, version_check = TRUE){
 
   if (!inherits(x, "docorator")) {
     cli::cli_abort("The {.arg {rlang::caller_arg(x)}} argument must be class docorator, not {.obj_type_friendly {x}}. See documentation for `as_docorator`.",
               call = rlang::caller_env())
+  }
+
+  # check package versions
+  if(isTRUE(version_check)){
+    check_pkg_version(x)
   }
 
   # if version of gt is <= 1.0.0

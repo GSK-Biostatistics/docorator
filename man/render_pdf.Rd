@@ -27,7 +27,9 @@ render_pdf(
 
 \item{escape_latex}{Boolean indicating if headers and footers of a gt table should be escaped with gt::escape_latex}
 
-\item{quarto}{Boolean indicating whether to use Quarto as the rendering
+\item{quarto}{Boolean indicating whether to use Quarto as the rendering}
+
+\item{version_check}{Boolean indicating whether to print a note if gt or ggplot versions dont match from docorator obj to render
 engine. Defaults to \code{FALSE}, which uses Rmarkdown to render. \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}}
 }
 \value{
