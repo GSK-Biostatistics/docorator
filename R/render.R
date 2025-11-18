@@ -7,7 +7,7 @@
 #' @param keep_tex Boolean indicating if to keep resulting .tex file from latex conversion. Defaults to FALSE.
 #' @param escape_latex Boolean indicating if headers and footers of a gt table should be escaped with gt::escape_latex
 #' @param quarto Boolean indicating whether to use Quarto as the rendering
-#' @param version_check Boolean indicating whether to print a note if gt or ggplot versions dont match from docorator obj to render
+#' @param version_check Boolean indicating whether to print a note if gt or ggplot versions dont match between the original docorator object and the one being used for rendering
 #'   engine. Defaults to `FALSE`, which uses Rmarkdown to render. `r lifecycle::badge("experimental")`
 #'
 #' @returns This function saves a pdf to a specified location
