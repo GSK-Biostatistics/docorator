@@ -32,3 +32,30 @@ test_that("markdown chunks are created correctly",{
   expect_snapshot(chunk_gt_group)
 
 })
+
+test_that("package version messages are printed correctly",{
+
+  skip_on_cran()
+  skip_on_ci()
+
+  my_gt <- gt::exibble |>
+    gt::gt(
+      rowname_col = "row",
+      groupname_col = "group"
+    )
+
+  docorator <- as_docorator(my_gt,
+                            display_name = "mytbl",
+                            save_object = FALSE)
+
+  # amend the sessionInfo
+
+  # non-existent gt version
+
+  old_gt <- docorator
+  old_gt$session_info$loadedOnly$gt$Version <- "0.0.1234"
+  check_pkg_version(old_gt)
+
+
+})
+
