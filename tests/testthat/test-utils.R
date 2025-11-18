@@ -47,14 +47,18 @@ test_that("package version messages are printed correctly",{
   docorator <- as_docorator(my_gt,
                             display_name = "mytbl",
                             save_object = FALSE)
+  current_version <- utils::packageVersion("gt")
 
   # amend the sessionInfo
 
   # non-existent gt version
-
   old_gt <- docorator
   old_gt$session_info$loadedOnly$gt$Version <- "0.0.1234"
-  check_pkg_version(old_gt)
+  expect_message(check_pkg_version(old_gt), paste0("Note: docorator object was created with gt 0.0.1234. You are now running gt ",current_version,". There may be issues rendering your document."))
+
+  # empty other packages still renders message
+  old_gt$session_info$otherPkgs <- NULL
+  expect_message(check_pkg_version(old_gt),paste0("Note: docorator object was created with gt 0.0.1234. You are now running ", current_version, ". There may be issues rendering your document."))
 
 
 })
