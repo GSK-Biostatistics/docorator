@@ -190,7 +190,7 @@ create_chunk <- function(x, transform) {
 check_pkg_version <- function(x) {
 
   if (rlang::inherits_any(x$display, c("gt_tbl", "gt_group"))) {
-    pkg = "gt"
+    pkg <- "gt"
   }else if (inherits(x$display,"ggplot")) {
     pkg <- "ggplot"
   }else{
