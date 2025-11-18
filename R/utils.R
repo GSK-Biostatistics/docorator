@@ -192,7 +192,7 @@ check_pkg_version <- function(x) {
   if (rlang::inherits_any(x$display, c("gt_tbl", "gt_group"))) {
     pkg = "gt"
   }else if (inherits(x$display,"ggplot")) {
-    pkg = "ggplot"
+    pkg <- "ggplot"
   }else{
     return()
   }
