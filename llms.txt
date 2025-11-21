@@ -1,0 +1,122 @@
+# docorator [![docorator logo](reference/figures/docorator_hex.png)](https://gsk-biostatistics.github.io/docorator/)
+
+{docorator} is an engine for creating production displays from R.
+Specifically, {docorator} provides the following functionality:
+
+- *Decorate*: Surround displays with document-level headers, footers,
+  and page numbers
+- *Output*: Export decorated displays to a file such as PDF or RTF
+
+The main function,
+[`as_docorator()`](https://GSK-Biostatistics.github.io/docorator/reference/as_docorator.md)
+accepts an R object containing the display as input. For best results
+with sizing, the table should be prepared via {gt}, or packages that
+interface with {gt} such as {tfrmt}, and the figure should be prepared
+with {ggplot2}. Alternatively, the path to a PNG can be passed to
+{docorator}. Specifically, the `x` should be one of the following:
+
+- `gt` table
+- `gt_group` (list of `gt` tables)
+- `ggplot2` figure
+- list of `ggplot` figures
+- path to PNG file (i.e. a previously created figure)
+- list of paths to PNG files
+
+The `docorator` object, which is saved by default, can then be output
+using one or both of the following render functions which can be piped
+together:
+[`render_pdf()`](https://GSK-Biostatistics.github.io/docorator/reference/render_pdf.md)
+and
+[`render_rtf()`](https://GSK-Biostatistics.github.io/docorator/reference/render_rtf.md)
+
+# Use
+
+``` r
+# install from GitHub
+devtools::install_github("GSK-Biostatistics/docorator")
+
+# Load package
+library(docorator) 
+
+# Create table (or figure)
+mytbl <- gt::exibble |> 
+  gt::gt()
+
+# Export display   
+mytbl |> 
+  as_docorator( 
+    display_name = "mytbl",
+    header = fancyhead(
+      fancyrow(left = "My Study", center = NA, right = doc_pagenum()),
+      fancyrow(left = "My Population", center = NA, right = NA),
+      fancyrow(left = NA, center = "My Table", right = NA)
+    ),
+    footer = fancyfoot(
+      fancyrow(left = "mypath/mytbl.R", center = NA, right = "Data as of 2025-01-01")
+    ) 
+  ) |> 
+  render_pdf() |>
+  render_rtf()
+```
+
+![Docorator example](reference/figures/doc_example.png)
+
+# Note
+
+{docorator} requires LaTeX libraries for PDF rendering. If using
+{tinytex}, the “TinyTeX” bundle covers the core dependencies.
+
+# Package index
+
+## Create docorator
+
+- [`as_docorator()`](https://GSK-Biostatistics.github.io/docorator/reference/as_docorator.md)
+  : Create docorator object
+- [`docorate()`](https://GSK-Biostatistics.github.io/docorator/reference/docorate.md)
+  **\[deprecated\]** : Decorate and output a table, listing, or figure
+  to a file
+- [`png_path()`](https://GSK-Biostatistics.github.io/docorator/reference/png_path.md)
+  : Path of png file
+
+## Render output
+
+- [`render_pdf()`](https://GSK-Biostatistics.github.io/docorator/reference/render_pdf.md)
+  : Render to pdf
+- [`render_rtf()`](https://GSK-Biostatistics.github.io/docorator/reference/render_rtf.md)
+  **\[experimental\]** : Render to rtf
+
+## Header and footer helpers
+
+- [`fancyhead()`](https://GSK-Biostatistics.github.io/docorator/reference/fancyhead.md)
+  : Construct document header
+- [`fancyfoot()`](https://GSK-Biostatistics.github.io/docorator/reference/fancyfoot.md)
+  : Construct document footer
+- [`fancyrow()`](https://GSK-Biostatistics.github.io/docorator/reference/fancyrow.md)
+  : Construct document header row
+- [`doc_datetime()`](https://GSK-Biostatistics.github.io/docorator/reference/doc_datetime.md)
+  : Date and time of program run
+- [`doc_pagenum()`](https://GSK-Biostatistics.github.io/docorator/reference/doc_pagenum.md)
+  : Automatic page numbering
+- [`doc_path()`](https://GSK-Biostatistics.github.io/docorator/reference/doc_path.md)
+  : Path of program
+
+## Sizing helpers
+
+- [`geom_set()`](https://GSK-Biostatistics.github.io/docorator/reference/geom_set.md)
+  : Set document geometry defaults
+- [`scale_gt()`](https://GSK-Biostatistics.github.io/docorator/reference/scale_gt.md)
+  : Scale gt table contents for document
+
+# Articles
+
+### All vignettes
+
+- [Display
+  Sizing](https://GSK-Biostatistics.github.io/docorator/articles/display_sizing.md):
+- [Getting
+  Started](https://GSK-Biostatistics.github.io/docorator/articles/docorator.md):
+- [Document
+  Sizing](https://GSK-Biostatistics.github.io/docorator/articles/document_sizing.md):
+- [Headers and
+  Footers](https://GSK-Biostatistics.github.io/docorator/articles/headers_footers.md):
+- [Render](https://GSK-Biostatistics.github.io/docorator/articles/render.md):
