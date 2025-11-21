@@ -169,7 +169,9 @@ test_that("apply_scale works - gt_tbl",{
   gt_tbl1 <- gt::exibble |>
     gt::gt() |> gt::cols_width(num ~ "400%", char ~ "3%") |>
     gt:: tab_options(table.font.size = "10pt",
-                table.width = "100%"
+                     heading.subtitle.font.size = "10pt",
+                     heading.title.font.size = "10pt",
+                     table.width = "100%"
     )
 
   expect_warning(apply_scale(gt_tbl1, fontsize = 10, tbl_scale = FALSE, tbl_stub_pct = 0.3),"Column widths must be add to =<100%, not 403%. Applying auto table scaling.")
@@ -182,6 +184,8 @@ test_that("apply_scale works - gt_tbl",{
   expect_message(apply_scale(gt_tbl2, fontsize = 10, tbl_scale = FALSE, tbl_stub_pct = 0.3),"NOTE: Column widths total <100%. Resulting table may not respect document margins.")
   expect_identical(suppressMessages(apply_scale(gt_tbl2, fontsize = 10,  tbl_scale = FALSE, tbl_stub_pct = 0.3)), gt_tbl2 |>
                      gt:: tab_options(table.font.size = "10pt",
+                                      heading.subtitle.font.size = "10pt",
+                                      heading.title.font.size = "10pt",
                                       table.width = "100%"
                      ))
 
@@ -192,7 +196,9 @@ test_that("apply_scale works - gt_tbl",{
 
 
   expect_identical(apply_scale(gt_tbl3, fontsize = 10,  tbl_scale = FALSE, tbl_stub_pct = 0.3), gt_tbl3 |>
-                     gt:: tab_options(table.font.size = "10pt"
+                     gt:: tab_options(table.font.size = "10pt",
+                                      heading.subtitle.font.size = "10pt",
+                                      heading.title.font.size = "10pt"
                      ))
 
   # scale true
@@ -201,6 +207,8 @@ test_that("apply_scale works - gt_tbl",{
 
   expect_identical(apply_scale(gt_tbl4, fontsize = 10, tbl_scale = TRUE, tbl_stub_pct = 0.3), scale_gt(gt_tbl4, tbl_stub_pct = 0.3)|>
                      gt:: tab_options(table.font.size = "10pt",
+                                      heading.subtitle.font.size ="10pt",
+                                      heading.title.font.size = "10pt",
                                       table.width = "100%"
                      ))
 })
@@ -224,6 +232,8 @@ test_that("apply_scale works - gt_group",{
   gt_tbl <- gt::exibble |>
     gt::gt()|>
     gt:: tab_options(table.font.size = "10pt",
+                     heading.subtitle.font.size = "10pt",
+                     heading.title.font.size = "10pt",
                      table.width = "100%"
     )
 

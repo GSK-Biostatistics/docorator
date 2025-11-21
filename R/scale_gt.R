@@ -45,7 +45,9 @@ apply_scale.gt_tbl <- function(x, fontsize, tbl_scale, tbl_stub_pct) {
 
   x |>
     gt::tab_options(table.font.size = paste0(fontsize, "pt"),
-               table.width = table_width
+                    heading.subtitle.font.size = paste0(fontsize, "pt"),
+                    heading.title.font.size = paste0(fontsize, "pt"),
+                    table.width = table_width
   )
 
 }
