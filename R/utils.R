@@ -204,5 +204,5 @@ check_pkg_version <- function(x) {
  current_version = as.character(utils::packageVersion(pkg))
 
  if(utils::compareVersion(current_version, pkg_version)!= 0){
-   cli::cli_alert_info("Note: docorator object was created with {.pkg {pkg} {pkg_version}}. You are now running {.pkg {pkg} {current_version}}. There may be issues rendering your document.")}
+   cli::cli_text("Note: docorator object was created with {.pkg {pkg} {pkg_version}}. You are now running {.pkg {pkg} {current_version}}. There may be issues rendering your document.")}
 }
