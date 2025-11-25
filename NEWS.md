@@ -1,4 +1,5 @@
 # docorator development version
+* Use sessionInfo to check gt and ggplot versions between as_docorator run and render
 
 Improvements
 * Change logic in prep_obj_rtf to include any headers in the gt object as subtitles in the rtf
