@@ -54,7 +54,8 @@
 <span>  header_latex <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  keep_tex <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  escape_latex <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  quarto <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span>  quarto <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  version_check <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -87,8 +88,11 @@
 
 
 <dt id="arg-quarto">quarto<a class="anchor" aria-label="anchor" href="#arg-quarto"></a></dt>
-<dd><p>Boolean indicating whether to use Quarto as the rendering
-engine. Defaults to <code>FALSE</code>, which uses Rmarkdown to render. <a href="https://lifecycle.r-lib.org/articles/stages.html#experimental" class="external-link"><img src="figures/lifecycle-experimental.svg" alt="[Experimental]"></a></p></dd>
+<dd><p>Boolean indicating whether to use Quarto as the rendering engine. Defaults to <code>FALSE</code>, which uses Rmarkdown to render. <a href="https://lifecycle.r-lib.org/articles/stages.html#experimental" class="external-link"><img src="figures/lifecycle-experimental.svg" alt="[Experimental]"></a></p></dd>
+
+
+<dt id="arg-version-check">version_check<a class="anchor" aria-label="anchor" href="#arg-version-check"></a></dt>
+<dd><p>Boolean indicating whether to print a note if gt or ggplot versions dont match between the original docorator object and the one being used for rendering</p></dd>
 
 </dl></div>
     <div class="section level2">

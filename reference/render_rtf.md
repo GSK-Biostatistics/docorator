@@ -9,7 +9,8 @@ render_rtf(
   x,
   display_loc = NULL,
   remove_unicode_ws = TRUE,
-  use_page_header = FALSE
+  use_page_header = FALSE,
+  version_check = TRUE
 )
 ```
 
@@ -32,6 +33,12 @@ render_rtf(
   If `TRUE` then all table headings will be migrated to the page header.
   See
   https://gt.rstudio.com/reference/tab_options.html#arg-page-header-use-tbl-headings
+
+- version_check:
+
+  Boolean indicating whether to print a note if gt or ggplot versions
+  dont match between the original docorator object and the one being
+  used for rendering
 
 ## Value
 

@@ -12,7 +12,8 @@ render_pdf(
   header_latex = NULL,
   keep_tex = FALSE,
   escape_latex = TRUE,
-  quarto = FALSE
+  quarto = FALSE,
+  version_check = TRUE
 )
 ```
 
@@ -49,6 +50,12 @@ render_pdf(
   Boolean indicating whether to use Quarto as the rendering engine.
   Defaults to `FALSE`, which uses Rmarkdown to render.
   **\[experimental\]**
+
+- version_check:
+
+  Boolean indicating whether to print a note if gt or ggplot versions
+  dont match between the original docorator object and the one being
+  used for rendering
 
 ## Value
 

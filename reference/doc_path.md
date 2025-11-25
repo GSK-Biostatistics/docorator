@@ -27,6 +27,6 @@ character string
 ``` r
 # \donttest{
  doc_path(filename = "my_tbl.pdf", path = NULL)
-#> [1] "/home/runner/work/_temp/759cf65e-5093-42bb-80b8-f02dc3e70b00"
+#> [1] "/home/runner/work/_temp/a7d2c719-8c27-4f03-9e3f-3fd409626732"
 # }
 ```
