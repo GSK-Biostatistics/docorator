@@ -21,7 +21,7 @@ render_rtf(
 
 \item{use_page_header}{If \code{TRUE} then all table headings will be migrated to the page header. See https://gt.rstudio.com/reference/tab_options.html#arg-page-header-use-tbl-headings}
 
-\item{version_check}{Boolean indicating whether to print a note if gt or ggplot versions dont match from docorator obj to render}
+\item{version_check}{Boolean indicating whether to print a note if gt or ggplot versions dont match between the original docorator object and the one being used for rendering}
 }
 \value{
 This function saves an rtf to a specified location

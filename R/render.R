@@ -6,9 +6,9 @@
 #' @param header_latex optional .tex file of header latex
 #' @param keep_tex Boolean indicating if to keep resulting .tex file from latex conversion. Defaults to FALSE.
 #' @param escape_latex Boolean indicating if headers and footers of a gt table should be escaped with gt::escape_latex
-#' @param quarto Boolean indicating whether to use Quarto as the rendering
+#' @param quarto Boolean indicating whether to use Quarto as the rendering engine. Defaults to `FALSE`, which uses Rmarkdown to render. `r lifecycle::badge("experimental")`
 #' @param version_check Boolean indicating whether to print a note if gt or ggplot versions dont match between the original docorator object and the one being used for rendering
-#'   engine. Defaults to `FALSE`, which uses Rmarkdown to render. `r lifecycle::badge("experimental")`
+#'
 #'
 #' @returns This function saves a pdf to a specified location
 #' @export
@@ -126,7 +126,6 @@ render_pdf <- function(x,
 #' @param remove_unicode_ws Option to remove unicode white space from text.
 #' @param use_page_header If `TRUE` then all table headings will be migrated to the page header. See https://gt.rstudio.com/reference/tab_options.html#arg-page-header-use-tbl-headings
 #' @param version_check Boolean indicating whether to print a note if gt or ggplot versions dont match between the original docorator object and the one being used for rendering
-#'   engine. Defaults to `FALSE`, which uses Rmarkdown to render. `r lifecycle::badge("experimental")`
 #'
 #' @details Option `remove_unicode_ws` serves as a workaround for this
 #'   [issue](https://github.com/rstudio/gt/issues/1437) in gt
