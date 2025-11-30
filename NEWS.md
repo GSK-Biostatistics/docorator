@@ -5,6 +5,9 @@ Improvements
 * Change logic in prep_obj_rtf to include any headers in the gt object as subtitles in the rtf
 * Apply fontsize to gt title and subtitle 
 
+Bug fixes
+* Fix issue where gt scaling did not support multiple rowname columns in the gt (#48)
+
 # docorator 0.5.0
 
 Improvements
