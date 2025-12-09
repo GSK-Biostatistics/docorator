@@ -3,7 +3,7 @@
 Improvements
 * Change logic in prep_obj_rtf to include any headers in the gt object as subtitles in the rtf
 * Apply fontsize to gt title and subtitle 
-* Set default footnotes to NULL
+* Set `footnote` argument in `as_docorator()` function to `NULL` as the default.
 
 # docorator 0.5.0
 
