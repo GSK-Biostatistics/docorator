@@ -17,6 +17,6 @@ character string
 ``` r
 # \donttest{
  doc_datetime()
-#> [1] "25November2025 15:25"
+#> [1] "10December2025 17:14"
 # }
 ```
