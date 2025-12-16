@@ -6,6 +6,9 @@ Improvements
 * Apply fontsize to gt title and subtitle 
 * Set `footnote` argument in `as_docorator()` function to `NULL` as the default.
 
+Bug fixes
+* Fix issue where gt scaling did not support multiple rowname columns in the gt (#48)
+
 # docorator 0.5.0
 
 Improvements
