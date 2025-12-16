@@ -32,3 +32,39 @@ test_that("markdown chunks are created correctly",{
   expect_snapshot(chunk_gt_group)
 
 })
+
+test_that("package version messages are printed correctly",{
+
+  skip_on_cran()
+  skip_on_ci()
+
+  my_gt <- gt::exibble |>
+    gt::gt(
+      rowname_col = "row",
+      groupname_col = "group"
+    )
+
+  docorator <- as_docorator(my_gt,
+                            display_name = "mytbl",
+                            save_object = FALSE)
+
+  current_version <- utils::packageVersion("gt")
+
+  # amend the sessionInfo
+
+  # non-existent gt version
+  old_gt <- docorator
+  old_gt$session_info$loadedOnly$gt$Version <- "0.0.1234"
+  suppressMessages({
+    expected_message <- cli::cli_text("Note: docorator object was created with {.pkg gt 0.0.1234}. You are now running {.pkg gt {current_version}}. There may be issues rendering your document.")
+    expect_equal( check_pkg_version(old_gt), expected_message)
+  })
+
+  # empty other packages still renders message
+  old_gt$session_info$otherPkgs <- NULL
+  suppressMessages({
+    expect_equal( check_pkg_version(old_gt), expected_message)
+  })
+
+})
+

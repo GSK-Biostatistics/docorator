@@ -141,8 +141,7 @@ as_docorator <- function(x,
                      display_name,
                      display_loc = NULL,
                      header = fancyhead(fancyrow(right = doc_pagenum())),
-                     footer = fancyfoot(fancyrow(left = doc_path(display_name, display_loc),
-                                                 right = doc_datetime())),
+                     footer = NULL,
                      save_object = TRUE,
                      object_loc = display_loc,
                      ...,
@@ -182,7 +181,8 @@ as_docorator <- function(x,
       footer = footer,
       fontsize = fontsize,
       geometry = geometry,
-      fig_dim = fig_dim
+      fig_dim = fig_dim,
+      session_info = sessionInfo()
     ),
     class = "docorator"
   )

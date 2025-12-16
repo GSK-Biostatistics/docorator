@@ -9,8 +9,7 @@ as_docorator(
   display_name,
   display_loc = NULL,
   header = fancyhead(fancyrow(right = doc_pagenum())),
-  footer = fancyfoot(fancyrow(left = doc_path(display_name, display_loc), right =
-    doc_datetime())),
+  footer = NULL,
   save_object = TRUE,
   object_loc = display_loc,
   ...,
