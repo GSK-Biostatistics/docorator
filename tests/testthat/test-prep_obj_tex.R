@@ -44,3 +44,14 @@ test_that("png objects are prepared correctly ",{
   knit_png <- prep_obj_tex(docorator)
   expect_true(inherits(knit_png,c("knit_image_paths", "knit_asis")))
 })
+
+
+test_that("ggplot objects are prepared correctly when ggplot2 not loaded", {
+
+  # import previous docorator obj
+  doc <- readRDS(system.file("extdata/docorator_ggplot.RDS", package = "docorator"))
+
+  display <- prep_obj_tex(doc$display)
+
+  expect_s3_class(display, "ggplot")
+})
