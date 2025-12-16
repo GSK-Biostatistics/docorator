@@ -4,6 +4,9 @@ Improvements
 * Change logic in prep_obj_rtf to include any headers in the gt object as subtitles in the rtf
 * Apply fontsize to gt title and subtitle 
 
+Lifecycle changes
+* Minimum `gt` version updated to 1.2.0
+
 # docorator 0.5.0
 
 Improvements
