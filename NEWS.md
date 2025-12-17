@@ -9,6 +9,9 @@ Improvements
 Bug fixes
 * Fix issue where gt scaling did not support multiple rowname columns in the gt (#48)
 
+Lifecycle changes
+* Minimum `gt` version updated to 1.2.0
+
 # docorator 0.5.0
 
 Improvements
