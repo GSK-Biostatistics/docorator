@@ -9,7 +9,8 @@ test_that("markdown chunks are created correctly",{
   skip_if_not(interactive())
 
   png_obj <- png_path(path = system.file("extdata/test_image.png", package = "docorator"))
-  chunk_png <- create_chunk(x = png_obj, fig_dim = c(5,8), transform = NULL) |> capture.output()
+  docorator <- as_docorator(png_obj, display_name = "myfig", save_object = FALSE)
+  chunk_png <- create_chunk(x = docorator, transform = NULL) |> capture.output()
   # avoiding snapshot because of temp directory + mardown header
   expect_true(any(grepl('<div class=\"figure\">', chunk_png)))
 
@@ -21,12 +22,49 @@ test_that("markdown chunks are created correctly",{
     apply_scale(fontsize = 10,
                 tbl_scale = TRUE,
                 tbl_stub_pct = 0.5)
-
-  chunk_gt <- create_chunk(x = my_gt, fig_dim = c(5,8), transform = NULL) |> capture.output()
+  docorator <- as_docorator(my_gt, display_name = "mytbl", save_object = FALSE)
+  chunk_gt <- create_chunk(x = docorator, transform = NULL) |> capture.output()
   expect_snapshot(chunk_gt)
 
   my_gt_group <- gt::gt_group(my_gt,my_gt)
-  chunk_gt_group <- create_chunk(x = my_gt_group, fig_dim = c(5,8), transform = NULL) |> capture.output()
+  docorator <- as_docorator(my_gt_group, display_name = "mytbl", save_object = FALSE)
+  chunk_gt_group <- create_chunk(x = docorator, transform = NULL) |> capture.output()
   expect_snapshot(chunk_gt_group)
 
 })
+
+test_that("package version messages are printed correctly",{
+
+  skip_on_cran()
+  skip_on_ci()
+
+  my_gt <- gt::exibble |>
+    gt::gt(
+      rowname_col = "row",
+      groupname_col = "group"
+    )
+
+  docorator <- as_docorator(my_gt,
+                            display_name = "mytbl",
+                            save_object = FALSE)
+
+  current_version <- utils::packageVersion("gt")
+
+  # amend the sessionInfo
+
+  # non-existent gt version
+  old_gt <- docorator
+  old_gt$session_info$loadedOnly$gt$Version <- "0.0.1234"
+  suppressMessages({
+    expected_message <- cli::cli_text("Note: docorator object was created with {.pkg gt 0.0.1234}. You are now running {.pkg gt {current_version}}. There may be issues rendering your document.")
+    expect_equal( check_pkg_version(old_gt), expected_message)
+  })
+
+  # empty other packages still renders message
+  old_gt$session_info$otherPkgs <- NULL
+  suppressMessages({
+    expect_equal( check_pkg_version(old_gt), expected_message)
+  })
+
+})
+

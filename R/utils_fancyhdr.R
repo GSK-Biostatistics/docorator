@@ -81,6 +81,9 @@ fancyrow <- function(left = NA,
                      center = NA,
                      right = NA){
 
+  # Check that all arguments are single strings
+  check_fancyrow_string(left = left, center = center, right = right)
+
   structure(
     list(left = left,
          center = center,
@@ -88,6 +91,48 @@ fancyrow <- function(left = NA,
     class = "fancyrow"
   )
 
+}
+
+#' Check that all arguments in fancyrow() are single strings or NA
+#' @param left Character string to be aligned to the left side of the row.
+#' @param center Character string to be aligned to the center of the row.
+#' @param right Character string to be aligned to the right side of the row.
+#' @noRd
+#' @keywords internal
+#'
+check_fancyrow_string <- function(left = NA,
+                                  center = NA,
+                                  right = NA){
+
+  # Create list of arguments for iteration
+  args <- list(left = left, center = center, right = right)
+  errors <- character(0)
+
+  for (name in names(args)) {
+    value <- args[[name]]
+    # Check if arguments are a vector of size greater than 1
+    if (length(value) > 1) {
+      errors <- c(
+        errors,
+        cli::format_message("{.arg {name}} must be a single value, but has a length of {length(value)}.")
+      )
+      next
+    }
+
+    # Check if arguments contain any non-string values if not NA
+    if (!is.na(value) && !is.character(value)) {
+      errors <- c(
+        errors,
+        cli::format_message("{.arg {name}} must be a character string or NA, but is {class(value)}.")
+      )
+    }
+  }
+
+  if (length(errors) > 0) {
+    cli::cli_abort(c("Invalid input in fancyrow():", errors))
+  }
+
+  invisible(TRUE)
 }
 
 #' Check that header and footer args are of class `fancyhdr`
@@ -140,8 +185,21 @@ as_tibble_fancyrow <- function(x, ...){
 }
 
 #' Process headers/footers
+#'
+#' @param x header or footer
+#' @param escape_latex Boolean to escape latex in header/footer
+#'
+#' @return character string containing headers and footers latex code
 #' @export
 #' @keywords internal
+#'
+#' @examples
+#' header <- fancyhead(
+#' fancyrow(left = "Protocol: 12345", right = doc_pagenum()),
+#' fancyrow(center = "Demographic Summary"))
+#'
+#' hf_process(header)
+#'
 hf_process <- function(x, escape_latex = TRUE){
   UseMethod("hf_process", x)
 }
@@ -220,6 +278,14 @@ process_rows <- function(x, type = c("head","foot"), escape_latex = TRUE){
 #'
 #' @return Numeric value
 #' @keywords internal
+#' @export
+#' @examples
+#' header <- fancyhead(
+#' fancyrow(left = "Protocol: 12345", right = doc_pagenum()),
+#' fancyrow(center = "Demographic Summary"))
+#'
+#' hf_height(header, 10)
+#'
 hf_height <- function(x, fontsize){
   UseMethod("hf_height", x)
 }
@@ -246,6 +312,7 @@ hf_height.fancyhdr <- function(x, fontsize){
 
 #' escape the latex characters, but keep the output of doc_pagenum unescaped
 #' @param x text string to be escaped
+#' @noRd
 hf_escape <- function(x) {
 
   latex_text <- gt::escape_latex(x)

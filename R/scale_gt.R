@@ -5,20 +5,29 @@
 #' @param tbl_stub_pct percent of total width that should be dedicated to stub column(s). If more than 1 stub column then this is the total for both.
 #' @param fontsize document font size
 #' @return scaled gt object
+#' @name apply_scale
+#' @examples
+#' gt <- gt::exibble |>
+#' gt::gt()
+#'
+#' apply_scale(gt, fontsize = 10, tbl_scale = FALSE, tbl_stub_pct = "20%")
+NULL
+
+#' @name apply_scale
 #' @export
 #' @keywords internal
 apply_scale <- function (x, fontsize, tbl_scale, tbl_stub_pct) {
   UseMethod("apply_scale", x)
 }
 
-#' default
+#' @name apply_scale
 #' @export
 #' @keywords internal
 apply_scale.default <- function(x, fontsize, tbl_scale, tbl_stub_pct) {
   x
 }
 
-#' scale gt_tbl object
+#' @name apply_scale
 #' @export
 #' @keywords internal
 apply_scale.gt_tbl <- function(x, fontsize, tbl_scale, tbl_stub_pct) {
@@ -36,12 +45,14 @@ apply_scale.gt_tbl <- function(x, fontsize, tbl_scale, tbl_stub_pct) {
 
   x |>
     gt::tab_options(table.font.size = paste0(fontsize, "pt"),
-               table.width = table_width
+                    heading.subtitle.font.size = paste0(fontsize, "pt"),
+                    heading.title.font.size = paste0(fontsize, "pt"),
+                    table.width = table_width
   )
 
 }
 
-#' scale gt_group object
+#' @name apply_scale
 #' @export
 #' @keywords internal
 apply_scale.gt_group <- function(x, fontsize, tbl_scale, tbl_stub_pct) {
@@ -61,9 +72,8 @@ apply_scale.gt_group <- function(x, fontsize, tbl_scale, tbl_stub_pct) {
 #' @return Table with col_widths settings applied
 #' @export
 #'
-#' @section Examples:
+#' @examples
 #'
-#' ```r
 #' gt::gtcars |>
 #'   dplyr::slice_head(n = 10) |>
 #'   dplyr::select(mfr, model, year, msrp, ctry_origin) |>
@@ -72,33 +82,30 @@ apply_scale.gt_group <- function(x, fontsize, tbl_scale, tbl_stub_pct) {
 #'       rowname_col = "mfr",
 #'       row_group_as_column = TRUE) |>
 #'   scale_gt(tbl_stub_pct = 0.4)
-#' ```
 #'
 scale_gt <- function(x,
                      tbl_stub_pct = 0.3
 ){
 
-  # will there be 2 stub columns?
+  # will group add to stub?
   row_grp_as_column <- x$`_options` |>
     dplyr::filter(.data$parameter=="row_group_as_column") |>
     dplyr::pull(.data$value) |>
     unlist()
 
   # total # of columns in table
-  n_cols <- x[["_boxhead"]] |>
-    dplyr::filter(!.data$type=="hidden") |>
-    nrow()
+  boxhead <- x[["_boxhead"]] |>
+    dplyr::filter(!.data$type=="hidden")
+  n_cols <- nrow(boxhead)
 
   # # of stub columns in table
-  n_stubs <- x$`_stub_df` |>
-    dplyr::select("row_id", "group_id") |>
-    dplyr::select(dplyr::where(~!all(is.na(.x)))) |>
-    ncol()
+  n_stubs <- boxhead |>
+    dplyr::filter(type %in% c("stub", "row_group")) |>
+    nrow()
 
-  # if 2 stub columns
-  if (n_stubs>1 && !row_grp_as_column) {
-    # if row group is not column, then there is actually 1 stub
-    n_stubs <- 1
+  # account for row_grp NOT as column
+  if (n_stubs>0 && "row_group" %in% boxhead$type && !row_grp_as_column) {
+    n_stubs <- n_stubs-1
   }
 
   if (n_stubs==0) tbl_stub_pct <- 0
@@ -135,7 +142,7 @@ scale_gt <- function(x,
 #' @return boolean true if needs rescaling, false otherwise.
 #' @noRd
 check_gt_widths <- function(x){
-  
+
   # preset table_width
   table_width <- "100%"
 

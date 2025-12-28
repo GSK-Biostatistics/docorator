@@ -6,11 +6,10 @@
 \usage{
 as_docorator(
   x,
-  display_name = "docorator",
-  display_loc = getwd(),
+  display_name,
+  display_loc = NULL,
   header = fancyhead(fancyrow(right = doc_pagenum())),
-  footer = fancyfoot(fancyrow(left = doc_path(display_name, display_loc), right =
-    doc_datetime())),
+  footer = NULL,
   save_object = TRUE,
   object_loc = display_loc,
   ...,
@@ -24,9 +23,9 @@ as_docorator(
 \arguments{
 \item{x}{object containing the display. See @details for more information.}
 
-\item{display_name}{name of file (excluding extension)}
+\item{display_name}{required name of file (excluding extension)}
 
-\item{display_loc}{path to save the output file to}
+\item{display_loc}{optional path to save the output file to}
 
 \item{header}{Document header. Accepts a \code{fancyhead} object. If \code{NULL}, no header will be displayed.}
 
@@ -68,18 +67,18 @@ following classes/types are recommended:
 \item list of paths to PNG files created via \code{png_path()}
 }
 }
-\section{Examples}{
+\examples{
 
-
-\if{html}{\out{<div class="sourceCode r">}}\preformatted{gt::gtcars |>
+\dontrun{
+gt::gtcars |>
   dplyr::slice_head(n = 10) |>
   dplyr::select(mfr, model, year, msrp) |>
   gt::gt(groupname_col = "mfr",
          row_group_as_column = TRUE) |>
   as_docorator(
    header = fancyhead(fancyrow("Header 1"), fancyrow("Header 2")),
-   display_name = "mytbl")
-
-}\if{html}{\out{</div>}}
+   display_name = "mytbl",
+   footer = NULL)
 }
 
+}

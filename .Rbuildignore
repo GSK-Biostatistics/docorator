@@ -1,2 +1,15 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
+^_pkgdown\.yml$
+^docs$
+^pkgdown$
+^data-raw$
+^images$
+^man/figures/$
+^doc$
+man/figures/
+^cran-comments\.md$
+^CRAN-SUBMISSION$
+^\.github$
+^LICENSE$
+^README\.Rmd$

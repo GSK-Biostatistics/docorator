@@ -1,13 +1,14 @@
 #' Render to pdf
 #'
 #' @param x `docorator` object
-#' @param display_loc path to save the output pdf to
+#' @param display_loc optional path to save the output pdf to
 #' @param transform optional latex transformation function to apply to a gt latex string
 #' @param header_latex optional .tex file of header latex
 #' @param keep_tex Boolean indicating if to keep resulting .tex file from latex conversion. Defaults to FALSE.
 #' @param escape_latex Boolean indicating if headers and footers of a gt table should be escaped with gt::escape_latex
-#' @param quarto Boolean indicating whether to use Quarto as the rendering
-#'   engine. Defaults to `FALSE`, which uses Rmarkdown to render. `r lifecycle::badge("experimental")`
+#' @param quarto Boolean indicating whether to use Quarto as the rendering engine. Defaults to `FALSE`, which uses Rmarkdown to render. `r lifecycle::badge("experimental")`
+#' @param version_check Boolean indicating whether to print a note if gt or ggplot versions dont match between the original docorator object and the one being used for rendering
+#'
 #'
 #' @returns This function saves a pdf to a specified location
 #' @export
@@ -32,11 +33,17 @@ render_pdf <- function(x,
                        header_latex = NULL,
                        keep_tex = FALSE,
                        escape_latex = TRUE,
-                       quarto = FALSE){
+                       quarto = FALSE,
+                       version_check = TRUE){
 
   if (!inherits(x, "docorator")) {
     cli::cli_abort("The {.arg {rlang::caller_arg(x)}} argument must be class docorator, not {.obj_type_friendly {x}}. See documentation for `as_docorator`.",
               call = rlang::caller_env())
+  }
+
+  # check package versions
+  if(isTRUE(version_check)){
+    check_pkg_version(x)
   }
 
   # check transform is a function if not convert to NULL
@@ -66,13 +73,10 @@ render_pdf <- function(x,
 
   # if no path is given, use docorator path
   if(is.null(display_loc)){
-    display_loc <- x$display_loc
+    display_loc <- x$display_loc %||% "."
   }
 
-  # set name if needed
-  if (is.null(x$display_name)){
-    x$display_name <- "docorator"
-  }
+  # set filename
   filename <- paste0(x$display_name,".pdf")
 
   if(quarto){
@@ -87,7 +91,7 @@ render_pdf <- function(x,
                              output_file = filename,
                              output_dir = display_loc,
                              output_options = list(keep_tex = keep_tex),
-                             params = list(x = x$display,
+                             params = list(x = x,
                                            header = hf_process(x$header, escape_latex = escape_latex),
                                            footer = hf_process(x$footer, escape_latex = escape_latex),
                                            geometry = geom_process(
@@ -96,8 +100,6 @@ render_pdf <- function(x,
                                              x$fontsize,
                                              x$geometry
                                            ),
-                                           fontsize = x$fontsize,
-                                           fig_dim = x$fig_dim,
                                            transform = transform
                              ),
                              quiet = TRUE)
@@ -123,6 +125,7 @@ render_pdf <- function(x,
 #' @param display_loc path to save the output rtf to
 #' @param remove_unicode_ws Option to remove unicode white space from text.
 #' @param use_page_header If `TRUE` then all table headings will be migrated to the page header. See https://gt.rstudio.com/reference/tab_options.html#arg-page-header-use-tbl-headings
+#' @param version_check Boolean indicating whether to print a note if gt or ggplot versions dont match between the original docorator object and the one being used for rendering
 #'
 #' @details Option `remove_unicode_ws` serves as a workaround for this
 #'   [issue](https://github.com/rstudio/gt/issues/1437) in gt
@@ -144,32 +147,34 @@ render_pdf <- function(x,
 #'  render_rtf()
 #' ```
 #'
-render_rtf <- function(x, display_loc = NULL, remove_unicode_ws = TRUE, use_page_header = FALSE){
+render_rtf <- function(x, display_loc = NULL, remove_unicode_ws = TRUE, use_page_header = FALSE, version_check = TRUE){
 
   if (!inherits(x, "docorator")) {
     cli::cli_abort("The {.arg {rlang::caller_arg(x)}} argument must be class docorator, not {.obj_type_friendly {x}}. See documentation for `as_docorator`.",
               call = rlang::caller_env())
   }
 
-  if(!inherits(x$display, "gt_tbl") & !inherits(x$display, "gt_group")) {
-    cli::cli_abort("rtf render is only enabled for objects of class gt_tbl or gt_grp, not {.obj_type_friendly {x$display}}. See documentation for `render_rtf`.",
+  # check package versions
+  if(isTRUE(version_check)){
+    check_pkg_version(x)
+  }
+
+  # if version of gt is <= 1.0.0
+  if(!inherits(x$display, "gt_tbl") & !inherits(x$display, "gt_group") & utils::compareVersion(as.character(utils::packageVersion("gt")), "1.0.0")>0) {
+    cli::cli_warn("RTF render is only enabled for objects of class `gt_tbl` or `gt_group`, not {.obj_type_friendly {x$display}}. See documentation for `render_rtf`.",
               call = rlang::caller_env())
   }
 
   # if no path is given, use docorator path
   if(is.null(display_loc)){
-    display_loc <- x$display_loc
+    display_loc <- x$display_loc %||% "."
   }
 
-  # set name if needed
-  if (is.null(x$display_name)){
-    filename <- "doc.rtf"
-  }else{
-    filename <- paste0(x$display_name,".rtf")
-  }
+  # set name
+  filename <- paste0(x$display_name,".rtf")
 
-  # add headers and footers
-  gt <- hf_to_gt(x)
+  # convert outputs to gt for rtf render
+  gt <- prep_obj_rtf(x)
 
   # page headers
   gt <- apply_to_grp(
@@ -224,15 +229,25 @@ render_pdf_qmd <- function(x,
                            header_latex = NULL,
                            clean = TRUE){
 
+  if (!is.null(transform)) {
+    cli::cli_warn("The {.arg {rlang::caller_arg(transform)}} argument is not currently available for quarto rendered documents. Try `quarto = FALSE`",
+                  call = rlang::caller_env())
+  }
+
   # create a full path
-  display_loc <- normalizePath(display_loc, winslash = "/")
+  if (!is.null(display_loc)){
+    display_loc <- normalizePath(display_loc, winslash = "/")
+  }
 
   qmd_name <- paste0(x$display_name,".qmd")
   pdf_name <- paste0(x$display_name, ".pdf")
   docorator_name <- paste0(x$display_name, "_docorator_obj.Rds")
 
-  cur_dir <- getwd()
-  render_dir <- file.path(display_loc, paste0(x$display_name, "_docorator_files"))
+  if (!is.null(display_loc)){
+    render_dir <- file.path(display_loc, paste0(x$display_name, "_docorator_files"))
+  } else {
+    render_dir <- file.path(paste0(x$display_name, "_docorator_files"))
+  }
   if(!dir.exists(render_dir)){
     dir.create(render_dir)
   }
@@ -247,53 +262,54 @@ render_pdf_qmd <- function(x,
   withr::with_dir(
     new = render_dir,
     code = {
-
-      # copy template qmd to a temp directory
+      # copy template qmd to the render dir
       template <- system.file("template", "template.qmd", package = "docorator")
-      file.copy(template, getwd(), overwrite = TRUE, recursive = TRUE)
+      file.copy(template, ".", overwrite = TRUE, recursive = TRUE)
       file.rename("template.qmd", qmd_name)
 
-      # copy tex header to temp directory and rename if one exists
+      # copy tex header to render dir and rename if one exists
       if(!is.null(header_latex)){
         if(file.exists(header_latex) && tools::file_ext(header_latex) == "tex"){
           file_name <- basename(header_latex)
-          file.copy(header_latex, getwd(), overwrite = TRUE, recursive = TRUE)
+          file.copy(header_latex, ".", overwrite = TRUE, recursive = TRUE)
           file.rename(file_name, "header.tex")
         }else{
           cli::cli_warn("The header_latex argument must point to a valid .tex file. No header options applied.",
-                   call = rlang::caller_env())
+                        call = rlang::caller_env())
         }
       }
 
-      # save docorator obj to temp dir
+      # save docorator obj to render dir
       saveRDS(x, docorator_name)
 
       # render pdf
-      doc <- purrr::safely(
-        quarto::quarto_render)(
+      doc <-
+        quarto::quarto_render(
           input = qmd_name,
           output_format = "pdf",
           output_file = pdf_name,
           execute_params = list(
             display_name = x$display_name,
-            pkg_path = ifelse(testthat::is_testing(),cur_dir,"")
+            pkg_path = "", #set to cur_dir in development
+            transform = NULL # disabled for quarto
           ),
           quiet = TRUE)
+    })
 
-      if (is.null(doc$error) && file.exists(pdf_name)){
-
-        out_path <- file.path(display_loc, pdf_name)
-        file_ok <- file.copy(from = pdf_name,
-                             to = out_path,
-                             overwrite = TRUE)
-
-        if (file_ok){
-          cli::cli_alert_success("Document created at: {out_path}")
-        }
-      }
-
+  if (file.exists(file.path(render_dir, pdf_name))){
+    if (!is.null(display_loc)){
+      out_path <- file.path(display_loc, pdf_name)
+    } else {
+      out_path <- pdf_name
     }
-  )
+    file_ok <- file.copy(from = file.path(render_dir, pdf_name),
+                         to = out_path,
+                         overwrite = TRUE)
+
+    if (file_ok){
+      cli::cli_alert_success("Document created at: {out_path}")
+    }
+  }
 
   # return docorator object for further renders
   invisible(x)

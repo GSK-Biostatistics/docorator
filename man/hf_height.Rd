@@ -23,4 +23,12 @@ Numeric value
 \description{
 Calculate desired header or footer height for the document
 }
+\examples{
+header <- fancyhead(
+fancyrow(left = "Protocol: 12345", right = doc_pagenum()),
+fancyrow(center = "Demographic Summary"))
+
+hf_height(header, 10)
+
+}
 \keyword{internal}

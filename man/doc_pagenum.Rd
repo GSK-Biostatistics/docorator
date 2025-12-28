@@ -12,3 +12,7 @@ character string containing latex code
 \description{
 Automatic page numbering
 }
+\examples{
+doc_pagenum()
+
+}

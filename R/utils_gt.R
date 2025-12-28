@@ -10,6 +10,20 @@
 #'
 #' @export
 #' @keywords internal
+#'
+#' @examples
+#' docorator <- gt::exibble |>
+#'   gt::gt()|>
+#'   as_docorator(
+#'   display_name = "my_tbl",
+#'   header = fancyhead(
+#'   fancyrow(left = "Protocol: 12345", right = doc_pagenum()),
+#'   fancyrow(center = "Demographic Summary")
+#'   ),
+#'   footer = NULL,
+#'   save_object = FALSE)
+#'
+#' hf_to_gt(docorator)
 
 hf_to_gt <- function(x) {
 
@@ -48,19 +62,27 @@ hf_to_gt <- function(x) {
 #' @noRd
 hf_to_gt_tbl <- function(gt, header, subheader, footer){
   if(inherits(gt, "gt_tbl")){
-    subtitle <- NULL
 
-    # check if existing subtitle exists
-    if(length(gt$`_heading`$subtitle)>0){
-      old_sub <- gt$`_heading`$subtitle
-      # add subtitle text on top of groups if exists
-      if(length(subheader)>0){
-        subtitle = gt::md(paste0(paste0(subheader, collapse = "<br>"), "<br>",old_sub))
-      }else{
-        subtitle = gt::md(old_sub)
-      }
-    }else if(length(subheader)>0){
-      subtitle = gt::md(paste0(subheader, collapse = "<br>"))
+    # order of titles should be: all docorator headers (header and subheader) then gt title, then gt subtitles.
+    subtitle <- NULL # will create a vector of new subtitles and split with <br> characters
+    gt_headers <- NULL # vector of existing gt headers to be added at the end of docorator headers
+
+    # check title and subtitle arent empty strings and add to gt_headers.
+    if(!is.null(gt$`_heading`$title) && !identical(gt$`_heading`$title, "")){
+      gt_headers <- gt$`_heading`$title
+    }
+
+    # check if existing subtitle exists, if so add to gt_headers
+    if(!is.null(gt$`_heading`$subtitle) && !identical(gt$`_heading`$subtitle, "")){
+      gt_headers <- c(gt_headers,gt$`_heading`$subtitle)
+    }
+
+    # add docorator subtitle text before old gt headers.
+    subtitle <- c(subheader, gt_headers)
+
+    # if not null or empty, add breaks and md()
+    if(!is.null(subtitle) && !identical(subtitle,"")){
+      subtitle <- gt::md(paste0(subtitle, collapse = "<br>"))
     }
     # header
     if(length(header)>0 | length(subtitle)>0){
@@ -105,6 +127,19 @@ hf_to_gt_group <- function(gt_group, header, subheader, footer){
 #'
 #' @export
 #' @keywords internal
+#' @examples
+#' docorator <- gt::exibble |>
+#'   gt::gt()|>
+#'   as_docorator(
+#'   display_name = "mytbl",
+#'   header = fancyhead(
+#'   fancyrow(left = "Protocol: 12345", right = doc_pagenum()),
+#'   fancyrow(center = "Demographic Summary")
+#'   ),
+#'   footer = NULL,
+#'   save_object = FALSE)
+#'
+#' hf_extract(docorator)
 hf_extract <- function(x){
   # get header and footer information
   header <- x$header
@@ -120,7 +155,11 @@ hf_extract <- function(x){
   head_data <- all_headers[1]
 
   # subheaders
-  subhead_data <- all_headers[-1]
+  if(length(all_headers[-1])>0){
+    subhead_data <- all_headers[-1]
+  }else{
+    subhead_data <- NULL
+  }
 
   # Take footers that are alignment left, remove any missing
   foot_data <- unlist(lapply(footer, function(x){
@@ -169,4 +208,146 @@ apply_to_grp <- function(func, args, call = rlang::caller_env()){
   }
 
   gt_obj
+}
+
+#' Convert png object to gt from docorator object
+#' @param x docorator object
+#' @noRd
+#' @keywords internal
+png_to_gt <- function(x){
+
+  # save png to temp file
+ temp_png <- tempfile(
+    pattern = "temp_png_",
+    tmpdir = tempdir(),
+    fileext = ".png")
+
+ png::writePNG(x$display$png, temp_png)
+
+  # convert to gt
+  gt <- dplyr::tibble(ggplot =  temp_png) |>
+    gt::gt() |>
+    gt::fmt_image(columns = dplyr::everything(), sep = ",", width = "6in") |>
+    # remove column headers and borders
+    gt::tab_options(
+      column_labels.hidden = TRUE,
+      table.border.top.style = "hidden",
+      table.border.bottom.style = "hidden"
+    )
+
+  gt
+
+}
+
+#' Convert ggplot object to gt from docorator object
+#' @param x docorator object
+#' @noRd
+#' @keywords internal
+gg_to_gt <- function(x){
+
+  if (!inherits(x$display, "ggplot")) {
+    cli::cli_abort("The display must be class `ggplot`, not {.obj_type_friendly {x$display}}.",
+                   call = rlang::caller_env())
+  }
+
+  # remove header footer information
+  display_info <- hf_strip(x$display)
+
+  # convert to gt
+  gt <- dplyr::tibble(ggplot =  display_info$display |>
+                 gg_to_image(fig_dim = x$fig_dim, path = tempdir())) |>
+    gt::gt() |>
+    gt::fmt_image(columns = dplyr::everything(), sep = ",", width = "6in") |>
+    # add header and footer information
+    gt::tab_header(title = display_info$head_data, subtitle = display_info$subhead_data) |>
+    # remove column headers and borders
+    gt::tab_options(
+      column_labels.hidden = TRUE,
+      table.border.top.style = "hidden",
+      table.border.bottom.style = "hidden"
+    )
+
+  # add footnotes if not NULL - avoids null row being added
+  if(!is.null(display_info$foot_data)){
+    gt <- gt |>
+      gt::tab_footnote(footnote = display_info$foot_data)
+  }
+
+  gt
+
+}
+
+#' ggplot to image filepath
+#' Taken from code here: https://github.com/rstudio/gt/blob/6312cf5be92fae41633b5df7d41aa948b850aaf8/R/image.R#L351C1-L392C2
+#' @param plot_object ggplot object
+#' @param fig_dim vector containing figure height and width in inches. Defaults to c(5,8) - docorator defaults
+#' @param path file path including the png location to save the output to
+#' @return filepath to snap of ggplot
+#' @keywords internal
+#' @noRd
+gg_to_image <- function(plot_object, fig_dim = c(5,8), path = NULL) {
+
+
+  # Upgrade x to a list if only a single ggplot object is provided
+  if (inherits(plot_object, "gg")) {
+    plot_object <- list(plot_object)
+  }
+
+  vapply(
+    seq_along(plot_object),
+    FUN.VALUE = character(1L),
+    USE.NAMES = FALSE,
+    FUN = function(x) {
+
+      filename <- tempfile(
+        pattern = "temp_gt_ggplot_",
+        tmpdir = path,
+        fileext = ".png")
+
+      # Save PNG file to disk
+      ggplot2::ggsave(
+        filename = filename,
+        create.dir = TRUE,
+        plot = plot_object[[x]],
+        device = "png",
+        dpi = 100,
+        width = fig_dim[2],
+        height = fig_dim[1],
+        units = "in"
+      )
+
+      filename
+
+    }
+  )
+}
+
+#' strip header footer info from ggplot object
+#' @param x a ggplot object
+#'
+#' @return list of header footer info
+#'
+#' @noRd
+#' @keywords internal
+hf_strip <- function(x){
+
+
+  if (!inherits(x, "ggplot")) {
+    cli::cli_abort("The display must be class `ggplot`, not {.obj_type_friendly {x}}.",
+                   call = rlang::caller_env())
+  }
+
+  head_data <- x$labels$title
+  # move tag to subtitle
+  subhead_data <- c(x$labels$subtitle,x$labels$tag)
+  foot_data <- x$labels$caption
+
+  # set to null in ggplot object
+  x$labels[c("title","subtitle", "caption", "tag")] <- NULL
+
+  list(display = x,
+       head_data = head_data,
+       subhead_data = subhead_data,
+       foot_data = foot_data)
+
 }

@@ -24,6 +24,7 @@ test_that("scale_gt works", {
       group
     )
 
+
   gt_out <- scale_gt(tbl_1stub_1hidden, tbl_stub_pct = 0.3)$`_boxhead`
 
   expect_equal(
@@ -64,7 +65,7 @@ test_that("scale_gt works", {
   tbl_nostub <- gt::exibble |>
     gt::gt()
 
-  gt_out <- scale_gt(tbl_nostub)$`_boxhead`
+  gt_out <- scale_gt(tbl_nostub, tbl_stub_pct = 0.3)$`_boxhead`
 
   widths <- as.numeric(gsub("%","",gt_out$column_width |> unlist()))
   expect_equal(unique(widths),
@@ -75,7 +76,7 @@ test_that("scale_gt works", {
     gt::gt(groupname_col = "fctr",
            row_group_as_column = TRUE)
 
-  gt_out <- scale_gt(tbl_grp1stub)$`_boxhead`
+  gt_out <- scale_gt(tbl_grp1stub, tbl_stub_pct = 0.3)$`_boxhead`
 
   expect_equal(dplyr::filter(gt_out, type=="stub") |> nrow(),
                0)
@@ -87,7 +88,53 @@ test_that("scale_gt works", {
     dplyr::filter(gt_out, !type=="row_group")$column_width |> unlist(),
     rep("8.75%", ncol(gt::exibble)-1)
   )
+})
 
+test_that("scale_gt works with gt >= 1.1.0", {
+
+  # up version once gt is released - requires multi-rowname cols (1.1.0) and
+  #  bug fix for stub() helper (1.1.0.9000 currently)
+  skip_if_not_installed("gt", minimum_version = "1.1.0.9000")
+
+  # table with 2 stub columns that are rowname_col
+  tbl_row2stub <- gt::exibble |>
+    gt::gt(rowname_col = c("fctr", "row"))
+
+  gt_out <- scale_gt(tbl_row2stub, tbl_stub_pct = 0.3)$`_boxhead`
+
+  expect_equal(
+    dplyr::filter(gt_out, type=="stub")$column_width |> unlist(),
+    c("15%","15%")
+  )
+  expect_equal(
+    dplyr::filter(gt_out, type=="row_group") |> nrow(),
+    0
+  )
+  expect_equal(
+    dplyr::filter(gt_out, !type %in% c("stub", "row_group"))$column_width |> unlist(),
+    rep("10%", ncol(gt::exibble)-2)
+  )
+
+  # table with 3 stub columns - 1 grp, 2 rowname
+  tbl_grprow3stub <- gt::exibble |>
+    gt::gt(groupname_col = "group",
+           rowname_col = c("fctr", "row"),
+           row_group_as_column = TRUE)
+
+  gt_out <- scale_gt(tbl_grprow3stub, tbl_stub_pct = 0.3)$`_boxhead`
+
+  expect_equal(
+    dplyr::filter(gt_out, type=="stub")$column_width |> unlist(),
+    c("10%","10%")
+  )
+  expect_equal(
+    dplyr::filter(gt_out, type=="row_group")$column_width |> unlist(),
+    "10%"
+  )
+  expect_equal(
+    dplyr::filter(gt_out, !type %in% c("stub", "row_group"))$column_width |> unlist(),
+    rep(paste0(70/(ncol(gt::exibble)-3), "%"), ncol(gt::exibble)-3)
+  )
 })
 
 test_that("check_gt_widths works",{
@@ -169,7 +216,9 @@ test_that("apply_scale works - gt_tbl",{
   gt_tbl1 <- gt::exibble |>
     gt::gt() |> gt::cols_width(num ~ "400%", char ~ "3%") |>
     gt:: tab_options(table.font.size = "10pt",
-                table.width = "100%"
+                     heading.subtitle.font.size = "10pt",
+                     heading.title.font.size = "10pt",
+                     table.width = "100%"
     )
 
   expect_warning(apply_scale(gt_tbl1, fontsize = 10, tbl_scale = FALSE, tbl_stub_pct = 0.3),"Column widths must be add to =<100%, not 403%. Applying auto table scaling.")
@@ -182,6 +231,8 @@ test_that("apply_scale works - gt_tbl",{
   expect_message(apply_scale(gt_tbl2, fontsize = 10, tbl_scale = FALSE, tbl_stub_pct = 0.3),"NOTE: Column widths total <100%. Resulting table may not respect document margins.")
   expect_identical(suppressMessages(apply_scale(gt_tbl2, fontsize = 10,  tbl_scale = FALSE, tbl_stub_pct = 0.3)), gt_tbl2 |>
                      gt:: tab_options(table.font.size = "10pt",
+                                      heading.subtitle.font.size = "10pt",
+                                      heading.title.font.size = "10pt",
                                       table.width = "100%"
                      ))
 
@@ -192,7 +243,9 @@ test_that("apply_scale works - gt_tbl",{
 
 
   expect_identical(apply_scale(gt_tbl3, fontsize = 10,  tbl_scale = FALSE, tbl_stub_pct = 0.3), gt_tbl3 |>
-                     gt:: tab_options(table.font.size = "10pt"
+                     gt:: tab_options(table.font.size = "10pt",
+                                      heading.subtitle.font.size = "10pt",
+                                      heading.title.font.size = "10pt"
                      ))
 
   # scale true
@@ -201,6 +254,8 @@ test_that("apply_scale works - gt_tbl",{
 
   expect_identical(apply_scale(gt_tbl4, fontsize = 10, tbl_scale = TRUE, tbl_stub_pct = 0.3), scale_gt(gt_tbl4, tbl_stub_pct = 0.3)|>
                      gt:: tab_options(table.font.size = "10pt",
+                                      heading.subtitle.font.size ="10pt",
+                                      heading.title.font.size = "10pt",
                                       table.width = "100%"
                      ))
 })
@@ -224,6 +279,8 @@ test_that("apply_scale works - gt_group",{
   gt_tbl <- gt::exibble |>
     gt::gt()|>
     gt:: tab_options(table.font.size = "10pt",
+                     heading.subtitle.font.size = "10pt",
+                     heading.title.font.size = "10pt",
                      table.width = "100%"
     )
 

@@ -1,17 +1,19 @@
 Package: docorator
-Title: Docorate (decorate + output) displays
-Version: 0.4.0.9000
+Title: Docorate (Decorate + Output) Displays
+Version: 0.5.0.9000
 Authors@R: 
     c(person(given = "Becca", family = "Krouse", email = "becca.z.krouse@gsk.com", role = c("aut", "cre")),
       person(given = "Shannon", family = "Haughton", email = "shannon.l.haughton@gsk.com", role = c("aut")),
+      person(given = "Seongbin", family = "Hong", email = "seongbin.x.hong@gsk.com", role = c("aut")),
+      person("Dragoș", "Moldovan-Grünfeld", , "dragos.v.moldovan-grunfeld@gsk.com", role = "aut"),
       person("GlaxoSmithKline Research & Development Limited", role = c("cph", "fnd")))
-Description: Frame a table, listing, or figure with decorations and save to an output file.  
-License: file LICENSE
+Description: A framework for creating production outputs. Users can frame a table, listing, or figure with headers and footers and save to an output file. Stores an intermediate 'docorator' object for reproducibility and rendering to multiple output types.
+License: Apache License 2.0
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3
 Imports: 
-    gt (>= 0.11.0),
+    gt (>= 1.2.0),
     rmarkdown,
     rlang,
     cli,
@@ -34,3 +36,7 @@ Suggests:
     ggplot2
 Config/testthat/edition: 3
 VignetteBuilder: knitr
+URL: https://GSK-Biostatistics.github.io/docorator/, https://github.com/GSK-Biostatistics/docorator
+BugReports: https://github.com/GSK-Biostatistics/docorator/issues
+Depends: 
+    R (>= 4.1.0)

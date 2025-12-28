@@ -15,3 +15,8 @@ object with png attribute
 \description{
 Path of png file
 }
+\examples{
+\dontrun{
+png_path <- png_path(path = "path_to_my_png.png")
+}
+}

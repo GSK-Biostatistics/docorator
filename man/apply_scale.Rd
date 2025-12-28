@@ -2,9 +2,18 @@
 % Please edit documentation in R/scale_gt.R
 \name{apply_scale}
 \alias{apply_scale}
+\alias{apply_scale.default}
+\alias{apply_scale.gt_tbl}
+\alias{apply_scale.gt_group}
 \title{Apply scaling to gt objects}
 \usage{
 apply_scale(x, fontsize, tbl_scale, tbl_stub_pct)
+
+\method{apply_scale}{default}(x, fontsize, tbl_scale, tbl_stub_pct)
+
+\method{apply_scale}{gt_tbl}(x, fontsize, tbl_scale, tbl_stub_pct)
+
+\method{apply_scale}{gt_group}(x, fontsize, tbl_scale, tbl_stub_pct)
 }
 \arguments{
 \item{x}{gt object}
@@ -20,5 +29,11 @@ scaled gt object
 }
 \description{
 Apply scaling to gt objects
+}
+\examples{
+gt <- gt::exibble |>
+gt::gt()
+
+apply_scale(gt, fontsize = 10, tbl_scale = FALSE, tbl_stub_pct = "20\%")
 }
 \keyword{internal}

@@ -11,13 +11,14 @@ render_pdf(
   header_latex = NULL,
   keep_tex = FALSE,
   escape_latex = TRUE,
-  quarto = FALSE
+  quarto = FALSE,
+  version_check = TRUE
 )
 }
 \arguments{
 \item{x}{\code{docorator} object}
 
-\item{display_loc}{path to save the output pdf to}
+\item{display_loc}{optional path to save the output pdf to}
 
 \item{transform}{optional latex transformation function to apply to a gt latex string}
 
@@ -27,8 +28,9 @@ render_pdf(
 
 \item{escape_latex}{Boolean indicating if headers and footers of a gt table should be escaped with gt::escape_latex}
 
-\item{quarto}{Boolean indicating whether to use Quarto as the rendering
-engine. Defaults to \code{FALSE}, which uses Rmarkdown to render. \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}}
+\item{quarto}{Boolean indicating whether to use Quarto as the rendering engine. Defaults to \code{FALSE}, which uses Rmarkdown to render. \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}}
+
+\item{version_check}{Boolean indicating whether to print a note if gt or ggplot versions dont match between the original docorator object and the one being used for rendering}
 }
 \value{
 This function saves a pdf to a specified location

@@ -6,8 +6,8 @@
 \usage{
 docorate(
   x,
-  filename = NULL,
-  path = getwd(),
+  filename,
+  path = NULL,
   header = fancyhead(fancyrow(right = doc_pagenum())),
   footer = fancyfoot(fancyrow(left = doc_path(filename, path), right = doc_datetime())),
   ...,
@@ -21,9 +21,9 @@ docorate(
 \arguments{
 \item{x}{object containing the display. See @details for more information.}
 
-\item{filename}{name of file including extension (note: only PDF supported currently)}
+\item{filename}{required name of file including extension (note: only PDF supported currently)}
 
-\item{path}{path to save the output pdf to}
+\item{path}{optional path to save the output pdf to}
 
 \item{header}{Document header. Accepts a \code{fancyhead} object. If \code{NULL}, no header will be displayed.}
 
@@ -63,4 +63,17 @@ following classes/types are recommended:
 \item path to PNG file created via \code{png_path()}
 \item list of paths to PNG files created via \code{png_path()}
 }
+}
+\examples{
+\dontrun{
+gt::gtcars |>
+  dplyr::slice_head(n = 10) |>
+  dplyr::select(mfr, model, year, msrp) |>
+  gt::gt(groupname_col = "mfr",
+         row_group_as_column = TRUE) |>
+  docorate(
+   header = fancyhead(fancyrow("Header 1"), fancyrow("Header 2")),
+   filename = "mytbl.pdf")
+ }
+
 }
