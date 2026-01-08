@@ -6,7 +6,7 @@
 #' @return character string
 #' @export
 #' @examples
-#' \donttest{
+#' \dontrun{
 #'  doc_path(filename = "my_tbl.pdf", path = NULL)
 #'}
 doc_path <- function(filename = NULL, path = NULL){
