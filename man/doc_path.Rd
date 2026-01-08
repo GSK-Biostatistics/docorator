@@ -18,7 +18,7 @@ character string
 Path of program
 }
 \examples{
-\donttest{
+\dontrun{
  doc_path(filename = "my_tbl.pdf", path = NULL)
 }
 }

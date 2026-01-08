@@ -1,16 +1,16 @@
-# docorator development version
-* Use sessionInfo to check gt and ggplot versions between as_docorator run and render
+# docorator 0.5.1
 
 Improvements
-* Change logic in prep_obj_rtf to include any headers in the gt object as subtitles in the rtf
-* Apply fontsize to gt title and subtitle 
-* Set `footnote` argument in `as_docorator()` function to `NULL` as the default.
+* Change logic in prep_obj_rtf to include any headers in the gt object as subtitles in the rtf (#56)
+* Apply fontsize to gt title and subtitle (#59)
+* Set `footnote` argument in `as_docorator()` function to `NULL` as the default. (#61)
+* Include sessionInfo in docorator object and add optional check that gt and ggplot2 versions match between as_docorator run and render (#52, #53)
 
 Bug fixes
 * Fix issue where gt scaling did not support multiple rowname columns in the gt (#48)
 
 Lifecycle changes
-* Minimum `gt` version updated to 1.2.0
+* Minimum `gt` version updated to 1.2.0 (#66)
 
 # docorator 0.5.0
 

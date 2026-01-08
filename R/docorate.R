@@ -46,19 +46,22 @@
 #'    filename = "mytbl.pdf")
 #'  }
 #'
-docorate <- function(x,
-                     filename,
-                     path = NULL,
-                     header = fancyhead(fancyrow(right = doc_pagenum())),
-                     footer = fancyfoot(fancyrow(left = doc_path(filename, path),
-                                                 right = doc_datetime())),
-                     ...,
-                     fontsize = 10,
-                     geometry = geom_set(),
-                     fig_dim = c(5,8),
-                     tbl_scale = TRUE,
-                     tbl_stub_pct = 0.3){
-
+docorate <- function(
+  x,
+  filename,
+  path = NULL,
+  header = fancyhead(fancyrow(right = doc_pagenum())),
+  footer = fancyfoot(fancyrow(
+    left = doc_path(filename, path),
+    right = doc_datetime()
+  )),
+  ...,
+  fontsize = 10,
+  geometry = geom_set(),
+  fig_dim = c(5, 8),
+  tbl_scale = TRUE,
+  tbl_stub_pct = 0.3
+) {
   lifecycle::deprecate_warn(
     when = "0.3.0",
     what = "docorator::docorate()",
@@ -69,26 +72,29 @@ docorate <- function(x,
 
   # check that name has been passed
   if (missing(filename)) {
-    cli::cli_abort("The {.arg {rlang::caller_arg(filename)}} argument must be specified",
-                   call = rlang::caller_env(),
-                   .envir = parent.frame())
+    cli::cli_abort(
+      "The {.arg {rlang::caller_arg(filename)}} argument must be specified",
+      call = rlang::caller_env(),
+      .envir = parent.frame()
+    )
   }
 
-  as_docorator(x,
-               display_name =  tools::file_path_sans_ext(filename),
-               display_loc = path,
-               header = header,
-               footer = footer,
-               save_object = FALSE,
-               object_loc = path,
-               ...,
-               fontsize = fontsize,
-               geometry = geometry,
-               fig_dim = fig_dim,
-               tbl_scale = tbl_scale,
-               tbl_stub_pct = tbl_stub_pct) |>
+  as_docorator(
+    x,
+    display_name = tools::file_path_sans_ext(filename),
+    display_loc = path,
+    header = header,
+    footer = footer,
+    save_object = FALSE,
+    object_loc = path,
+    ...,
+    fontsize = fontsize,
+    geometry = geometry,
+    fig_dim = fig_dim,
+    tbl_scale = tbl_scale,
+    tbl_stub_pct = tbl_stub_pct
+  ) |>
     render_pdf()
-
 }
 
 #' Create docorator object
@@ -137,32 +143,39 @@ docorate <- function(x,
 #'    footer = NULL)
 #' }
 #'
-as_docorator <- function(x,
-                     display_name,
-                     display_loc = NULL,
-                     header = fancyhead(fancyrow(right = doc_pagenum())),
-                     footer = NULL,
-                     save_object = TRUE,
-                     object_loc = display_loc,
-                     ...,
-                     fontsize = 10,
-                     geometry = geom_set(),
-                     fig_dim = c(5,8),
-                     tbl_scale = TRUE,
-                     tbl_stub_pct = 0.3){
-
-  if (inherits(header,"character")) {
-    lifecycle::deprecate_warn("0.1.0",
-                   what = I("Support of character vectors as input to the `header` argument of `as_docorator()`"),
-                   details = "Please provide a `fancyhdr` object instead.",
-                   env = rlang::caller_env())
+as_docorator <- function(
+  x,
+  display_name,
+  display_loc = NULL,
+  header = fancyhead(fancyrow(right = doc_pagenum())),
+  footer = NULL,
+  save_object = TRUE,
+  object_loc = display_loc,
+  ...,
+  fontsize = 10,
+  geometry = geom_set(),
+  fig_dim = c(5, 8),
+  tbl_scale = TRUE,
+  tbl_stub_pct = 0.3
+) {
+  if (inherits(header, "character")) {
+    lifecycle::deprecate_warn(
+      "0.1.0",
+      what = I(
+        "Support of character vectors as input to the `header` argument of `as_docorator()`"
+      ),
+      details = "Please provide a `fancyhdr` object instead.",
+      env = rlang::caller_env()
+    )
   }
 
   # check that name has been passed
   if (missing(display_name)) {
-    cli::cli_abort("The {.arg {rlang::caller_arg(display_name)}} argument must be specified",
-                   call = rlang::caller_env(),
-                   .envir = parent.frame())
+    cli::cli_abort(
+      "The {.arg {rlang::caller_arg(display_name)}} argument must be specified",
+      call = rlang::caller_env(),
+      .envir = parent.frame()
+    )
   }
 
   # check inputs
@@ -170,7 +183,12 @@ as_docorator <- function(x,
   check_fancyhdr(footer)
 
   # notify user about any possible scaling issues
-  x <- apply_scale(x, fontsize = fontsize, tbl_scale = tbl_scale, tbl_stub_pct = tbl_stub_pct)
+  x <- apply_scale(
+    x,
+    fontsize = fontsize,
+    tbl_scale = tbl_scale,
+    tbl_stub_pct = tbl_stub_pct
+  )
 
   docorator_obj <- structure(
     list(
@@ -182,20 +200,18 @@ as_docorator <- function(x,
       fontsize = fontsize,
       geometry = geometry,
       fig_dim = fig_dim,
-      session_info = sessionInfo()
+      session_info = utils::sessionInfo()
     ),
     class = "docorator"
   )
 
   # save docorator object
-  if(save_object){
-    object_filename <- paste0(display_name,".RDS")
+  if (save_object) {
+    object_filename <- paste0(display_name, ".RDS")
     object_loc <- object_loc %||% "."
     object_loc <- file.path(object_loc, object_filename)
     saveRDS(object = docorator_obj, file = object_loc)
   }
 
   docorator_obj
-
 }
-
