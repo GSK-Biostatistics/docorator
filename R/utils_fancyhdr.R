@@ -315,7 +315,7 @@ hf_height.fancyhdr <- function(x, fontsize){
 #' @noRd
 hf_escape <- function(x) {
 
-  latex_text <- gt::escape_latex(x)
+  latex_text <- gt::escape_latex(x, unicode_conversion = TRUE)
 
   # keep the display page number unescaped
   page_num_pattern <- c(
