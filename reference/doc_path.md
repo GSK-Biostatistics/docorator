@@ -25,8 +25,7 @@ character string
 ## Examples
 
 ``` r
-# \donttest{
+if (FALSE) { # \dontrun{
  doc_path(filename = "my_tbl.pdf", path = NULL)
-#> [1] "/home/runner/work/_temp/5b2bf8a8-6148-4ee4-aa65-2bff15129de9"
-# }
+} # }
 ```

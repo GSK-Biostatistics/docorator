@@ -1,5 +1,30 @@
 # Changelog
 
+## docorator 0.5.1
+
+CRAN release: 2026-01-08
+
+Improvements \* Change logic in prep_obj_rtf to include any headers in
+the gt object as subtitles in the rtf
+([\#56](https://github.com/GSK-Biostatistics/docorator/issues/56)) \*
+Apply fontsize to gt title and subtitle
+([\#59](https://github.com/GSK-Biostatistics/docorator/issues/59)) \*
+Set `footnote` argument in
+[`as_docorator()`](https://GSK-Biostatistics.github.io/docorator/reference/as_docorator.md)
+function to `NULL` as the default.
+([\#61](https://github.com/GSK-Biostatistics/docorator/issues/61)) \*
+Include sessionInfo in docorator object and add optional check that gt
+and ggplot2 versions match between as_docorator run and render
+([\#52](https://github.com/GSK-Biostatistics/docorator/issues/52),
+[\#53](https://github.com/GSK-Biostatistics/docorator/issues/53))
+
+Bug fixes \* Fix issue where gt scaling did not support multiple rowname
+columns in the gt
+([\#48](https://github.com/GSK-Biostatistics/docorator/issues/48))
+
+Lifecycle changes \* Minimum `gt` version updated to 1.2.0
+([\#66](https://github.com/GSK-Biostatistics/docorator/issues/66))
+
 ## docorator 0.5.0
 
 CRAN release: 2025-09-30
