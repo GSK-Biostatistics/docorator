@@ -16,7 +16,7 @@
 ## Citation
 
 Source:
-[`DESCRIPTION`](https://github.com/GSK-Biostatistics/docorator/blob/main/DESCRIPTION)
+[`DESCRIPTION`](https://github.com/GSK-Biostatistics/docorator/blob/v0.5.1/DESCRIPTION)
 
 Krouse B, Haughton S, Hong S, Moldovan-Grünfeld D (2026). *docorator:
 Docorate (Decorate + Output) Displays*. R package version 0.5.1,
