@@ -2,6 +2,7 @@
 
 Improvements
 * when escaping footnotes and headers enable unicode conversion (#73)
+* make the apply_to_gt_group function external (#76)
 
 # docorator 0.5.1
 

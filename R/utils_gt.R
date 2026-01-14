@@ -177,8 +177,17 @@ hf_extract <- function(x){
 #' @param func string with function name
 #' @param args named list of function arguments with gt_tbl or gt_group as first arg
 #' @param call caller env
-#' @noRd
-apply_to_grp <- function(func, args, call = rlang::caller_env()){
+#' @export
+#' @examples
+#' gt_tbl <- gt::exibble|> gt::gt()
+#' gt_group <- gt::gt_group(gt_tbl, gt_tbl)
+#'
+#' func <- gt::tab_options
+#' arg_list_group <- list(data = gt_group, page.header.use_tbl_headings = c(TRUE))
+#'
+#' apply_to_gt_group(func,arg_list_group)
+#'
+apply_to_gt_group <- function(func, args, call = rlang::caller_env()){
 
   # check first arg is gt obj
   gt_obj <- args[[1]]

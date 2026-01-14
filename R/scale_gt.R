@@ -62,7 +62,7 @@ apply_scale.gt_group <- function(x, fontsize, tbl_scale, tbl_stub_pct) {
     tbl_stub_pct = tbl_stub_pct
   )
 
-  x <- apply_to_grp("apply_scale", arg_list)
+  x <- apply_to_gt_group("apply_scale", arg_list)
 
   x
 }

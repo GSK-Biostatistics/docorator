@@ -177,7 +177,7 @@ render_rtf <- function(x, display_loc = NULL, remove_unicode_ws = TRUE, use_page
   gt <- prep_obj_rtf(x)
 
   # page headers
-  gt <- apply_to_grp(
+  gt <- apply_to_gt_group(
     gt::tab_options,
     list(
       data = gt,
