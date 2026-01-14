@@ -65,4 +65,4 @@ reference:
   - geom_set
   - scale_gt
 - title: {gt} helpers
-  - spply_to_gt_group
+  - apply_to_gt_group
