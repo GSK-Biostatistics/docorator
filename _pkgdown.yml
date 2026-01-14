@@ -64,6 +64,6 @@ reference:
   contents:
   - geom_set
   - scale_gt
-- title: {gt} helpers
+- title: gt helpers
   contents:
   - apply_to_gt_group
