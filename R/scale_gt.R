@@ -31,6 +31,7 @@ apply_scale.default <- function(x, fontsize, tbl_scale, tbl_stub_pct) {
 #' @export
 #' @keywords internal
 apply_scale.gt_tbl <- function(x, fontsize, tbl_scale, tbl_stub_pct) {
+
   table_width <- "100%"
   if (isFALSE(tbl_scale)) {
     scaling <- check_gt_widths(x)
@@ -56,13 +57,12 @@ apply_scale.gt_tbl <- function(x, fontsize, tbl_scale, tbl_stub_pct) {
 #' @keywords internal
 apply_scale.gt_group <- function(x, fontsize, tbl_scale, tbl_stub_pct) {
   arg_list <- list(
-    x = x,
     fontsize = fontsize,
     tbl_scale = tbl_scale,
     tbl_stub_pct = tbl_stub_pct
   )
 
-  x <- apply_to_gt_group("apply_scale", arg_list)
+  x <- apply_to_gt_group(x, "apply_scale", arg_list)
 
   x
 }

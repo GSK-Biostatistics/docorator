@@ -174,6 +174,7 @@ hf_extract <- function(x){
 }
 
 #' apply a gt function to a gt_group
+#' @param x gt group object
 #' @param func string with function name
 #' @param args named list of function arguments with gt_tbl or gt_group as first arg
 #' @param call caller env
@@ -183,40 +184,39 @@ hf_extract <- function(x){
 #' gt_group <- gt::gt_group(gt_tbl, gt_tbl)
 #'
 #' func <- gt::tab_options
-#' arg_list_group <- list(data = gt_group, page.header.use_tbl_headings = c(TRUE))
+#' arg_list_group <- list(page.header.use_tbl_headings = c(TRUE))
 #'
-#' apply_to_gt_group(func,arg_list_group)
+#' apply_to_gt_group(gt_group, func,arg_list_group)
 #'
-apply_to_gt_group <- function(func, args, call = rlang::caller_env()){
+apply_to_gt_group <- function(x, func, args, call = rlang::caller_env()){
 
-  # check first arg is gt obj
-  gt_obj <- args[[1]]
-
-  if(!(inherits(gt_obj, c("gt_tbl", "gt_group")))){
-    cli::cli_abort("First arg must be a gt_tbl or gt_group object, not {.obj_type_friendly {gt_obj}}")
+  if(!(inherits(x, c("gt_tbl", "gt_group")))){
+    cli::cli_abort("First arg must be a gt_tbl or gt_group object, not {.obj_type_friendly {x}}")
   }
+  # add gt to args list as first element
+  full_args <- append(args, list(x), after = 0)
 
-  if(inherits(gt_obj, "gt_tbl")){
-    gt_obj <- do.call(func, args, envir = call)
-  }else if(inherits(gt_obj, "gt_group")){
-    for (i in seq_len(nrow(gt_obj$gt_tbls))) {
+  if(inherits(x, "gt_tbl")){
+    x <- do.call(func, full_args, envir = call)
+  }else if(inherits(x, "gt_group")){
+    for (i in seq_len(nrow(x$gt_tbls))) {
       # pull out gt_tbl, apply function, reinsert into group
-      gt_tbl <- gt::grp_pull(gt_obj, i)
+      gt_tbl <- gt::grp_pull(x, i)
       # replace data arg with current gt_tbl
-      args[[1]] <- gt_tbl
+      full_args[[1]] <- gt_tbl
       #make it clear which table if an error occurs
       gt_tbl <- tryCatch({
-        do.call(func, args, envir = call)
+        do.call(func, full_args, envir = call)
       },
       error = function(e) {
         cli::cli_abort("Failure in Table {i}", parent = e)
       })
 
-      gt_obj <- gt::grp_replace(gt_obj, gt_tbl, .which = i)
+      x <- gt::grp_replace(x, gt_tbl, .which = i)
     }
   }
 
-  gt_obj
+  x
 }
 
 #' Convert png object to gt from docorator object

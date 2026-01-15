@@ -4,9 +4,11 @@
 \alias{apply_to_gt_group}
 \title{apply a gt function to a gt_group}
 \usage{
-apply_to_gt_group(func, args, call = rlang::caller_env())
+apply_to_gt_group(x, func, args, call = rlang::caller_env())
 }
 \arguments{
+\item{x}{gt group object}
+
 \item{func}{string with function name}
 
 \item{args}{named list of function arguments with gt_tbl or gt_group as first arg}
@@ -21,8 +23,8 @@ gt_tbl <- gt::exibble|> gt::gt()
 gt_group <- gt::gt_group(gt_tbl, gt_tbl)
 
 func <- gt::tab_options
-arg_list_group <- list(data = gt_group, page.header.use_tbl_headings = c(TRUE))
+arg_list_group <- list(page.header.use_tbl_headings = c(TRUE))
 
-apply_to_gt_group(func,arg_list_group)
+apply_to_gt_group(gt_group, func,arg_list_group)
 
 }

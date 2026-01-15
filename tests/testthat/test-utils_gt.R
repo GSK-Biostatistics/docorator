@@ -278,13 +278,12 @@ test_that("apply_to_gt_group works",{
 
   # bad object
   arg_list <- list(data = mtcars)
-  expect_error(apply_to_gt_group(gt::tab_options, arg_list), 'First arg must be a gt_tbl or gt_group object, not a data frame')
+  expect_error(apply_to_gt_group(mtcars, gt::tab_options, arg_list), 'First arg must be a gt_tbl or gt_group object, not a data frame')
 
   # create arguments - cols_align function
   gt_group <- gt::gt_group(gt_tbl, gt_tbl)
   func <- gt::tab_options
-  arg_list_group <- list(data = gt_group, page.header.use_tbl_headings = c(TRUE))
-  arg_list_tbl <- list(data = gt_tbl, page.header.use_tbl_headings = c(TRUE))
+  arg_list <- list(page.header.use_tbl_headings = c(TRUE))
 
   # aligned gt_tbl
   options_tbl <- gt_tbl |>
@@ -293,11 +292,11 @@ test_that("apply_to_gt_group works",{
     )
 
   # aligned group 2 ways: one via apply_to_group one via individual aligned tables
-  options_group <- apply_to_gt_group(func,arg_list_group)
+  options_group <- apply_to_gt_group(gt_group,func,arg_list)
   expect_identical(options_group, gt::gt_group(options_tbl, options_tbl))
 
   # check apply_to_gt_group works for gt_tbl
-  expect_identical(options_tbl, apply_to_gt_group(func, arg_list_tbl))
+  expect_identical(options_tbl, apply_to_gt_group(gt_tbl, func, arg_list))
 })
 
 test_that("Create png from ggplot", {

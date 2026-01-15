@@ -178,9 +178,9 @@ render_rtf <- function(x, display_loc = NULL, remove_unicode_ws = TRUE, use_page
 
   # page headers
   gt <- apply_to_gt_group(
+    gt,
     gt::tab_options,
     list(
-      data = gt,
       page.numbering = FALSE,
       page.header.use_tbl_headings = use_page_header
     )
