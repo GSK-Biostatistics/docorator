@@ -1,4 +1,4 @@
-# docorator development version
+# docorator 0.5.2
 
 Improvements
 * when escaping footnotes and headers enable unicode conversion (#73)
