@@ -100,12 +100,14 @@ mytbl |>
 - [`doc_path()`](https://GSK-Biostatistics.github.io/docorator/reference/doc_path.md)
   : Path of program
 
-## Sizing helpers
+## Sizing and Styling helpers
 
 - [`geom_set()`](https://GSK-Biostatistics.github.io/docorator/reference/geom_set.md)
   : Set document geometry defaults
 - [`scale_gt()`](https://GSK-Biostatistics.github.io/docorator/reference/scale_gt.md)
   : Scale gt table contents for document
+- [`apply_to_gt_group()`](https://GSK-Biostatistics.github.io/docorator/reference/apply_to_gt_group.md)
+  : apply a gt function to a gt_group
 
 # Articles
 
