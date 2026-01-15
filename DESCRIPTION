@@ -28,6 +28,7 @@ Imports:
     withr,
     quarto
 Suggests: 
+    covr,
     rprojroot,
     testthat (>= 3.0.0),
     tfrmt,
