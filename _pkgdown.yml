@@ -60,7 +60,8 @@ reference:
   - doc_datetime
   - doc_pagenum
   - doc_path
-- title: Sizing helpers
+- title: Sizing and Styling helpers
   contents:
   - geom_set
   - scale_gt
+  - apply_to_gt_group
