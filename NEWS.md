@@ -2,6 +2,7 @@
 
 Improvements
 * when escaping footnotes and headers enable unicode conversion (#73)
+* Export the `apply_to_gt_group` function to help apply functions to gt_group objects  (#76)
 
 # docorator 0.5.1
 
