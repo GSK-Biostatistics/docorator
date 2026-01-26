@@ -1,5 +1,16 @@
 # Changelog
 
+## docorator 0.5.2
+
+CRAN release: 2026-01-23
+
+Improvements \* when escaping footnotes and headers enable unicode
+conversion
+([\#73](https://github.com/GSK-Biostatistics/docorator/issues/73)) \*
+Export the `apply_to_gt_group` function to help apply functions to
+gt_group objects
+([\#76](https://github.com/GSK-Biostatistics/docorator/issues/76))
+
 ## docorator 0.5.1
 
 CRAN release: 2026-01-08
