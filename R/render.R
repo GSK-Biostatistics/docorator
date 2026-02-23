@@ -8,6 +8,7 @@
 #' @param escape_latex Boolean indicating if headers and footers of a gt table should be escaped with gt::escape_latex
 #' @param quarto Boolean indicating whether to use Quarto as the rendering engine. Defaults to `FALSE`, which uses Rmarkdown to render. `r lifecycle::badge("experimental")`
 #' @param version_check Boolean indicating whether to print a note if gt or ggplot versions dont match between the original docorator object and the one being used for rendering
+#' @param fancywrap Boolean indicating if footnotes and headers should be split to fit the page. Defaults to `TRUE`
 #'
 #'
 #' @returns This function saves a pdf to a specified location
@@ -34,7 +35,8 @@ render_pdf <- function(x,
                        keep_tex = FALSE,
                        escape_latex = TRUE,
                        quarto = FALSE,
-                       version_check = TRUE){
+                       version_check = TRUE,
+                       fancywrap = TRUE){
 
   if (!inherits(x, "docorator")) {
     cli::cli_abort("The {.arg {rlang::caller_arg(x)}} argument must be class docorator, not {.obj_type_friendly {x}}. See documentation for `as_docorator`.",
@@ -44,6 +46,10 @@ render_pdf <- function(x,
   # check package versions
   if(isTRUE(version_check)){
     check_pkg_version(x)
+  }
+
+  if(isTRUE(fancywrap)){
+    x <- fancywrap(x)
   }
 
   # check transform is a function if not convert to NULL

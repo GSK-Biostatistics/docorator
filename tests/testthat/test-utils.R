@@ -68,3 +68,7 @@ test_that("package version messages are printed correctly",{
 
 })
 
+test_that("footnotes are split when required", {
+
+
+})

@@ -12,7 +12,8 @@ render_pdf(
   keep_tex = FALSE,
   escape_latex = TRUE,
   quarto = FALSE,
-  version_check = TRUE
+  version_check = TRUE,
+  fancywrap = TRUE
 )
 }
 \arguments{
@@ -31,6 +32,8 @@ render_pdf(
 \item{quarto}{Boolean indicating whether to use Quarto as the rendering engine. Defaults to \code{FALSE}, which uses Rmarkdown to render. \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}}
 
 \item{version_check}{Boolean indicating whether to print a note if gt or ggplot versions dont match between the original docorator object and the one being used for rendering}
+
+\item{fancywrap}{Boolean indicating if footnotes and headers should be split to fit the page. Defaults to \code{TRUE}}
 }
 \value{
 This function saves a pdf to a specified location
