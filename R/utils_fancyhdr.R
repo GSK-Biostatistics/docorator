@@ -365,7 +365,6 @@ fancywrap.fancyrow <- function(x, chars){
   # which elements have strings in them
   str_to_wrap <- which(!is.na(x))
   if (length(str_to_wrap) != 1) {
-    browser()
     wrapped_rows <- list(x)
   }
   else{
