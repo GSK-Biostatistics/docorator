@@ -21,6 +21,7 @@ Imports:
     rstudioapi, 
     purrr,
     stringr,
+    stringi,
     tidyr,
     lifecycle,
     png,

@@ -328,21 +328,28 @@ hf_escape <- function(x) {
 }
 
 
-#' Wrap fancy rows
+#' Wrap `fancyrow`s
 #'
-#' @param x object with fancyrows to wrap
+#' @param x object with `fancyrow`s to wrap
 #' @param chars number of characters to wrap on
 #'
-#' @return docorator object with wrapped headers and footers
+#' @return `docorator` object with wrapped headers and footers
 #' @noRd
 #' @keywords internal
+#'
+#' @examples
+#' header <- fancyhead(
+#' fancyrow(left = "Protocol: 12345"),
+#' fancyrow(center = "Table 1.1 Demographic Summary"))
+#'
+#' fancywrap(header, 5)
 #'
 fancywrap <- function(x, chars){
   UseMethod("fancywrap", x)
 }
 
 #' @rdname fancywrap
-#' @keywords internal
+#' @export
 #' @noRd
 fancywrap.default <- function(x, chars){
   if(is.null(x)){
@@ -352,12 +359,13 @@ fancywrap.default <- function(x, chars){
 }
 
 #' @rdname fancywrap
-#' @keywords internal
+#' @export
 #' @noRd
 fancywrap.fancyrow <- function(x, chars){
   # which elements have strings in them
   str_to_wrap <- which(!is.na(x))
   if (length(str_to_wrap) != 1) {
+    browser()
     wrapped_rows <- list(x)
   }
   else{
@@ -366,8 +374,9 @@ fancywrap.fancyrow <- function(x, chars){
     rows <- stringi::stri_wrap(row, chars, whitespace_only = TRUE)
 
     wrapped_rows <- lapply(rows, function(x) {
-      names(x) <- str_to_wrap
-      do.call(fancyrow, list(x))
+      args <- list(x)
+      names(args) <- names(str_to_wrap)
+      do.call(fancyrow, args)
     })
 
   }
@@ -376,18 +385,18 @@ fancywrap.fancyrow <- function(x, chars){
 }
 
 #' @rdname fancywrap
-#' @keywords internal
+#' @export
 #' @noRd
-fancywrap.fancyhead <- function(x, chars){
-  wrapped_headers <- lapply(x, function(row){
-      fancywrap(row, chars)
+fancywrap.fancyhead <- function(x, chars) {
+  wrapped_headers <- lapply(x, function(row) {
+    fancywrap(row, chars)
   })
 
-  do.call(fancyhead, unlist(wrapped_headers, recursive=FALSE))
+  do.call(fancyhead, unlist(wrapped_headers, recursive = FALSE))
 }
 
 #' @rdname fancywrap
-#' @keywords internal
+#' @export
 #' @noRd
 fancywrap.fancyfoot <- function(x, chars){
   wrapped_footers <- lapply(x, function(row){
@@ -399,20 +408,24 @@ fancywrap.fancyfoot <- function(x, chars){
 
 
 #' @rdname fancywrap
-#' @keywords internal
+#' @export
 #' @noRd
 fancywrap.docorator <- function(x, chars){
   # width in pts is roughly 50% font size
   # 1 inch 72 points
-  # courier character
   # 11 inch page without margins, 9 inches
   # per page roughly 630 points
   # character width
   ch_width <- x$fontsize * 0.5
   characters <- floor(630 / ch_width)
 
-  x$header <- fancywrap(x$header, chars = characters)
-  x$footer <- fancywrap(x$footer, chars = characters)
+  if(!is.null(x$header)){
+    x$header <- fancywrap(x$header, chars = characters)
+  }
+
+  if(!is.null(x$footer)){
+    x$footer <- fancywrap(x$footer, chars = characters)
+  }
 
   x
 }
