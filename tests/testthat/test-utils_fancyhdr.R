@@ -126,17 +126,25 @@ test_that("fancyrows are split when required", {
                     fancyrow(center = "array of colors and swift movements across the tranquil, sun-drenched"),
                     fancyrow(center = "landscape. This idyllic scene unfolds gracefully.")))
 
-  # 2 elements - no wrapping just adds to list
+  # 2 elements - no wrapping just adds to list, too long to fit
   fancyrow4 <- fancyrow(left = "The quick brown fox jumps over the lazy dog, showcasing a vibrant array of colors and swift movements across the tranquil, sun-drenched landscape. This idyllic scene unfolds gracefully.",
                         right = "second element which prevents wrapping")
-  fancywrap4 <- fancywrap(fancyrow4, chars = 70)
-  expect_equal(list(fancyrow4), fancywrap4)
+  fancywrap4 <- suppressMessages(fancywrap(fancyrow4, chars = 70))
+  # tells you it's too long and won't fit
+  expect_message(fancywrap(fancyrow4, chars = 70))
+
+
+  # 2 elements - no wrapping just adds to list, everything fits
+  fancyrow5 <- fancyrow(left = "The quick brown fox",
+                        right = "second element which prevents wrapping")
+  fancywrap5 <- fancywrap(fancyrow5, chars = 70)
+  expect_equal(list(fancyrow5), fancywrap5)
 
 
   # empty fancyrow - no change
-  fancyrow5 <- fancyrow()
-  fancywrap5 <- fancywrap(fancyrow5, chars = 10)
-  expect_equal(list(fancyrow5), fancywrap5)
+  fancyrow6 <- fancyrow()
+  fancywrap6 <- fancywrap(fancyrow6, chars = 10)
+  expect_equal(list(fancyrow6), fancywrap6)
 
 
 })
@@ -150,7 +158,7 @@ test_that("splitting of fancyhead and fancyfoot elements are handled correctly",
     fancyrow(center = "The quick brown fox jumps over the lazy dog, showcasing a vibrant array of colors and swift movements across the tranquil, sun-drenched landscape. This idyllic scene unfolds gracefully.",
              right = "second element that will prevent wrapping")
   )
-  fancywrap1 <- fancywrap(fancyhead1, chars = 70)
+  fancywrap1 <- suppressMessages(fancywrap(fancyhead1, chars = 70))
 
   # should still be a fancyheader
   expect_true(inherits(fancywrap1, "fancyhead"))
@@ -173,7 +181,7 @@ test_that("splitting of fancyhead and fancyfoot elements are handled correctly",
     # one element should be wrapped into 2
     fancyrow(left = "The quick brown fox jumps over the lazy dog, showcasing a vibrant array of colors and swift movements across the tranquil, sun-drenched landscape. This idyllic scene unfolds gracefully.")
   )
-  fancywrap2 <- fancywrap(fancyfoot1, chars = 70)
+  fancywrap2 <- suppressMessages(fancywrap(fancyfoot1, chars = 70))
 
   # should still be a fancyheader
   expect_true(inherits(fancywrap2, "fancyfoot"))

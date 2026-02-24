@@ -365,6 +365,12 @@ fancywrap.fancyrow <- function(x, chars){
   # which elements have strings in them
   str_to_wrap <- which(!is.na(x))
   if (length(str_to_wrap) != 1) {
+    # check if the total of the elements are too long for the page
+    total_length <- sum(nchar(x[str_to_wrap]))
+    total_string <- paste(x[str_to_wrap], collapse = ", ")
+    if(total_length>chars){
+      cli::cli_text("Note: Text is only wrapped for `fancyrows` with one element. Your fancyrow text {.arg {total_string}} is over the character limit of {.arg {chars}} and could overrun the page margins.")
+    }
     wrapped_rows <- list(x)
   }
   else{
