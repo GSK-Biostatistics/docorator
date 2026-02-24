@@ -1,3 +1,6 @@
+# docorator (development)
+* Add fancywrap function to wrap fancyrows so they fit on the page in `render_pdf()` but remain unaffected for other rendering (#36)
+
 # docorator 0.5.2
 
 Improvements
