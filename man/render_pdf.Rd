@@ -33,7 +33,7 @@ render_pdf(
 
 \item{version_check}{Boolean indicating whether to print a note if gt or ggplot versions dont match between the original docorator object and the one being used for rendering}
 
-\item{fancywrap}{Boolean indicating if footnotes and headers should be split to fit the page. Defaults to \code{TRUE}. Note that only fancyrows with one \code{left}, \code{right} OR \code{center} element will be wrapped.}
+\item{fancywrap}{Boolean indicating if headers and footers should be split to fit the page. Defaults to \code{TRUE}. Note that only fancyrows with one \code{left}, \code{right} OR \code{center} element will be wrapped.}
 }
 \value{
 This function saves a pdf to a specified location

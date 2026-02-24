@@ -8,7 +8,7 @@
 #' @param escape_latex Boolean indicating if headers and footers of a gt table should be escaped with gt::escape_latex
 #' @param quarto Boolean indicating whether to use Quarto as the rendering engine. Defaults to `FALSE`, which uses Rmarkdown to render. `r lifecycle::badge("experimental")`
 #' @param version_check Boolean indicating whether to print a note if gt or ggplot versions dont match between the original docorator object and the one being used for rendering
-#' @param fancywrap Boolean indicating if footnotes and headers should be split to fit the page. Defaults to `TRUE`. Note that only fancyrows with one `left`, `right` OR `center` element will be wrapped.
+#' @param fancywrap Boolean indicating if headers and footers should be split to fit the page. Defaults to `TRUE`. Note that only fancyrows with one `left`, `right` OR `center` element will be wrapped.
 #'
 #'
 #' @returns This function saves a pdf to a specified location
