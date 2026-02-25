@@ -1,5 +1,5 @@
 # docorator (development)
-* Add fancywrap function to wrap fancyrows so they fit on the page in `render_pdf()` but remain unaffected for other rendering (#36)
+* Add option `fancywrap` to `render_pdf()` to support text wrapping of headers/footers for pdf outputs (#36)
 
 # docorator 0.5.2
 

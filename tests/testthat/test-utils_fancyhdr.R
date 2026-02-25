@@ -132,7 +132,7 @@ test_that("fancyrows are split when required", {
   fancywrap4 <- suppressMessages(fancywrap(fancyrow4, chars = 70))
   # tells you it's too long and won't fit
   expect_message(fancywrap(fancyrow4, chars = 70))
-
+  expect_equal(fancywrap4, list(fancyrow4))
 
   # 2 elements - no wrapping just adds to list, everything fits
   fancyrow5 <- fancyrow(left = "The quick brown fox",
