@@ -13,7 +13,8 @@ render_pdf(
   keep_tex = FALSE,
   escape_latex = TRUE,
   quarto = FALSE,
-  version_check = TRUE
+  version_check = TRUE,
+  fancywrap = TRUE
 )
 ```
 
@@ -56,6 +57,12 @@ render_pdf(
   Boolean indicating whether to print a note if gt or ggplot versions
   dont match between the original docorator object and the one being
   used for rendering
+
+- fancywrap:
+
+  Boolean indicating if headers and footers should be split to fit the
+  page. Defaults to `TRUE`. Note that only fancyrows with one `left`,
+  `right` OR `center` element will be wrapped. **\[experimental\]**
 
 ## Value
 
