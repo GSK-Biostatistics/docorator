@@ -1,3 +1,6 @@
+# docorator (development)
+* Add option `fancywrap` to `render_pdf()` to support text wrapping of headers/footers for pdf outputs (#36)
+
 # docorator 0.5.2
 
 Improvements

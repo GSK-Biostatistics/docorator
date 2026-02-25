@@ -67,4 +67,3 @@ test_that("package version messages are printed correctly",{
   })
 
 })
-
