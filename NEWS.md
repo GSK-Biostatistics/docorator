@@ -1,5 +1,10 @@
 # docorator (development)
+
+Improvements
 * Add option `fancywrap` to `render_pdf()` to support text wrapping of headers/footers for pdf outputs (#36)
+
+Bug Fixes
+* Fix issue where pdf render fails if headers or footers start with brackets, e.g. "[1]" ([#85](https://github.com/GSK-Biostatistics/docorator/issues/85))
 
 # docorator 0.5.2
 
