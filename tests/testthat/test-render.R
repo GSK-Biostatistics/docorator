@@ -556,7 +556,7 @@ test_that("render to pdf works with brackets in headers/footers", {
   docorator <- as_docorator(
     x = my_gt,
     header = fancyhead(fancyrow("[a] first line header"), fancyrow("[b] second line header")),
-    footer = fancyhead(fancyrow("[1] first line footer"), fancyrow("[2] second line footer")),
+    footer = fancyfoot(fancyrow("[1] first line footer"), fancyrow("[2] second line footer")),
     display_name = "my_first_gt",
     display_loc = NULL,
     save_object = FALSE
