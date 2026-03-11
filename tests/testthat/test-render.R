@@ -544,5 +544,46 @@ test_that("render keep tex file", {
 })
 
 
+test_that("render to pdf works with brackets in headers/footers", {
 
+  skip_on_cran()
+  skip_on_ci()
+
+  my_gt <- gt::exibble |>
+    gt::gt(
+    )
+
+  docorator <- as_docorator(
+    x = my_gt,
+    header = fancyhead(fancyrow("[a] first line header"), fancyrow("[b] second line header")),
+    footer = fancyfoot(fancyrow("[1] first line footer"), fancyrow("[2] second line footer")),
+    display_name = "my_first_gt",
+    display_loc = NULL,
+    save_object = FALSE
+  )
+
+  # rmd render pdf
+  withr::with_tempdir({
+    res <- suppressMessages( docorator |> render_pdf()
+    )
+
+    expect_true(file.exists("my_first_gt.pdf"))
+  })
+
+
+  # # quarto render pdf - doesn't work
+  # withr::with_tempdir({
+
+  #   dir.create("tempdir2")
+
+  #   res <- suppressMessages( docorator |> render_pdf(
+  #     quarto = TRUE,
+  #     keep_tex = TRUE,
+  #     display_loc = "tempdir2"
+  #   )
+  #   )
+  #   expect_true(file.exists(file.path("tempdir2", "my_first_gt.pdf")))
+  # })
+
+})
 

@@ -264,7 +264,14 @@ process_rows <- function(x, type = c("head","foot"), escape_latex = TRUE){
       dplyr::across(dplyr::everything(), \(x) as.character(x) |>
                tidyr::replace_na("\\phantom{}"))
     ) |>
-  dplyr::summarise(dplyr::across(dplyr::everything(), \(x) paste(x, collapse = "\\\\")))
+  dplyr::summarise(
+    dplyr::across(
+      dplyr::everything(), \(x) {
+        x_braces <- paste0("{", x, "}")
+        paste(x_braces, collapse = "\\\\")
+      }
+    )
+  )
 
   paste0("\\fancy", type, "[L]{\\begin{tabular}[b]{@{}l@{}}", x_df$left, "\\end{tabular}}",
          "\\fancy", type, "[C]{\\begin{tabular}[b]{@{}c@{}}", x_df$center, "\\end{tabular}}",
