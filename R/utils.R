@@ -152,6 +152,7 @@ png_path <- function(path = NULL){
 #' Taken from https://gist.github.com/MichaelJW/b4a3dd999a47b137d12f42a8f7562b11
 #'
 #' @param x docorator object
+#' @param id id number for the chunk
 #' @param transform optional latex transformation function to apply to a gt latex string
 #'
 #' @return printed code chunk to be included as-is in the render engine
@@ -164,7 +165,7 @@ png_path <- function(path = NULL){
 #'   as_docorator(save_object = FALSE)
 #' create_chunk(docorator, transform = NULL)
 #' }
-create_chunk <- function(x, transform) {
+create_chunk <- function(x, id = 1, transform) {
   deparsed <- paste0(deparse(
     function() {
       prep_obj_tex(x, transform)
@@ -172,7 +173,7 @@ create_chunk <- function(x, transform) {
   ), collapse = '')
 
   new_chunk <- paste0("
-  `","``{r new_chunk", sample.int(10000, 1), ", fig.height=", x$fig_dim[1], ", fig.width=", x$fig_dim[2], ", echo=FALSE, results='asis', output='asis'}",
+  `","``{r new_chunk", id, ", fig.height=", x$fig_dim[1], ", fig.width=", x$fig_dim[2], ", echo=FALSE, results='asis', output='asis'}",
                       "\n(",
                       deparsed
                       , ")()",
