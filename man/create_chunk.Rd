@@ -5,10 +5,12 @@
 \title{Create prep_obj_tex code chunks
 Taken from https://gist.github.com/MichaelJW/b4a3dd999a47b137d12f42a8f7562b11}
 \usage{
-create_chunk(x, transform)
+create_chunk(x, id = 1, transform)
 }
 \arguments{
 \item{x}{docorator object}
+
+\item{id}{id number for the chunk}
 
 \item{transform}{optional latex transformation function to apply to a gt latex string}
 }
