@@ -183,6 +183,42 @@ create_chunk <- function(x, id = 1, transform) {
   cat(knitr::knit(text = knitr::knit_expand(text = new_chunk), quiet = TRUE))
 }
 
+#' Create code chunks
+#'
+#' @param x docorator object
+#' @param transform optional latex transformation function to apply to a gt latex string
+#'
+#' @return printed code chunk(s) to be included as-is in the render engine
+#' @export
+#' @keywords internal
+#' @examples
+#' \dontrun{
+#' docorator <- gt::exibble |>
+#'   gt::gt() |>
+#'   as_docorator(save_object = FALSE)
+#' create_chunks_all(docorator, transform = NULL)
+#' }
+create_chunks_all <- function(x, transform) {
+  if (!inherits(x, "docorator")) {
+    cli::cli_abort("The {.arg {rlang::caller_arg(x)}} argument must be class docorator, not {.obj_type_friendly {x}}. See documentation for `as_docorator`.",
+                   call = rlang::caller_env())
+  }
+
+  display <- x$display
+
+  if(identical(class(display), "list")) {
+    for (i in 1:length(display)) {
+      new_docorator <- x
+      new_docorator$display <- display[[i]]
+      create_chunk(new_docorator,i,transform)
+      if(length(display)>1){
+        cat("\\pagebreak\n")
+      }
+    }
+  } else{
+    create_chunk(x, 1, transform)
+  }
+}
 
 #' Check package versions for docorator object are the same as loaded
 #'

@@ -31,6 +31,22 @@ test_that("markdown chunks are created correctly",{
   chunk_gt_group <- create_chunk(x = docorator, transform = NULL) |> capture.output()
   expect_snapshot(chunk_gt_group)
 
+
+  # list of ggplot2
+  ggplot1 <- ggplot2::ggplot(data = mtcars, ggplot2::aes(y=cyl, x=mpg)) +
+    ggplot2::geom_point() +
+    ggplot2::labs(title = "title1", subtitle = "subtitle1", tag = "tag1", caption = "footnote1")
+  ggplot2 <- ggplot2::ggplot(data = mtcars, ggplot2::aes(x=cyl, y=mpg)) +
+    ggplot2::geom_point() +
+    ggplot2::labs(title = "title2", subtitle = "subtitle2", tag = "tag2", caption = "footnote2")
+
+  list_of_ggplots <- list(ggplot1, ggplot2)
+  docorator <- as_docorator(list_of_ggplots, display_name = "my_plot_list", save_object = FALSE)
+  chunk_list <- create_chunks_all(x = docorator, transform = NULL) |> capture.output()
+  expect_snapshot(chunk_list)
+
+
+
 })
 
 test_that("package version messages are printed correctly",{
