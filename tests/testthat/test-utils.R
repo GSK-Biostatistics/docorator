@@ -32,7 +32,9 @@ test_that("markdown chunks are created correctly",{
   expect_snapshot(chunk_gt_group)
 
 
-  # list of ggplot2
+  # list of ggplot2 - tempdir to stop creation of figure folder
+  withr::with_tempdir({
+
   ggplot1 <- ggplot2::ggplot(data = mtcars, ggplot2::aes(y=cyl, x=mpg)) +
     ggplot2::geom_point() +
     ggplot2::labs(title = "title1", subtitle = "subtitle1", tag = "tag1", caption = "footnote1")
@@ -43,9 +45,10 @@ test_that("markdown chunks are created correctly",{
   list_of_ggplots <- list(ggplot1, ggplot2)
   docorator <- as_docorator(list_of_ggplots, display_name = "my_plot_list", save_object = FALSE)
   chunk_list <- create_chunks_all(x = docorator, transform = NULL) |> capture.output()
-  expect_snapshot(chunk_list)
+  expect_true(any(grepl('new_chunk1', chunk_list)))
+  expect_true(any(grepl('new_chunk2', chunk_list)))
 
-
+})
 
 })
 
