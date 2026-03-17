@@ -35,6 +35,21 @@ The `docorator` object, which is saved by default, can then be output
 using one or both of the following render functions which can be piped
 together: `render_pdf()` and `render_rtf()`
 
+# Installation
+
+The {docorator} package can be installed from CRAN with:
+
+``` r
+install.packages("docorator")
+```
+
+The development version of {docorator} can be installed with:
+
+``` r
+devtools::install_github("GSK-Biostatistics/docorator")
+```
+
+
 # Use
 
 ``` r

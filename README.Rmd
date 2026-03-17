@@ -62,9 +62,6 @@ devtools::install_github("GSK-Biostatistics/docorator")
 ```{r}
 #| eval: false
 
-# install from GitHub
-devtools::install_github("GSK-Biostatistics/docorator")
-
 # Load package
 library(docorator) 
 
