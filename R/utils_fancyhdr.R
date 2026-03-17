@@ -152,7 +152,7 @@ check_fancyhdr <- function(x, chr_ok = FALSE){
   }
 
   if (!inherits(x, class_ok)) {
-    cli::cli_abort("The {.arg {caller_arg(x)}} argument must be class {.cls {class_ok}} or empty, not {.obj_type_friendly {x}}.",
+    cli::cli_abort("The {.arg {rlang::caller_arg(x)}} argument must be class {.cls {class_ok}} or empty, not {.obj_type_friendly {x}}.",
               call = rlang::caller_env())
   }
   invisible(x)

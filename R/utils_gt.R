@@ -28,14 +28,14 @@
 hf_to_gt <- function(x) {
 
   if (!inherits(x, "docorator")) {
-    cli::cli_abort("The {.arg {caller_arg(x)}} argument must be class docorator, not {.obj_type_friendly {x}}. See documentation for `as_docorator`.",
+    cli::cli_abort("The {.arg {rlang::caller_arg(x)}} argument must be class docorator, not {.obj_type_friendly {x}}. See documentation for `as_docorator`.",
               call = rlang::caller_env())
   }
 
   gt <- x$display
 
   if (!rlang::inherits_any(gt, c("gt_tbl", "gt_group"))) {
-    cli::cli_abort("The {.arg {caller_arg(x)}} argument must be class gt_tbl or gt_group, not {.obj_type_friendly {x}}.",
+    cli::cli_abort("The {.arg {rlang::caller_arg(x)}} argument must be class gt_tbl or gt_group, not {.obj_type_friendly {x}}.",
               call = rlang::caller_env())
   }
 

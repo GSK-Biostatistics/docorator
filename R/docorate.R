@@ -62,12 +62,11 @@ docorate <- function(
   tbl_scale = TRUE,
   tbl_stub_pct = 0.3
 ) {
-  lifecycle::deprecate_warn(
+  lifecycle::deprecate_stop(
     when = "0.3.0",
     what = "docorator::docorate()",
     details = "Please use `as_docorator()` and the required render function, i.e `render_pdf()`",
-    env = rlang::caller_env(),
-    always = TRUE
+    env = rlang::caller_env()
   )
 
   # check that name has been passed
@@ -159,7 +158,7 @@ as_docorator <- function(
   tbl_stub_pct = 0.3
 ) {
   if (inherits(header, "character")) {
-    lifecycle::deprecate_warn(
+    lifecycle::deprecate_stop(
       "0.1.0",
       what = I(
         "Support of character vectors as input to the `header` argument of `as_docorator()`"
