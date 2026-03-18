@@ -29,12 +29,23 @@ together:
 and
 [`render_rtf()`](https://GSK-Biostatistics.github.io/docorator/reference/render_rtf.md)
 
+# Installation
+
+The {docorator} package can be installed from CRAN with:
+
+``` r
+install.packages("docorator")
+```
+
+The development version of {docorator} can be installed with:
+
+``` r
+devtools::install_github("GSK-Biostatistics/docorator")
+```
+
 # Use
 
 ``` r
-# install from GitHub
-devtools::install_github("GSK-Biostatistics/docorator")
-
 # Load package
 library(docorator) 
 
