@@ -39,7 +39,7 @@ together: `render_pdf()` and `render_rtf()`
 
 The {docorator} package can be installed from CRAN with:
 
-``` ruse
+``` r
 install.packages("docorator")
 ```
 
