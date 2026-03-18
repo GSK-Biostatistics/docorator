@@ -47,7 +47,7 @@ or both of the following render functions which can be piped together: `render_p
 
 The {docorator} package can be installed from CRAN with:
 
-```{ruse eval=FALSE}
+```{r eval=FALSE}
 install.packages("docorator")
 ```
 
