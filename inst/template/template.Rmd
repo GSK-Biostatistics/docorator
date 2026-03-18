@@ -36,19 +36,7 @@ fig_crop: FALSE
 
 
 ```{r echo = FALSE, results = "asis"}
-display <- params$x$display
-if(identical(class(display), "list")) {
-  for (i in 1:length(display)) {
-    new_docorator <- params$x
-    new_docorator$display <- display[[i]]
-    create_chunk(new_docorator,params$transform)
-    if(length(display)>1){
-      cat("\\pagebreak\n")
-    }
-  }
-} else{
-  create_chunk(params$x, params$transform)
-}
+create_chunks_all(params$x, params$transform)
 ```
 
 

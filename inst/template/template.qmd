@@ -58,16 +58,7 @@ include-in-header:
 ```{r echo = FALSE, results = "asis"}
 if (inherits(dd$display, c("gt_tbl","gt_group"))){
   prep_obj_tex(dd, params$transform)
-} else if(identical(class(dd$display), "list")) {
-  for (i in 1:length(dd$display)) {
-    new_docorator <- dd
-    new_docorator$display <- dd$display[[i]]
-    create_chunk(new_docorator, params$transform)
-    if(length(dd$display)>1){
-      cat("\\pagebreak\n")
-    }
-  }
 } else {
-  create_chunk(dd, params$transform)
+  create_chunks_all(dd, params$transform)
 }
 ```

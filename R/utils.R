@@ -152,11 +152,11 @@ png_path <- function(path = NULL){
 #' Taken from https://gist.github.com/MichaelJW/b4a3dd999a47b137d12f42a8f7562b11
 #'
 #' @param x docorator object
+#' @param id id number for the chunk
 #' @param transform optional latex transformation function to apply to a gt latex string
 #'
 #' @return printed code chunk to be included as-is in the render engine
-#' @export
-#' @keywords internal
+#' @noRd
 #' @examples
 #' \dontrun{
 #' docorator <- gt::exibble |>
@@ -164,7 +164,7 @@ png_path <- function(path = NULL){
 #'   as_docorator(save_object = FALSE)
 #' create_chunk(docorator, transform = NULL)
 #' }
-create_chunk <- function(x, transform) {
+create_chunk <- function(x, id = 1, transform) {
   deparsed <- paste0(deparse(
     function() {
       prep_obj_tex(x, transform)
@@ -172,7 +172,7 @@ create_chunk <- function(x, transform) {
   ), collapse = '')
 
   new_chunk <- paste0("
-  `","``{r new_chunk", sample.int(10000, 1), ", fig.height=", x$fig_dim[1], ", fig.width=", x$fig_dim[2], ", echo=FALSE, results='asis', output='asis'}",
+  `","``{r new_chunk", id, ", fig.height=", x$fig_dim[1], ", fig.width=", x$fig_dim[2], ", echo=FALSE, results='asis', output='asis'}",
                       "\n(",
                       deparsed
                       , ")()",
@@ -182,6 +182,42 @@ create_chunk <- function(x, transform) {
   cat(knitr::knit(text = knitr::knit_expand(text = new_chunk), quiet = TRUE))
 }
 
+#' Create code chunks
+#'
+#' @param x docorator object
+#' @param transform optional latex transformation function to apply to a gt latex string
+#'
+#' @return printed code chunk(s) to be included as-is in the render engine
+#' @export
+#' @keywords internal
+#' @examples
+#' \dontrun{
+#' docorator <- gt::exibble |>
+#'   gt::gt() |>
+#'   as_docorator(save_object = FALSE)
+#' create_chunks_all(docorator, transform = NULL)
+#' }
+create_chunks_all <- function(x, transform) {
+  if (!inherits(x, "docorator")) {
+    cli::cli_abort("The {.arg {rlang::caller_arg(x)}} argument must be class docorator, not {.obj_type_friendly {x}}. See documentation for `as_docorator`.",
+                   call = rlang::caller_env())
+  }
+
+  display <- x$display
+
+  if(identical(class(display), "list")) {
+    for (i in 1:length(display)) {
+      new_docorator <- x
+      new_docorator$display <- display[[i]]
+      create_chunk(new_docorator,i,transform)
+      if(length(display)>1){
+        cat("\\pagebreak\n")
+      }
+    }
+  } else{
+    create_chunk(x, 1, transform)
+  }
+}
 
 #' Check package versions for docorator object are the same as loaded
 #'
