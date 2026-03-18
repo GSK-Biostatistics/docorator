@@ -29,4 +29,3 @@ docorator <- gt::exibble |>
 create_chunk(docorator, transform = NULL)
 }
 }
-\keyword{internal}

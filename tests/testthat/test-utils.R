@@ -10,7 +10,7 @@ test_that("markdown chunks are created correctly",{
 
   png_obj <- png_path(path = system.file("extdata/test_image.png", package = "docorator"))
   docorator <- as_docorator(png_obj, display_name = "myfig", save_object = FALSE)
-  chunk_png <- create_chunk(x = docorator, transform = NULL) |> capture.output()
+  chunk_png <- create_chunks_all(x = docorator, transform = NULL) |> capture.output()
   # avoiding snapshot because of temp directory + mardown header
   expect_true(any(grepl('<div class=\"figure\">', chunk_png)))
 
@@ -23,7 +23,7 @@ test_that("markdown chunks are created correctly",{
                 tbl_scale = TRUE,
                 tbl_stub_pct = 0.5)
   docorator <- as_docorator(my_gt, display_name = "mytbl", save_object = FALSE)
-  chunk_gt <- create_chunk(x = docorator, transform = NULL) |> capture.output()
+  chunk_gt <- create_chunks_all(x = docorator, transform = NULL) |> capture.output()
   expect_snapshot(chunk_gt)
 
   my_gt_group <- gt::gt_group(my_gt,my_gt)

@@ -156,8 +156,6 @@ png_path <- function(path = NULL){
 #' @param transform optional latex transformation function to apply to a gt latex string
 #'
 #' @return printed code chunk to be included as-is in the render engine
-#' @export
-#' @keywords internal
 #' @examples
 #' \dontrun{
 #' docorator <- gt::exibble |>
