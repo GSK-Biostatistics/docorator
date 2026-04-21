@@ -45,7 +45,7 @@ test_that("deprecated - docorate works", {
 
   withr::with_tempdir({
 
-    expect_warning(suppressMessages(
+    expect_error(
       docorate(
         x = my_gt,
         header = fancyhead(
@@ -55,9 +55,9 @@ test_that("deprecated - docorate works", {
         footer = NULL,
         filename = "my_first_gt.pdf",
         path = NULL
-      )))
+      ))
 
-    expect_true(file.exists("my_first_gt.pdf"))
+    expect_false(file.exists("my_first_gt.pdf"))
 
   })
 })
@@ -87,24 +87,6 @@ test_that("Create docorator object without display_name errors",{
     "The `display_name` argument must be specified"
   )
 
-
-  withr::with_tempdir({
-
-    expect_error(
-      suppressWarnings(
-        docorate(
-        x = my_gt,
-        header = fancyhead(
-          fancyrow("first line header"),
-          fancyrow("second line header")
-        ),
-        footer = NULL
-      )
-      ),
-      "The `filename` argument must be specified"
-    )
-
-  })
 
 
 })
