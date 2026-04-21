@@ -1,5 +1,22 @@
 # Changelog
 
+## docorator 0.6.0
+
+CRAN release: 2026-03-20
+
+Improvements \* Add option `fancywrap` to
+[`render_pdf()`](https://GSK-Biostatistics.github.io/docorator/reference/render_pdf.md)
+to support text wrapping of headers/footers for pdf outputs
+([\#36](https://github.com/GSK-Biostatistics/docorator/issues/36)) \*
+Upgrade deprecation of `docorator` and character headers to
+`deprecate_stop()`
+
+Bug Fixes \* Fix issue where pdf render fails if headers or footers
+start with brackets, e.g. “\[1\]”
+([\#85](https://github.com/GSK-Biostatistics/docorator/issues/85)) \*
+Fix issue where chunk ids could be duplicated
+([\#88](https://github.com/GSK-Biostatistics/docorator/issues/88))
+
 ## docorator 0.5.2
 
 CRAN release: 2026-01-23

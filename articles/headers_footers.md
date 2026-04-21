@@ -117,9 +117,14 @@ gt::gtcars |>
 {docorator} will automatically adjust the allowed height for headers and
 footers according to the lines of text required. If many lines of
 headers and/or footers are specified, this cuts down on the available
-height for the table/figure. Additionally, {docorator} does not
-auto-wrap long lines of text, so it is recommended you keep your left,
-right, and center text as brief as possible.
+height for the table/figure.
+
+*NEW as of v0.6.0* {docorator} can auto-wrap long lines of text in PDF
+documents via the `fancywrap` argument of
+[`render_pdf()`](https://GSK-Biostatistics.github.io/docorator/reference/render_pdf.md).
+See
+[`?render_pdf`](https://GSK-Biostatistics.github.io/docorator/reference/render_pdf.md)
+for details.
 
 Please file an
 [issue](https://github.com/GSK-Biostatistics/docorator/issues) if you

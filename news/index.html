@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">docorator</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.2.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.6.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -37,9 +37,14 @@
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Changelog</h1>
-      <small>Source: <a href="https://github.com/GSK-Biostatistics/docorator/blob/main/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
+      <small>Source: <a href="https://github.com/GSK-Biostatistics/docorator/blob/v0.6.0/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.6.0" id="docorator-060">docorator 0.6.0<a class="anchor" aria-label="anchor" href="#docorator-060"></a></h2><p class="text-muted">CRAN release: 2026-03-20</p>
+<p>Improvements * Add option <code>fancywrap</code> to <code><a href="../reference/render_pdf.html">render_pdf()</a></code> to support text wrapping of headers/footers for pdf outputs (<a href="https://github.com/GSK-Biostatistics/docorator/issues/36" class="external-link">#36</a>) * Upgrade deprecation of <code>docorator</code> and character headers to <code>deprecate_stop()</code></p>
+<p>Bug Fixes * Fix issue where pdf render fails if headers or footers start with brackets, e.g. “[1]” (<a href="https://github.com/GSK-Biostatistics/docorator/issues/85" class="external-link">#85</a>) * Fix issue where chunk ids could be duplicated (<a href="https://github.com/GSK-Biostatistics/docorator/issues/88" class="external-link">#88</a>)</p>
+</div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.5.2" id="docorator-052">docorator 0.5.2<a class="anchor" aria-label="anchor" href="#docorator-052"></a></h2><p class="text-muted">CRAN release: 2026-01-23</p>
 <p>Improvements * when escaping footnotes and headers enable unicode conversion (<a href="https://github.com/GSK-Biostatistics/docorator/issues/73" class="external-link">#73</a>) * Export the <code>apply_to_gt_group</code> function to help apply functions to gt_group objects (<a href="https://github.com/GSK-Biostatistics/docorator/issues/76" class="external-link">#76</a>)</p>

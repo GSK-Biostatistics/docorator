@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">docorator</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.2.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.6.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -63,7 +63,7 @@
       <h1>Headers and Footers</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/GSK-Biostatistics/docorator/blob/main/vignettes/headers_footers.Rmd" class="external-link"><code>vignettes/headers_footers.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/GSK-Biostatistics/docorator/blob/v0.6.0/vignettes/headers_footers.Rmd" class="external-link"><code>vignettes/headers_footers.Rmd</code></a></small>
       <div class="d-none name"><code>headers_footers.Rmd</code></div>
     </div>
 
@@ -186,9 +186,10 @@ numbering and time stamps. These are prefixed with
 <p>{docorator} will automatically adjust the allowed height for headers
 and footers according to the lines of text required. If many lines of
 headers and/or footers are specified, this cuts down on the available
-height for the table/figure. Additionally, {docorator} does not
-auto-wrap long lines of text, so it is recommended you keep your left,
-right, and center text as brief as possible.</p>
+height for the table/figure.</p>
+<p><em>NEW as of v0.6.0</em> {docorator} can auto-wrap long lines of
+text in PDF documents via the <code>fancywrap</code> argument of
+<code><a href="../reference/render_pdf.html">render_pdf()</a></code>. See <code><a href="../reference/render_pdf.html">?render_pdf</a></code> for details.</p>
 <p>Please file an <a href="https://github.com/GSK-Biostatistics/docorator/issues" class="external-link">issue</a>
 if you discover unexpected results or problems related to headers and
 footers.</p>
