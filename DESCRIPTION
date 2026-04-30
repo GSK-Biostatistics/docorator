@@ -19,7 +19,6 @@ Imports:
     cli,
     dplyr,
     htmltools,
-    jsonlite,
     rstudioapi, 
     purrr,
     stringr,
@@ -30,7 +29,8 @@ Imports:
     knitr,
     withr,
     quarto,
-    chromote
+    chromote,
+    base64enc
 Suggests: 
     rprojroot,
     testthat (>= 3.0.0),

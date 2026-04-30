@@ -368,14 +368,7 @@ render_html <- function(x, display_loc = NULL) {
   if (!inherits(x, "docorator")) {
     cli::cli_abort("The {.arg {rlang::caller_arg(x)}} argument must be class docorator, not {.obj_type_friendly {x}}. See documentation for `as_docorator`.",
               call = rlang::caller_env())
-  }
-
-  if (!inherits(x$display, "gt_tbl")) {
-    cli::cli_abort(
-      "The {.arg {rlang::caller_arg(x)}} argument must be a {.cls gt_tbl} object, not {.obj_type_friendly {x}}.",
-      call = rlang::caller_env()
-    )
-  }
+  }  
 
   # if no path is given, use docorator path
   display_loc <- x$display_loc %||% "."
@@ -387,25 +380,19 @@ render_html <- function(x, display_loc = NULL) {
   css <- system.file("www", "styles.css", package = "docorator") |>
     readLines(warn = FALSE) |>
     paste(collapse = "\n")
-
-  # convert gt to html
-  # TODO generalize this to plots, lists of tbls/plots
-  gt_html <- as.character(gt::as_raw_html(x$display))
-
-  # Build outer layout table: thead = page header, tbody = gt content, tfoot = page footer
-  thead_html <- if (!is.null(x$header)) {
-    paste0('<thead><tr><td>', hf_process(x$header, engine = "html"), '</td></tr></thead>')
-  } else ""
-
-  tfoot_html <- if (!is.null(x$footer)) {
-    paste0('<tfoot><tr><td>', hf_process(x$footer, engine = "html"), '</td></tr></tfoot>')
-  } else ""
-
+ 
+  # build html for contents - header, body, footer
   layout_html <- paste0(
     '<table class="page-layout">',
-    thead_html,
-    '<tbody><tr><td>', gt_html, '</td></tr></tbody>',
-    tfoot_html,
+    '<thead><tr><td>',
+    hf_process(x$header, engine = "html"),
+    '</td></tr></thead>',
+    '<tbody><tr><td>', 
+    prep_obj_html(x), 
+    '</td></tr></tbody>',
+    '<tfoot><tr><td>',
+    hf_process(x$footer, engine = "html"),
+    '</td></tr></tfoot>',
     '</table>'
   )
 
@@ -420,7 +407,7 @@ render_html <- function(x, display_loc = NULL) {
   cli::cli_alert_success("Document created at: {.path {normalizePath(filename, winslash = '/')}}")
 
   invisible(x)
-}
+  }
 
 
 #' Render to PDF via HTML
@@ -467,13 +454,6 @@ render_pdf_html <- function(x,
   if (!inherits(x, "docorator")) {
     cli::cli_abort("The {.arg {rlang::caller_arg(x)}} argument must be class docorator, not {.obj_type_friendly {x}}. See documentation for `as_docorator`.",
               call = rlang::caller_env())
-  }
-
-  if (!inherits(x$display, "gt_tbl")) {
-    cli::cli_abort(
-      "The {.arg {rlang::caller_arg(x)}} argument must be a {.cls gt_tbl} object, not {.obj_type_friendly {x}}.",
-      call = rlang::caller_env()
-    )
   }
 
   # if no path is given, use docorator path
@@ -523,8 +503,7 @@ render_pdf_html <- function(x,
     wait_ = TRUE
   )
 
-  raw_pdf <- jsonlite::base64_dec(result$data)
-  writeBin(raw_pdf, filename_pdf)
+  base64enc::base64decode(result$data, filename_pdf)
 
   cli::cli_alert_success("Document created at: {.path {normalizePath(filename_pdf, winslash = '/')}}")
 
