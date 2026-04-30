@@ -1,0 +1,181 @@
+/* css for docorator html-based outputs */
+
+/* -------------------------------- 
+  Page-level resets
+----------------------------------*/
+
+/* reset padding/margins so specified heights/widths are as-is */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+/* -------------------------------- 
+  Contents-level container
+    - thead = header
+    - tbody = main content (tbl/fig)
+    - tfoot = footer
+----------------------------------*/
+
+/* full-width table (we may not want this) */
+.page-layout {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+/* header and footer cells */
+.page-layout > thead > tr > td,
+.page-layout > tfoot > tr > td {
+  padding: 0;
+  font-size: 10pt;
+  font-family: 'Courier', monospace;
+}
+
+/* Body cell (contains the gt table) */
+.page-layout > tbody > tr > td {
+  vertical-align: top;
+  padding: 0;
+}
+
+
+/* -------------------------------- 
+  header/footer content
+----------------------------------*/
+
+/* styles within a row */
+.hf-row {
+  display: flex;              /* lay children out horizontally */
+  justify-content: space-between;  /* push left/right to edges, center in middle */
+  line-height: 1.4;           /* comfortable text spacing between rows */
+}
+
+/* left, center, right alignment */
+
+.hf-left {
+  text-align: left;
+}
+
+.hf-center {
+  text-align: center;
+  flex: 1;
+}
+
+.hf-right {
+  text-align: right;
+}
+
+
+/* -------------------------------- 
+  gt-specific styling
+----------------------------------*/
+
+/* Reset gt widget wrapper padding/overflow */
+.page-layout > tbody > tr > td > div {
+  padding: 0 !important;
+  overflow: visible !important;
+}
+
+/* Force gt table to full width */
+.page-layout > tbody > tr > td table {
+  width: 100% !important;
+}
+
+/* Keep rows together across page breaks */
+.page-layout > tbody > tr > td table tr {
+  break-inside: avoid;
+}
+
+
+/* -------------------------------- 
+  sticky header and footer for gt
+----------------------------------*/
+
+.page-layout > tbody > tr > td table > thead > tr > th {
+  position: sticky;
+}
+
+.page-layout > tbody > tr > td table > tfoot > tr > td {
+  position: sticky;
+  bottom: -1px; /* prevent gap between sticky border and edge */
+  z-index: 1; /* bring sticky border to front */
+  box-shadow: inset 0 2px 0 #D3D3D3, inset 0 -2px 0 #D3D3D3; /* create visual border*/
+}
+
+/* -------------------------------- 
+  PDF-specific things 
+----------------------------------*/
+
+@page {
+  size: 11in 8.5in;
+  margin: 1.25in 1in 1.25in 1in;
+}
+
+/* -------------------------------- 
+  HTML-specific things
+   Simulates a landscape page in the browser with header/footer pinned
+   and a scrollable body area.
+----------------------------------*/
+
+@media screen {
+
+  /* simulate the page in browser */
+  body {
+    position: relative;
+    width: 11in;
+    height: 8.5in;
+    margin: 0.5in auto;
+    padding: 1.25in 1in 1.25in 1in;
+    background: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.15); 
+    overflow: hidden;
+  }
+
+  /* convert contents container to flex box */
+  .page-layout {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  /* header/footer adaptable sizing to content */
+  .page-layout > thead,
+  .page-layout > tfoot {
+    display: block;
+    flex-shrink: 
+  }
+
+  /* body should fill space between header and footer */
+  .page-layout > tbody {
+    display: block;
+    flex: 1;  /* fill available space between headers/footers
+    min-height: 0; /* allow to have a smaller height for scroll */
+    overflow: hidden;
+  }
+
+  /* Override table-row display so height and block layout work correctly
+     at the row level inside thead, tfoot, and tbody. */
+  .page-layout > thead > tr,
+  .page-layout > tfoot > tr,
+  .page-layout > thead > tr > td,
+  .page-layout > tfoot > tr > td {
+    display: block;
+  }
+
+  /* make sure table fills space */
+  .page-layout > tbody > tr {
+    display: block;
+    height: 100%;
+  }
+ 
+  /* make scrollable container for the display itself */
+  .page-layout > tbody > tr > td {
+    display: block;
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: auto;
+  }
+}

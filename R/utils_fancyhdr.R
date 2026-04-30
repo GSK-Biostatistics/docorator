@@ -188,6 +188,7 @@ as_tibble_fancyrow <- function(x, ...){
 #'
 #' @param x header or footer
 #' @param escape_latex Boolean to escape latex in header/footer
+#' @param engine render engine to dictate how the headers and footers should be constructed 
 #'
 #' @return character string containing headers and footers latex code
 #' @export
@@ -200,14 +201,16 @@ as_tibble_fancyrow <- function(x, ...){
 #'
 #' hf_process(header)
 #'
-hf_process <- function(x, escape_latex = TRUE){
+hf_process <- function(x, escape_latex = TRUE, engine = "pdf"){
+  
+  engine <- match.arg(engine, choices = c("pdf", "html"))
   UseMethod("hf_process", x)
 }
 
 #' @export
 #' @rdname hf_process
 #' @keywords internal
-hf_process.default <- function(x, escape_latex = TRUE){
+hf_process.default <- function(x, escape_latex = TRUE, engine = "pdf"){
   if(is.null(x)){
     return(NULL)
   }
@@ -217,7 +220,7 @@ hf_process.default <- function(x, escape_latex = TRUE){
 #' @export
 #' @rdname hf_process
 #' @keywords internal
-hf_process.character <- function(x, escape_latex = TRUE){
+hf_process.character <- function(x, escape_latex = TRUE, engine = "pdf"){
   cli::cli_alert_info("Coercing `header` from {.cls {'character'}} to {.cls {'fancyhead'}} with {length(x)} row{?s}")
   lapply(x, fancyrow) |>
     process_rows(type = "head", escape_latex = escape_latex)
@@ -226,16 +229,38 @@ hf_process.character <- function(x, escape_latex = TRUE){
 #' @export
 #' @rdname hf_process
 #' @keywords internal
-hf_process.fancyhead <- function(x, escape_latex = TRUE){
-  process_rows(x, type = "head", escape_latex = escape_latex)
+hf_process.fancyhead <- function(x, escape_latex = TRUE, engine = "pdf"){
+  process_rows(x, type = "head", escape_latex = escape_latex, engine = engine)
 }
 
 #' @export
 #' @rdname hf_process
 #' @keywords internal
-hf_process.fancyfoot <- function(x, escape_latex = TRUE){
-  process_rows(x, type = "foot", escape_latex = escape_latex)
+hf_process.fancyfoot <- function(x, escape_latex = TRUE, engine = "pdf"){
+  process_rows(x, type = "foot", escape_latex = escape_latex, engine = engine)
 }
+
+#' Process list of `fancyrow` objects into character string containing latex code
+#'
+#' @param x list of `fancyrow` objects
+#' @param type Text positioning in the header (`head`) or footer (`foot`) of
+#'   document. Defaults to `head`.
+#' @inheritParams hf_process
+#'
+#' @return Character string
+#' @noRd
+process_rows <- function(x, type = c("head","foot"), escape_latex = TRUE, engine = "pdf"){
+
+  type <- match.arg(type)
+
+  x_df <- purrr::map_dfr(x, as_tibble_fancyrow)
+
+  switch(engine,
+    pdf = process_rows_pdf(x_df, type = type, escape_latex = escape_latex),
+    html = process_rows_html(x_df, type = type) 
+  )
+}
+
 
 
 #' Process list of `fancyrow` objects into character string containing latex code
@@ -243,14 +268,11 @@ hf_process.fancyfoot <- function(x, escape_latex = TRUE){
 #' @param x list of `fancyrow` objects
 #' @param type Text positioning in the header (`head`) or footer (`foot`) of
 #'   document. Defaults to `head`.
+#' @inheritParams hf_process
 #'
 #' @return Character string
 #' @noRd
-process_rows <- function(x, type = c("head","foot"), escape_latex = TRUE){
-
-  type <- match.arg(type)
-
-  x_df <- purrr::map_dfr(x, as_tibble_fancyrow)
+process_rows_pdf <- function(x, type = c("head","foot"), escape_latex = TRUE){
 
   if(isTRUE(escape_latex)){
     x_df <- x_df |>
@@ -276,6 +298,40 @@ process_rows <- function(x, type = c("head","foot"), escape_latex = TRUE){
   paste0("\\fancy", type, "[L]{\\begin{tabular}[b]{@{}l@{}}", x_df$left, "\\end{tabular}}",
          "\\fancy", type, "[C]{\\begin{tabular}[b]{@{}c@{}}", x_df$center, "\\end{tabular}}",
          "\\fancy", type, "[R]{\\begin{tabular}[b]{@{}r@{}}", x_df$right, "\\end{tabular}}")
+}
+
+#' Process list of `fancyrow` objects into character string containing latex code
+#'
+#' @param x list of `fancyrow` objects
+#' @param type Text positioning in the header (`head`) or footer (`foot`) of
+#'   document. Defaults to `head`.
+#'
+#' @return Character string
+#' @noRd
+process_rows_html <- function(x, type = c("head", "foot")) {
+  x <- x |>
+    dplyr::mutate(
+      dplyr::across(dplyr::everything(), \(x) {
+        as.character(x) |>
+          tidyr::replace_na("")
+      })
+    )
+
+  row_html <- x |>
+    dplyr::mutate(
+      left = paste0('<span class="hf-left">', left, '</span>'),
+      center = paste0('<span class="hf-center">', center, '</span>'),
+      right = paste0('<span class="hf-right">', right, '</span>')
+    ) |>
+    tidyr::unite(
+      "row",
+      everything(),
+      sep = ""
+    ) |>
+    dplyr::pull("row")
+
+  paste0('<div class="hf-row">', row_html, "</div>") |>
+    paste(collapse = "\n")
 }
 
 #' Calculate desired header or footer height for the document

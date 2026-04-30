@@ -18,6 +18,8 @@ Imports:
     rlang,
     cli,
     dplyr,
+    htmltools,
+    jsonlite,
     rstudioapi, 
     purrr,
     stringr,
@@ -27,7 +29,8 @@ Imports:
     png,
     knitr,
     withr,
-    quarto
+    quarto,
+    chromote
 Suggests: 
     rprojroot,
     testthat (>= 3.0.0),
