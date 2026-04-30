@@ -464,10 +464,6 @@ render_pdf_html <- function(x,
   filename_html <- file.path(display_loc, paste0(x$display_name,".html"))
   filename_pdf <- file.path(display_loc, paste0(x$display_name,"pdf"))
 
-  # set filename
-  filename_html <- paste0(x$display_name,".html")
-  filename_pdf <- paste0(x$display_name,".pdf")
-
   # determine intermediate html path
   if(isFALSE(keep_html)) {
     on.exit(unlink(filename_html), add = TRUE)
