@@ -499,7 +499,7 @@ render_pdf_html <- function(x,
     wait_ = TRUE
   )
 
-  base64enc::base64decode(result$data, filename_pdf)
+  base64enc::base64decode(what = result$data, file = filename_pdf)
 
   cli::cli_alert_success("Document created at: {.path {normalizePath(filename_pdf, winslash = '/')}}")
 
