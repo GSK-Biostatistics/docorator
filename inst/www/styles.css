@@ -12,6 +12,12 @@
 body {
   margin: 0;
   padding: 0;
+  font-family: Courier, 'Courier New', monospace;
+}
+
+/* Force consistent font across all elements, including gt inline styles */
+body * {
+  font-family: Courier, 'Courier New', monospace !important;
 }
 
 /* -------------------------------- 
@@ -32,7 +38,7 @@ body {
 .page-layout > tfoot > tr > td {
   padding: 0;
   font-size: 10pt;
-  font-family: 'Courier', monospace;
+  font-family: 'Courier New', Courier, monospace;
 }
 
 /* Body cell (contains the gt table) */
