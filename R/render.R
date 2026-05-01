@@ -491,7 +491,8 @@ render_pdf_html <- function(x,
     preferCSSPageSize = TRUE,
     # TODO generalize font size and optimal positioning of page numbers
     headerTemplate = paste0(
-      '<div style="width:100%; font-size:10pt; font-family:Courier, \'Courier New\', monospace;',
+      '<div style="width:100%; font-size:10pt; font-weight:normal; font-family: Courier, \'Courier New\', monospace;',
+      ' -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;',
       ' line-height:1.4; margin:0; padding:1.05in 1in 0 0; text-align:right;">',
       'Page <span class="pageNumber"></span> of <span class="totalPages"></span></div>'
     ),
