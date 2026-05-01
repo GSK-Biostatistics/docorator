@@ -93,22 +93,34 @@ render_pdf <- function(x,
   } else {
 
     # render rmd -> pdf
-    doc <- rmarkdown::render(file.path(temp_dir, "template", "template.Rmd"),
-                             output_file = filename,
-                             output_dir = display_loc,
-                             output_options = list(keep_tex = keep_tex),
-                             params = list(x = x,
-                                           header = hf_process(x$header, escape_latex = escape_latex),
-                                           footer = hf_process(x$footer, escape_latex = escape_latex),
-                                           geometry = geom_process(
-                                             x$header,
-                                             x$footer,
-                                             x$fontsize,
-                                             x$geometry
-                                           ),
-                                           transform = transform
-                             ),
-                             quiet = TRUE)
+    engine <- "pdf"
+    doc <- rmarkdown::render(
+      file.path(temp_dir, "template", "template.Rmd"),
+      output_file = filename,
+      output_dir = display_loc,
+      output_options = list(keep_tex = keep_tex),
+      params = list(
+        x = x,
+        header = hf_process(
+          x$header,
+          escape_latex = escape_latex,
+          engine = engine
+        ),
+        footer = hf_process(
+          x$footer,
+          escape_latex = escape_latex,
+          engine = engine
+        ),
+        geometry = geom_process(
+          x$header,
+          x$footer,
+          x$fontsize,
+          x$geometry
+        ),
+        transform = transform
+      ),
+      quiet = TRUE
+    )
 
     if (!is.null(doc)){
       cli::cli_alert_success("Document created at: {doc}")
@@ -320,3 +332,180 @@ render_pdf_qmd <- function(x,
   # return docorator object for further renders
   invisible(x)
 }
+
+#' Render to HTML
+#'
+#' @param x `docorator` object
+#' @param display_loc optional path to save the output pdf to
+#'
+#' @returns Invisibly returns `file`. Called for its side effect of writing
+#'   an HTML file to disk.
+#' @export
+#'
+#' @section Examples:
+#'
+#' ```r
+#' gt::gtcars |>
+#'   dplyr::slice_head(n = 10) |>
+#'   dplyr::select(mfr, model, year, msrp) |>
+#'   gt::gt() |>
+#'   as_docorator(
+#'      display_name = "output",
+#'      header = fancyhead(
+#'        fancyrow(left = "Study ABC-123", right = "Draft"),
+#'        fancyrow(center = "Table 1: Vehicle Summary")
+#'      ),
+#'      footer = fancyfoot(
+#'        fancyrow(left = "Source: gtcars"),
+#'        fancyrow(left = "program.R", right = format(Sys.Date(), "%d%b%Y"))
+#'      )
+#'   ) |> 
+#'   render_html()
+#' ```
+#'
+render_html <- function(x, display_loc = NULL) {
+
+  if (!inherits(x, "docorator")) {
+    cli::cli_abort("The {.arg {rlang::caller_arg(x)}} argument must be class docorator, not {.obj_type_friendly {x}}. See documentation for `as_docorator`.",
+              call = rlang::caller_env())
+  }  
+
+  # if no path is given, use docorator path
+  display_loc <- x$display_loc %||% "."
+  display_loc <- normalizePath(display_loc, winslash = "/")
+
+  # set filename
+  filename <- file.path(display_loc, paste0(x$display_name,".html"))
+
+  css <- system.file("www", "styles.css", package = "docorator") |>
+    readLines(warn = FALSE) |>
+    paste(collapse = "\n")
+ 
+  # build html for contents - header, body, footer
+  layout_html <- paste0(
+    '<table class="page-layout">',
+    '<thead><tr><td>',
+    hf_process(x$header, engine = "html"),
+    '</td></tr></thead>',
+    '<tbody><tr><td>', 
+    prep_obj_html(x), 
+    '</td></tr></tbody>',
+    '<tfoot><tr><td>',
+    hf_process(x$footer, engine = "html"),
+    '</td></tr></tfoot>',
+    '</table>'
+  )
+
+  htmltools::save_html(
+    htmltools::tagList(
+      htmltools::tags$head(htmltools::HTML(paste0("<style>", css, "</style>"))),
+      htmltools::HTML(layout_html)
+    ),
+    file = filename
+  )
+
+  cli::cli_alert_success("Document created at: {.path {normalizePath(filename, winslash = '/')}}")
+
+  invisible(x)
+  }
+
+
+#' Render to PDF via HTML
+#'
+#' @param x `docorator` object
+#' @param display_loc optional path to save the output pdf to
+#' @param keep_html Whether to keep the intermediate HTML file. If `TRUE`
+#'   (default), the HTML is saved alongside the PDF with the same base name.
+#'   If `FALSE`, HTML is deleted after conversion.
+#' @param wait Number of seconds to wait after page navigation before printing.
+#'   Increase if the table takes time to render. Defaults to `3`.
+#'
+#' @returns Invisibly returns the path to the created PDF file.
+#' @export
+#'
+#' @section Examples:
+#'
+#' ```r
+#' gt::gtcars |>
+#'   dplyr::slice_head(n = 10) |>
+#'   dplyr::select(mfr, model, year, msrp) |>
+#'   gt::gt() |>
+#'   as_docorator(
+#'      display_name = "output",
+#'      header = fancyhead(
+#'        fancyrow(left = "Study ABC-123", right = "Draft"),
+#'        fancyrow(center = "Table 1: Vehicle Summary")
+#'      ),
+#'      footer = fancyfoot(
+#'        fancyrow(left = "Source: gtcars"),
+#'        fancyrow(left = "program.R", right = format(Sys.Date(), "%d%b%Y"))
+#'      )
+#'   ) |> 
+#'   render_pdf_html()
+#' ```
+#'
+render_pdf_html <- function(x,
+                            display_loc = NULL,
+                            header = NULL,
+                            footer = NULL,
+                            keep_html = TRUE,
+                            wait = 3) {
+
+  if (!inherits(x, "docorator")) {
+    cli::cli_abort("The {.arg {rlang::caller_arg(x)}} argument must be class docorator, not {.obj_type_friendly {x}}. See documentation for `as_docorator`.",
+              call = rlang::caller_env())
+  }
+
+  # if no path is given, use docorator path
+  display_loc <- x$display_loc %||% "."
+  display_loc <- normalizePath(display_loc, winslash = "/")
+
+  # set filename
+  filename_html <- file.path(display_loc, paste0(x$display_name,".html"))
+  filename_pdf <- file.path(display_loc, paste0(x$display_name,".pdf"))
+
+  # determine intermediate html path
+  if(isFALSE(keep_html)) {
+    on.exit(unlink(filename_html), add = TRUE)
+    # todo avoid the message if we dont want to keep HTML..
+  }
+
+  # render intermediate html
+  render_html(x)
+
+  # convert to pdf via chromote
+  b <- chromote::ChromoteSession$new()
+  on.exit(b$close(), add = TRUE)
+
+  url <- paste0("file://", normalizePath(filename_html))
+  b$Page$navigate(url, wait_ = TRUE)
+  Sys.sleep(wait)
+
+  result <- b$Page$printToPDF(
+    marginTop = 0,
+    marginBottom = 0,
+    marginLeft = 0,
+    marginRight = 0,
+    printBackground = TRUE,
+    displayHeaderFooter = TRUE,
+    preferCSSPageSize = TRUE,
+    # TODO generalize font size and optimal positioning of page numbers
+    headerTemplate = paste0(
+      '<div style="width:100%; font-size:10pt; font-weight:normal; font-family: Courier, \'Courier New\', monospace;',
+      ' -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;',
+      ' line-height:1.4; margin:0; padding:1.05in 1in 0 0; text-align:right;">',
+      'Page <span class="pageNumber"></span> of <span class="totalPages"></span></div>'
+    ),
+    footerTemplate = '<div></div>',
+    wait_ = TRUE
+  )
+
+  result$data |>
+    base64enc::base64decode() |>
+    writeBin(con = filename_pdf)
+
+  cli::cli_alert_success("Document created at: {.path {normalizePath(filename_pdf, winslash = '/')}}")
+
+  invisible(x)
+}
+

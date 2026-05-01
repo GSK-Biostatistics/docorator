@@ -8,20 +8,22 @@
 \alias{hf_process.fancyfoot}
 \title{Process headers/footers}
 \usage{
-hf_process(x, escape_latex = TRUE)
+hf_process(x, escape_latex = TRUE, engine = "pdf")
 
-\method{hf_process}{default}(x, escape_latex = TRUE)
+\method{hf_process}{default}(x, escape_latex = TRUE, engine = "pdf")
 
-\method{hf_process}{character}(x, escape_latex = TRUE)
+\method{hf_process}{character}(x, escape_latex = TRUE, engine = "pdf")
 
-\method{hf_process}{fancyhead}(x, escape_latex = TRUE)
+\method{hf_process}{fancyhead}(x, escape_latex = TRUE, engine = "pdf")
 
-\method{hf_process}{fancyfoot}(x, escape_latex = TRUE)
+\method{hf_process}{fancyfoot}(x, escape_latex = TRUE, engine = "pdf")
 }
 \arguments{
 \item{x}{header or footer}
 
 \item{escape_latex}{Boolean to escape latex in header/footer}
+
+\item{engine}{render engine to dictate how the headers and footers should be constructed}
 }
 \value{
 character string containing headers and footers latex code

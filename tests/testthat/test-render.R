@@ -571,19 +571,19 @@ test_that("render to pdf works with brackets in headers/footers", {
   })
 
 
-  # # quarto render pdf - doesn't work
-  # withr::with_tempdir({
+  # quarto render pdf - doesn't work
+  withr::with_tempdir({
 
-  #   dir.create("tempdir2")
+    dir.create("tempdir2")
 
-  #   res <- suppressMessages( docorator |> render_pdf(
-  #     quarto = TRUE,
-  #     keep_tex = TRUE,
-  #     display_loc = "tempdir2"
-  #   )
-  #   )
-  #   expect_true(file.exists(file.path("tempdir2", "my_first_gt.pdf")))
-  # })
+    res <- suppressMessages( docorator |> render_pdf(
+      quarto = TRUE,
+      keep_tex = TRUE,
+      display_loc = "tempdir2"
+    )
+    )
+    expect_true(file.exists(file.path("tempdir2", "my_first_gt.pdf")))
+  })
 
 })
 
