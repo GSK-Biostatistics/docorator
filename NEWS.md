@@ -1,5 +1,6 @@
 # docorator development version
-
+Bug Fixes
+* remove RTF warning about gt version number
 
 # docorator 0.6.0
 
