@@ -2,7 +2,7 @@
 title: "Multi Page Displays"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Render}
+  %\VignetteIndexEntry{Multi Page Displays}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
