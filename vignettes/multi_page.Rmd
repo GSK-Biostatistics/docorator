@@ -44,9 +44,8 @@ doc <- as_docorator(
   header = fancyhead(fancyrow(right = doc_pagenum()), # `doc_pagenum` will set pagenumbers in the right header
                      fancyrow(center = "Multipage Display")),
   footer = fancyfoot(fancyrow(left = "Footnote1"))
-)
-
-render_pdf(doc, file = "multi_page_example.pdf")
+) |>  # render
+  render_pdf()
 ```
 
 This will produce a PDF with a plot on the first page, a table on the second, and page numbers in the top right corner.
