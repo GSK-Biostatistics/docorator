@@ -42,6 +42,8 @@ navbar:
         href: articles/headers_footers.html
       - text: Render
         href: articles/render.html
+      - text: Multi-page documents
+        href: articles/multi_page.html
 reference:
 - title: Create docorator
   contents:

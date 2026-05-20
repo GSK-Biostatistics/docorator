@@ -16,6 +16,7 @@ knitr::opts_chunk$set(
 
 Below we demonstrate how a list of objects can be passed to `as_docorator` to output a multi-page PDF document, with page numbers generated using `doc_pagenum()`. Note: `doc_pagenum()` is only supported for PDF output.
 
+Your list can consist of any combination of docorator supported objects e.g gt tables, ggplots, PNGs etc. In the example below we create a list with a ggplot and a gt table.
 ```{r setup}
 library(docorator)
 library(ggplot2)
