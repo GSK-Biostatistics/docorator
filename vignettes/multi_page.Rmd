@@ -17,7 +17,7 @@ knitr::opts_chunk$set(
 Below we demonstrate how a list of objects can be passed to `as_docorator` to output a multi-page PDF document, with page numbers generated using `doc_pagenum()`. Note: `doc_pagenum()` is only supported for PDF output.
 
 Your list can consist of any combination of docorator supported objects e.g gt tables, ggplots, PNGs etc. In the example below we create a list with a ggplot and a gt table.
-```{r setup}
+```{r setup, eval = FALSE}
 library(docorator)
 library(ggplot2)
 library(gt)
@@ -38,14 +38,14 @@ output_list <- list(
 )
 
 # Run `as_docorator` and set headers and footers
-doc <- as_docorator(
+as_docorator(
   output_list,
   display_name = "multi_page_example",
   header = fancyhead(fancyrow(right = doc_pagenum()), # `doc_pagenum` will set pagenumbers in the right header
                      fancyrow(center = "Multipage Display")),
   footer = fancyfoot(fancyrow(left = "Footnote1"))
 ) |>  # render
-  render_pdf()
+render_pdf()
 ```
 
 This will produce a PDF with a plot on the first page, a table on the second, and page numbers in the top right corner.
