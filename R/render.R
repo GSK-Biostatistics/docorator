@@ -420,14 +420,18 @@ render_docx <- function(x,
     footer_default = do.call(officer::block_list, fpar_foot_list)
   )
 
-  
+  # insert the body content 
+  xml <- prep_obj_docx(x)
 
-  for(i in seq_along(ooxml)){
-    doc <- officer::body_add_xml(doc, str = ooxml[i])
+  for(i in seq_along(xml)){
+    doc <- officer::body_add_xml(doc, str = xml[[i]])
   }
+ 
   doc <- officer::body_set_default_section(doc, value = ps)
 
   print(doc, target = paste0(x$display_name, ".docx"))
 
-
+  if(!is.null(doc)){
+      cli::cli_alert_success("Document created at: {x$display_name}.docx")
+  }
 }
