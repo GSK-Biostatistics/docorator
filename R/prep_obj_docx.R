@@ -50,7 +50,7 @@ prep_obj_docx.gt_tbl <- function(x, ...) {
 #' @keywords internal
 prep_obj_docx.gt_group <- function(x, ...) {
   # list of ooxml - one for each table in the gt_group
-  xml <- lapply(gt_group$gt_tbls$gt_tbl, function(i) {
+  xml <- lapply(x$display$gt_tbls$gt_tbl, function(i) {
     # new docorator object with gt_tbl as display
     gt_to_word(i)
   })
