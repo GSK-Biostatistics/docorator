@@ -14,7 +14,7 @@
 #' save_object = FALSE)
 #'
 #' prepared_obj <- prep_obj_docx(docorator)
-prep_obj_docx <- function (x, ...) {
+prep_obj_docx <- function(x, ...) {
   UseMethod("prep_obj_docx", x$display)
 }
 
@@ -22,21 +22,19 @@ prep_obj_docx <- function (x, ...) {
 #' @export
 #' @keywords internal
 prep_obj_docx.default <- function(x, ...) {
- xml <- polish::polish_content_word(x$display)
- xml
+  xml <- polish::polish_content_word(x$display)
+  xml
 }
 
 #' @rdname prep_obj_docx
 #' @export
 #' @keywords internal
-prep_obj_docx.PNG <- function(x, ... ) {
-
+prep_obj_docx.PNG <- function(x, ...) {
   # save the png to a temp location and then read in with as_file from polish to get the xml
   # temporarily store png
-  temp <- tempfile(fileext = ".png", tmpdir = tmpdir)
+  temp <- tempfile(fileext = ".png", tmpdir = tempdir())
   png::writePNG(x$display$png, temp)
   polish::polish_content_word(polish::as_file(temp))
- 
 }
 
 #' @rdname prep_obj_docx
@@ -52,7 +50,7 @@ prep_obj_docx.gt_tbl <- function(x, ...) {
 #' @keywords internal
 prep_obj_docx.gt_group <- function(x, ...) {
   # list of ooxml - one for each table in the gt_group
-  xml <- lapply(gt_group$gt_tbls$gt_tbl, function(i){
+  xml <- lapply(gt_group$gt_tbls$gt_tbl, function(i) {
     # new docorator object with gt_tbl as display
     gt_to_word(i)
   })
@@ -61,7 +59,7 @@ prep_obj_docx.gt_group <- function(x, ...) {
 
 #' convert gt_tbl object to latex
 #' @noRd
-gt_to_word <- function(x){
+gt_to_word <- function(x) {
   # get ooxml from gt
   ooxml <- polish::polish_content_word(x, autonum = FALSE)
 
@@ -69,9 +67,9 @@ gt_to_word <- function(x){
     "<tablecontainer>",
     paste0(ooxml, collapse = ""),
     "</tablecontainer>"
-    ) %>%
-    read_xml() %>%
-    xml_children()  %>%
+  ) %>%
+    xml2::read_xml() %>%
+    xml2::xml_children() %>%
     suppressWarnings()
 
   tbl_nodes
