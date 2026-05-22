@@ -36,6 +36,8 @@ Suggests:
     tfrmt,
     pdftools,
     ggplot2
+Remotes: 
+    GSK-Biostatistics/polish
 Config/testthat/edition: 3
 VignetteBuilder: knitr
 URL: https://GSK-Biostatistics.github.io/docorator/, https://github.com/GSK-Biostatistics/docorator

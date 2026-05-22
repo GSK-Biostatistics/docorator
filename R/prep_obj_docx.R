@@ -67,9 +67,9 @@ gt_to_word <- function(x) {
     "<tablecontainer>",
     paste0(ooxml, collapse = ""),
     "</tablecontainer>"
-  ) %>%
-    xml2::read_xml() %>%
-    xml2::xml_children() %>%
+  ) |>
+    xml2::read_xml() |>
+    xml2::xml_children() |>
     suppressWarnings()
 
   tbl_nodes
