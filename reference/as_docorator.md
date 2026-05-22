@@ -110,6 +110,7 @@ following classes/types are recommended:
 ## Examples
 
 ``` r
+
 if (FALSE) { # \dontrun{
 gt::gtcars |>
   dplyr::slice_head(n = 10) |>

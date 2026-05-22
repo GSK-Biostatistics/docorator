@@ -1,6 +1,7 @@
 # Headers and Footers
 
 ``` r
+
 library(docorator)
 ```
 
@@ -23,6 +24,7 @@ position). Some examples are below.
 ### One line header
 
 ``` r
+
 fancyhead(
   fancyrow(left = "My Study", center = NA, right = NA)
 )
@@ -31,6 +33,7 @@ fancyhead(
 ### Multi-line header
 
 ``` r
+
 fancyhead(
   fancyrow(left = "My Study", center = NA, right = "Date as of today"),
   fancyrow(left = "My Population", center = NA, right = NA),
@@ -49,6 +52,7 @@ footer.
 ### One line footer
 
 ``` r
+
 fancyfoot(
   fancyrow(left = "Date as of today", center = NA, right = NA)
 )
@@ -57,6 +61,7 @@ fancyfoot(
 ### Multi-line footer
 
 ``` r
+
 fancyfoot(
   fancyrow(left = "General footer for the table", center = NA, right = NA),
   fancyrow(left = "Date as of today", center = NA, right = "path/to/docname.pdf")
@@ -71,6 +76,7 @@ and time stamps. These are prefixed with `doc_*()`.
 ### Add automatic page numbering in upper left
 
 ``` r
+
 fancyhead(
   fancyrow(left = "My study", center = NA, right = doc_pagenum())
 )
@@ -79,6 +85,7 @@ fancyhead(
 ### Add file path in bottom left and datetime in bottom right
 
 ``` r
+
 fancyfoot(
   fancyrow(left = doc_path(), center = NA, right = doc_datetime())
 )
@@ -87,6 +94,7 @@ fancyfoot(
 ## Putting it all together
 
 ``` r
+
 gt::gtcars |>
   dplyr::slice_head(n = 10) |>
   dplyr::select(mfr, model, year, msrp) |>

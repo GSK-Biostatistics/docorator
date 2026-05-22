@@ -1,6 +1,7 @@
 # Render
 
 ``` r
+
 library(docorator)
 ```
 

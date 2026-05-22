@@ -1,6 +1,7 @@
 # Document Sizing
 
 ``` r
+
 library(docorator)
 ```
 
@@ -16,6 +17,7 @@ The default for the `geometry` package is
 which includes the following settings:
 
 ``` r
+
 geom_set()
 #> $paperheight
 #> [1] "8.5in"
@@ -55,6 +57,7 @@ Users can optionally override any defaults by passing new values as
 such:
 
 ``` r
+
 geom_set(top = "0.5in", bottom = "0.5in")
 #> $paperheight
 #> [1] "8.5in"
@@ -94,6 +97,7 @@ For values set to `NULL`, {docorator} will perform automatic size
 calculations. These can be overridden by hardcoded size values.
 
 ``` r
+
 geom_set(headheight = "20pt")
 #> $paperheight
 #> [1] "8.5in"

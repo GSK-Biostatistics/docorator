@@ -1,6 +1,7 @@
 # Display Sizing
 
 ``` r
+
 library(docorator)
 ```
 
@@ -30,6 +31,7 @@ Let’s say we have a table with 1 stub column and 4 other columns, like
 so:
 
 ``` r
+
 library(gt)
 mytbl <- gtcars |>
    dplyr::slice_head(n = 10) |>
@@ -61,6 +63,7 @@ full width, and the 4 data columns will each occupy 15% of the full
 width, totaling 100% width.
 
 ``` r
+
 mytbl |>
   scale_gt(tbl_stub_pct = 0.4)
 ```
@@ -83,6 +86,7 @@ For a table with 2 stub columns, like the one below, settings
 in 40% total for both stubs.
 
 ``` r
+
 mytbl <- gtcars |>
    dplyr::slice_head(n = 10) |>
    dplyr::select(mfr, model, year, msrp, ctry_origin) |>
@@ -112,6 +116,7 @@ mytbl
 |               | Ferrari | LaFerrari     | 2015 | 1416362 |
 
 ``` r
+
 mytbl |>
   scale_gt(tbl_stub_pct = 0.4)
 ```
@@ -146,6 +151,7 @@ If only a subset of the columns are covered in the
 of the display area.
 
 ``` r
+
 mytbl |> 
   gt::cols_width(
     msrp ~ pct(50)
@@ -158,6 +164,7 @@ Alternatively, if all columns are covered in the
 {docorator} will not apply *any* resizing to fit the allotted area.
 
 ``` r
+
 mytbl |> 
   gt::cols_width(
     ctry_origin ~ pct(15),

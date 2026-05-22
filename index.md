@@ -34,18 +34,21 @@ and
 The {docorator} package can be installed from CRAN with:
 
 ``` r
+
 install.packages("docorator")
 ```
 
 The development version of {docorator} can be installed with:
 
 ``` r
+
 devtools::install_github("GSK-Biostatistics/docorator")
 ```
 
 # Use
 
 ``` r
+
 # Load package
 library(docorator) 
 
