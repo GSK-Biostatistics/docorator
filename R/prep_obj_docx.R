@@ -57,7 +57,7 @@ prep_obj_docx.gt_group <- function(x, ...) {
   xml
 }
 
-#' convert gt_tbl object to latex
+#' convert gt_tbl object to ooxml
 #' @noRd
 gt_to_word <- function(x) {
   # get ooxml from gt
