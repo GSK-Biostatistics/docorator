@@ -40,11 +40,15 @@ prep_obj_html.gt_tbl <- function(x, ...) {
 prep_obj_html.gt_group <- function(x, ...) {
 
   # TODO figure out how to display this properly in the scrollable container
-  sapply(seq_len(nrow(x$display$gt_tbls)), function(idx) {
+  tbl_divs <- sapply(seq_len(nrow(x$display$gt_tbls)), function(idx) {
     tbl <- gt::grp_pull(x$display, idx)
 
     gt::as_raw_html(tbl) 
   })  
+
+  paste0("<div>",
+    paste(tbl_divs, collapse = ""),
+   "</div>")
 }
 
 #' @rdname prep_obj_html
