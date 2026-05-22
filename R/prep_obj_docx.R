@@ -1,9 +1,8 @@
 #' Prepare table, listing, figure object for inclusion in the template Rmd
 #'
 #' @param x docorator object containing info about the table, listing or figure
-#' @param doc docx object to which the content will be added
 #'
-#' @return object to be included as-is in render engine
+#' @return xml to be inserted into word document
 #' @export
 #' @keywords internal
 #'
@@ -14,7 +13,7 @@
 #' display_name = "mytbl", footer = NULL,
 #' save_object = FALSE)
 #'
-#' prepared_obj <- prep_obj_docx(docorator, doc = read_docx())
+#' prepared_obj <- prep_obj_docx(docorator)
 prep_obj_docx <- function (x, ...) {
   UseMethod("prep_obj_docx", x$display)
 }
@@ -23,17 +22,8 @@ prep_obj_docx <- function (x, ...) {
 #' @export
 #' @keywords internal
 prep_obj_docx.default <- function(x, ...) {
-
-  body_xml <- paste0(polish::polish_content_word(x$display), collapse = "")
-  body_xml
-}
-
-#' @rdname prep_obj_docx
-#' @export
-#' @keywords internal
-prep_obj_docx.character <- function(x, ...) {
-  xml <- polish::polish_content_word(x$display)
-  xml
+ xml <- polish::polish_content_word(x$display)
+ xml
 }
 
 #' @rdname prep_obj_docx
@@ -41,16 +31,12 @@ prep_obj_docx.character <- function(x, ...) {
 #' @keywords internal
 prep_obj_docx.PNG <- function(x, ... ) {
 
-  if (Sys.getenv("DOCORATOR_RENDER_ENGINE")=="qmd"){
-    tmpdir <- "."
-  } else {
-    tmpdir <- tempdir()
-  }
-
+  # save the png to a temp location and then read in with as_file from polish to get the xml
   # temporarily store png
   temp <- tempfile(fileext = ".png", tmpdir = tmpdir)
   png::writePNG(x$display$png, temp)
-  knitr::include_graphics(path = temp)
+  polish::polish_content_word(polish::as_file(temp))
+ 
 }
 
 #' @rdname prep_obj_docx
@@ -65,8 +51,11 @@ prep_obj_docx.gt_tbl <- function(x, ...) {
 #' @export
 #' @keywords internal
 prep_obj_docx.gt_group <- function(x, ...) {
-  
-  xml <- gt_to_word(x$display)
+  # list of ooxml - one for each table in the gt_group
+  xml <- lapply(gt_group$gt_tbls$gt_tbl, function(i){
+    # new docorator object with gt_tbl as display
+    gt_to_word(i)
+  })
   xml
 }
 

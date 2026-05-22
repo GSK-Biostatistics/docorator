@@ -423,10 +423,22 @@ render_docx <- function(x,
   # insert the body content 
   xml <- prep_obj_docx(x)
 
-  for(i in seq_along(xml)){
-    doc <- officer::body_add_xml(doc, str = xml[[i]])
+  # # ensure that xml is a list
+  if(inherits(xml, "xml_nodeset") | !is.list(xml)){
+    xml <- list(xml)
   }
- 
+
+  # for every element in the list add to the body of the document, separate by page breaks
+  for (i in seq_along(xml)){
+    if(i > 1){
+      doc <- officer::body_add_break(doc, pos = "after")
+    }
+      xml_element <- xml[[i]]
+      for(j in seq_along(xml_element)){
+      doc <- officer::body_add_xml(doc, str = xml_element[[j]])
+  }
+  }
+
   doc <- officer::body_set_default_section(doc, value = ps)
 
   print(doc, target = paste0(x$display_name, ".docx"))
