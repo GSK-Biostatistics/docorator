@@ -28,7 +28,7 @@ test_that("markdown chunks are created correctly",{
 
   my_gt_group <- gt::gt_group(my_gt,my_gt)
   docorator <- as_docorator(my_gt_group, display_name = "mytbl", save_object = FALSE)
-  chunk_gt_group <- create_chunk(x = docorator, transform = NULL) |> capture.output()
+  chunk_gt_group <- create_chunks_all(x = docorator, transform = NULL) |> capture.output()
   expect_snapshot(chunk_gt_group)
 
 

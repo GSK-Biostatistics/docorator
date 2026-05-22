@@ -214,7 +214,17 @@ create_chunks_all <- function(x, transform) {
         cat("\\pagebreak\n")
       }
     }
-  } else{
+  } else if(inherits(display, "gt_group")){
+    # each table in the gt_group gets its own chunk to avoid issues with caption ids
+    for(i in 1:nrow(display$gt_tbls)){
+      new_docorator <- x
+      new_docorator$display <- gt::grp_pull(display,i)
+      create_chunk(new_docorator,i,transform)
+       if(i!=nrow(display$gt_tbls)){
+        cat("\\pagebreak\n")
+       }
+    }
+  } else {
     create_chunk(x, 1, transform)
   }
 }
