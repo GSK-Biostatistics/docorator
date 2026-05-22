@@ -1,5 +1,6 @@
 # docorator development version
-
+Improvements
+* Add docx render engine `render_docx`
 
 # docorator 0.6.0
 
