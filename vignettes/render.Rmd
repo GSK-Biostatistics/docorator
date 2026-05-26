@@ -50,6 +50,31 @@ render_rtf()
 
 Due to the limitations of the RTF file format, some arguments specified in your `as_docorator()` call are not preserved, such as certain formatting or table styling. Document decoration headers are also not preserved, only titles specified as 'center' will be applied. 
 
+## Render to HTML
+
+```
+as_docorator(
+  mytbl,
+  display_name = "mytbl"
+) |> 
+render_html()
+```
+
+`render_html()` writes a self-contained `.html` file, rendering the display object together with any headers and footers using HTML and CSS in a page-like display. Long tables are presented in a scrollable container with sticky headers in lieu of pagination. This render engine is experimental and the layout is likely to evolve over time. 
+
+## Render to PDF via HTML
+```
+as_docorator(
+  mytbl,
+  display_name = "mytbl"
+) |> 
+render_pdf_html()
+```
+
+`render_pdf_html()` produces a PDF by first rendering the display to HTML (via `render_html()`) and then converting that HTML to PDF using [chromote](https://rstudio.github.io/chromote/). This conversion preserves the original styling more closely than the LaTeX-based `render_pdf()` pathway.
+
+Please note `render_pdf_html()` depends on a Chrome/Chromium installation being available to chromote.
+
 ## Multi-render
 
 ```

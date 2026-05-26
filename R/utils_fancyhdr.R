@@ -319,13 +319,13 @@ process_rows_html <- function(x, type = c("head", "foot")) {
 
   row_html <- x |>
     dplyr::mutate(
-      left = paste0('<span class="hf-left">', left, '</span>'),
-      center = paste0('<span class="hf-center">', center, '</span>'),
-      right = paste0('<span class="hf-right">', right, '</span>')
+      left = paste0('<span class="hf-left">', .data$left, '</span>'),
+      center = paste0('<span class="hf-center">', .data$center, '</span>'),
+      right = paste0('<span class="hf-right">', .data$right, '</span>')
     ) |>
     tidyr::unite(
       "row",
-      everything(),
+      dplyr::everything(),
       sep = ""
     ) |>
     dplyr::pull("row")

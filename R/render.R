@@ -335,6 +335,8 @@ render_pdf_qmd <- function(x,
 
 #' Render to HTML
 #'
+#' `r lifecycle::badge("experimental")`
+#'
 #' @param x `docorator` object
 #' @param display_loc optional path to save the output pdf to
 #'
@@ -412,14 +414,15 @@ render_html <- function(x, display_loc = NULL) {
 
 #' Render to PDF via HTML
 #'
-#' @param x `docorator` object
-#' @param display_loc optional path to save the output pdf to
+#' `r lifecycle::badge("experimental")`
+#'
 #' @param keep_html Whether to keep the intermediate HTML file. If `TRUE`
 #'   (default), the HTML is saved alongside the PDF with the same base name.
 #'   If `FALSE`, HTML is deleted after conversion.
 #' @param wait Number of seconds to wait after page navigation before printing.
 #'   Increase if the table takes time to render. Defaults to `3`.
-#'
+#' @inheritParams render_pdf
+#' 
 #' @returns Invisibly returns the path to the created PDF file.
 #' @export
 #'
@@ -446,8 +449,6 @@ render_html <- function(x, display_loc = NULL) {
 #'
 render_pdf_html <- function(x,
                             display_loc = NULL,
-                            header = NULL,
-                            footer = NULL,
                             keep_html = TRUE,
                             wait = 3) {
 

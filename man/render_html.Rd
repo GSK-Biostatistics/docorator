@@ -16,7 +16,7 @@ Invisibly returns \code{file}. Called for its side effect of writing
 an HTML file to disk.
 }
 \description{
-Render to HTML
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 }
 \section{Examples}{
 

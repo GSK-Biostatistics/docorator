@@ -4,14 +4,7 @@
 \alias{render_pdf_html}
 \title{Render to PDF via HTML}
 \usage{
-render_pdf_html(
-  x,
-  display_loc = NULL,
-  header = NULL,
-  footer = NULL,
-  keep_html = TRUE,
-  wait = 3
-)
+render_pdf_html(x, display_loc = NULL, keep_html = TRUE, wait = 3)
 }
 \arguments{
 \item{x}{\code{docorator} object}
@@ -29,7 +22,7 @@ Increase if the table takes time to render. Defaults to \code{3}.}
 Invisibly returns the path to the created PDF file.
 }
 \description{
-Render to PDF via HTML
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 }
 \section{Examples}{
 
