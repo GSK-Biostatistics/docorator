@@ -223,7 +223,7 @@ hf_process.default <- function(x, escape_latex = TRUE, engine = "pdf"){
 hf_process.character <- function(x, escape_latex = TRUE, engine = "pdf"){
   cli::cli_alert_info("Coercing `header` from {.cls {'character'}} to {.cls {'fancyhead'}} with {length(x)} row{?s}")
   lapply(x, fancyrow) |>
-    process_rows(type = "head", escape_latex = escape_latex)
+    process_rows(type = "head", escape_latex = escape_latex, engine = engine)
 }
 
 #' @export
@@ -275,13 +275,13 @@ process_rows <- function(x, type = c("head","foot"), escape_latex = TRUE, engine
 process_rows_pdf <- function(x, type = c("head","foot"), escape_latex = TRUE){
 
   if(isTRUE(escape_latex)){
-    x_df <- x_df |>
+    x <- x |>
       dplyr::mutate(
         # escape latex characters
         dplyr::across(dplyr::everything(), hf_escape))
   }
 
-  x_df <- x_df |>
+  x_df <- x |>
     dplyr::mutate(
       dplyr::across(dplyr::everything(), \(x) as.character(x) |>
                tidyr::replace_na("\\phantom{}"))

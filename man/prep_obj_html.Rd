@@ -4,6 +4,8 @@
 \alias{prep_obj_html}
 \alias{prep_obj_html.default}
 \alias{prep_obj_html.gt_tbl}
+\alias{prep_obj_html.gt_group}
+\alias{prep_obj_html.gg}
 \title{Prepare table, listing, figure object for inclusion in HTML}
 \usage{
 prep_obj_html(x, ...)
@@ -11,6 +13,10 @@ prep_obj_html(x, ...)
 \method{prep_obj_html}{default}(x, ...)
 
 \method{prep_obj_html}{gt_tbl}(x, ...)
+
+\method{prep_obj_html}{gt_group}(x, ...)
+
+\method{prep_obj_html}{gg}(x, ...)
 }
 \arguments{
 \item{x}{docorator object containing info about the table, listing or figure}

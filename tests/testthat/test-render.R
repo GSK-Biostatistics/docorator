@@ -587,3 +587,103 @@ test_that("render to pdf works with brackets in headers/footers", {
 
 })
 
+test_that("render to html works", {
+
+  skip_on_cran()
+  skip_on_ci()
+
+  my_gt <- gt::exibble |>
+    gt::gt(
+      rowname_col = "row",
+      groupname_col = "group"
+    )
+
+  withr::with_tempdir({
+
+    docorator <- as_docorator(
+      x = my_gt,
+      header = fancyhead(fancyrow(left = "first line header"), fancyrow(center = "second line header")),
+      footer = NULL,
+      display_name = "my_first_gt",
+      display_loc = NULL,
+      save_object = FALSE
+    )
+
+    res <- suppressMessages( docorator |> render_html()
+    )
+
+    expect_true(file.exists("my_first_gt.html"))
+  })
+
+})
+
+test_that("html headers and footers", {
+
+   my_gt <- gt::exibble |>
+    gt::gt(
+      rowname_col = "row",
+      groupname_col = "group"
+    )
+
+  withr::with_tempdir({
+    doc <- as_docorator(
+      x = my_gt, 
+      display_name = "my_tbl",
+      display_loc = NULL,save_object = FALSE,
+      header = fancyhead(fancyrow(left = "STUDY-XYZ")),
+      footer = fancyfoot(fancyrow(left = "Source: exibble"))
+    ) 
+    
+    suppressMessages(render_html(doc))
+
+    html <- readLines("my_tbl.html") |> paste(collapse = "\n")
+    expect_true(grepl("STUDY-XYZ",        html))
+    expect_true(grepl("Source: exibble",  html))
+  })
+})
+
+test_that("render_html works with a ggplot display", {
+
+  plt <- ggplot2::ggplot(mtcars, ggplot2::aes(x = mpg, y = wt)) +
+    ggplot2::geom_point()
+
+  withr::with_tempdir({
+    doc <- as_docorator(
+      x            = plt,
+      display_name = "my_fig",
+      header       = fancyhead(fancyrow(left = "Figure 1")),
+      footer       = NULL,
+      save_object  = FALSE
+    )
+    suppressMessages(render_html(doc))
+    html <- readLines("my_fig.html") |> paste(collapse = "\n")
+    expect_true(file.exists("my_fig.html"))
+    # ggplot embedded as base64 img
+    expect_true(grepl('<img src="data:image/png;base64', html, fixed = TRUE))
+  })
+})
+
+test_that("render_pdf_html creates pdf and html files", {
+
+  skip_on_cran()
+  skip_on_ci()
+
+    withr::with_tempdir({
+
+    docorator <- as_docorator(
+      x = my_gt,
+      header = fancyhead(fancyrow(left = "first line header"), fancyrow(center = "second line header")),
+      footer = NULL,
+      display_name = "my_first_gt",
+      display_loc = NULL,
+      save_object = FALSE
+    )
+
+    res <- suppressMessages( docorator |> render_pdf_html()
+    )
+
+    expect_true(file.exists("my_first_gt.html"))
+    expect_true(file.exists("my_first_gt.pdf"))
+
+    })
+})

@@ -39,7 +39,6 @@ prep_obj_html.gt_tbl <- function(x, ...) {
 #' @keywords internal
 prep_obj_html.gt_group <- function(x, ...) {
 
-  # TODO figure out how to display this properly in the scrollable container
   tbl_divs <- sapply(seq_len(nrow(x$display$gt_tbls)), function(idx) {
     tbl <- gt::grp_pull(x$display, idx)
 
@@ -62,15 +61,12 @@ prep_obj_html.gg <- function(x, ...) {
     ggplot2::ggsave(temp, plot = x$display, device = "png"),
     error = function(e) {
       stop("Failed to create PNG: ", e$message)
-      return(NULL)
     }
   )
 
   if (!is.null(png_success)) {
     paste0('<img src="', knitr::image_uri(temp), '" style="max-width:100%;" />')
-  } else {
-    NULL
-  }
+  } 
 }
 
 

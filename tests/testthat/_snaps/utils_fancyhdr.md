@@ -39,3 +39,38 @@
     Output
       [1] "\\fancyhead[L]{\\begin{tabular}[b]{@{}l@{}}{Page \\thepage\\ of \\pageref*{LastPage}}\\end{tabular}}\\fancyhead[C]{\\begin{tabular}[b]{@{}c@{}}{\\phantom{}}\\end{tabular}}\\fancyhead[R]{\\begin{tabular}[b]{@{}r@{}}{\\phantom{}}\\end{tabular}}"
 
+# Header and footer processes into html
+
+    Code
+      hf_process("My first line", engine = "html")
+    Message
+      i Coercing `header` from <character> to <fancyhead> with 1 row
+    Output
+      [1] "<div class=\"hf-row\"><span class=\"hf-left\">My first line</span><span class=\"hf-center\"></span><span class=\"hf-right\"></span></div>"
+
+---
+
+    Code
+      hf_process(c("Two", "Lines"), engine = "html")
+    Message
+      i Coercing `header` from <character> to <fancyhead> with 2 rows
+    Output
+      [1] "<div class=\"hf-row\"><span class=\"hf-left\">Two</span><span class=\"hf-center\"></span><span class=\"hf-right\"></span></div>\n<div class=\"hf-row\"><span class=\"hf-left\">Lines</span><span class=\"hf-center\"></span><span class=\"hf-right\"></span></div>"
+
+---
+
+    Code
+      hf_process(fancyhead(fancyrow(right = doc_pagenum()), fancyrow(left = "a",
+        center = "b", right = "c"), fancyrow(left = "something very longgggggggggggggggggggg")),
+      engine = "html")
+    Output
+      [1] "<div class=\"hf-row\"><span class=\"hf-left\"></span><span class=\"hf-center\"></span><span class=\"hf-right\">Page \\thepage\\ of \\pageref*{LastPage}</span></div>\n<div class=\"hf-row\"><span class=\"hf-left\">a</span><span class=\"hf-center\">b</span><span class=\"hf-right\">c</span></div>\n<div class=\"hf-row\"><span class=\"hf-left\">something very longgggggggggggggggggggg</span><span class=\"hf-center\"></span><span class=\"hf-right\"></span></div>"
+
+---
+
+    Code
+      hf_process(fancyfoot(fancyrow(left = "something very longgggggggggggggggggggg"),
+      fancyrow(right = "something else"), fancyrow(center = "middle")), engine = "html")
+    Output
+      [1] "<div class=\"hf-row\"><span class=\"hf-left\">something very longgggggggggggggggggggg</span><span class=\"hf-center\"></span><span class=\"hf-right\"></span></div>\n<div class=\"hf-row\"><span class=\"hf-left\"></span><span class=\"hf-center\"></span><span class=\"hf-right\">something else</span></div>\n<div class=\"hf-row\"><span class=\"hf-left\"></span><span class=\"hf-center\">middle</span><span class=\"hf-right\"></span></div>"
+

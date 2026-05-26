@@ -13,3 +13,5 @@ man/figures/
 ^\.github$
 ^LICENSE$
 ^README\.Rmd$
+^\.positai$
+^\.claude$

@@ -253,3 +253,35 @@ test_that("splitting of fancyhead and fancyfoot elements in a docorator object i
   )
 
 })
+
+
+test_that("Header and footer processes into html",{
+
+  # character (headers)
+  expect_snapshot(
+    hf_process("My first line", engine = "html")
+  )
+  expect_snapshot(
+    hf_process(c("Two","Lines"), engine = "html")
+  )
+
+  # fancyhead
+  expect_snapshot(
+    fancyhead(
+      fancyrow(right = doc_pagenum()),
+      fancyrow(left = "a", center = "b", right = "c"),
+      fancyrow(left = "something very longgggggggggggggggggggg")
+    ) |>
+      hf_process(engine = "html")
+  )
+
+  # fancyfoot
+  expect_snapshot(
+    fancyfoot(
+      fancyrow(left = "something very longgggggggggggggggggggg"),
+      fancyrow(right = "something else"),
+      fancyrow(center = "middle")
+    ) |>
+      hf_process(engine = "html")
+  )
+})
