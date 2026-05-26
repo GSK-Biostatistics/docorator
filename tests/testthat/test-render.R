@@ -665,6 +665,13 @@ test_that("render_html works with a ggplot display", {
 
 test_that("render_pdf_html creates pdf and html files", {
 
+
+   my_gt <- gt::exibble |>
+    gt::gt(
+      rowname_col = "row",
+      groupname_col = "group"
+    )
+  
   skip_on_cran()
   skip_on_ci()
 

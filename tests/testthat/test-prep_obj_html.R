@@ -39,7 +39,7 @@ test_that("prep_obj_html for ggplot", {
     save_object = FALSE
   )
 
-  result <- prep_obj_html(doc)
+  result <- suppressMessages(prep_obj_html(doc))
 
   expect_type(result, "character")
   expect_true(grepl('<img src=', result))
