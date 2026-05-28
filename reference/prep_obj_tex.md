@@ -18,9 +18,6 @@ prep_obj_tex(x, transform = NULL, ...)
 
 # S3 method for class 'gt_tbl'
 prep_obj_tex(x, transform = NULL, ...)
-
-# S3 method for class 'gt_group'
-prep_obj_tex(x, transform = NULL, ...)
 ```
 
 ## Arguments
