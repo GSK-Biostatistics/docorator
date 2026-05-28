@@ -6,7 +6,6 @@
 \alias{prep_obj_tex.character}
 \alias{prep_obj_tex.PNG}
 \alias{prep_obj_tex.gt_tbl}
-\alias{prep_obj_tex.gt_group}
 \title{Prepare table, listing, figure object for inclusion in the template Rmd}
 \usage{
 prep_obj_tex(x, transform = NULL, ...)
@@ -18,8 +17,6 @@ prep_obj_tex(x, transform = NULL, ...)
 \method{prep_obj_tex}{PNG}(x, transform = NULL, ...)
 
 \method{prep_obj_tex}{gt_tbl}(x, transform = NULL, ...)
-
-\method{prep_obj_tex}{gt_group}(x, transform = NULL, ...)
 }
 \arguments{
 \item{x}{docorator object containing info about the table, listing or figure}

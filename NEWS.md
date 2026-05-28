@@ -1,5 +1,6 @@
 # docorator development version
-
+Bug Fixes
+* use individual markdown chunks for each table in a gt_group to avoid issues with caption ids
 
 # docorator 0.6.0
 

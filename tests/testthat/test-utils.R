@@ -28,9 +28,15 @@ test_that("markdown chunks are created correctly",{
 
   my_gt_group <- gt::gt_group(my_gt,my_gt)
   docorator <- as_docorator(my_gt_group, display_name = "mytbl", save_object = FALSE)
-  chunk_gt_group <- create_chunk(x = docorator, transform = NULL) |> capture.output()
+  chunk_gt_group <- create_chunks_all(x = docorator, transform = NULL) |> capture.output()
   expect_snapshot(chunk_gt_group)
 
+  my_gt_group_caption <- gt::gt_group(my_gt |> gt::tab_caption("test"),my_gt |> gt::tab_caption("test"))
+  docorator <- as_docorator(my_gt_group_caption, display_name = "mytbl", save_object = FALSE)
+  chunk_gt_group_caption <- create_chunks_all(x = docorator, transform = NULL) |> capture.output()
+  expect_snapshot(chunk_gt_group_caption)
+  expect_true(any(grepl('new_chunk1', chunk_gt_group_caption)))
+  expect_true(any(grepl('new_chunk2', chunk_gt_group_caption)))
 
   # list of ggplot2 - tempdir to stop creation of figure folder
   withr::with_tempdir({
