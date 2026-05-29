@@ -12,11 +12,11 @@ hf_process(x, escape_latex = TRUE, engine = "pdf")
 
 \method{hf_process}{default}(x, escape_latex = TRUE, engine = "pdf")
 
-\method{hf_process}{character}(x, escape_latex = TRUE, engine = "pdf")
+\method{hf_process}{character}(x, escape_latex = TRUE, fontsize = 10, engine = "pdf")
 
-\method{hf_process}{fancyhead}(x, escape_latex = TRUE, engine = "pdf")
+\method{hf_process}{fancyhead}(x, escape_latex = TRUE, fontsize = 10, engine = "pdf")
 
-\method{hf_process}{fancyfoot}(x, escape_latex = TRUE, engine = "pdf")
+\method{hf_process}{fancyfoot}(x, escape_latex = TRUE, fontsize = fontsize, engine = "pdf")
 }
 \arguments{
 \item{x}{header or footer}

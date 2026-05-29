@@ -199,7 +199,7 @@ as_tibble_fancyrow <- function(x, ...) {
 #'
 #' hf_process(header)
 #'
-hf_process <- function(x, escape_latex = TRUE, engine = "pdf") {
+hf_process <- function(x, escape_latex = TRUE, fontsize = 10, engine = "pdf") {
   engine <- match.arg(engine, choices = c("pdf", "docx"))
   UseMethod("hf_process", x)
 }
@@ -207,7 +207,12 @@ hf_process <- function(x, escape_latex = TRUE, engine = "pdf") {
 #' @export
 #' @rdname hf_process
 #' @keywords internal
-hf_process.default <- function(x, escape_latex = TRUE, engine = "pdf") {
+hf_process.default <- function(
+  x,
+  escape_latex = TRUE,
+  fontsize = 10,
+  engine = "pdf"
+) {
   if (is.null(x)) {
     return(NULL)
   }
@@ -217,26 +222,58 @@ hf_process.default <- function(x, escape_latex = TRUE, engine = "pdf") {
 #' @export
 #' @rdname hf_process
 #' @keywords internal
-hf_process.character <- function(x, escape_latex = TRUE, engine = "pdf") {
+hf_process.character <- function(
+  x,
+  escape_latex = TRUE,
+  fontsize = 10,
+  engine = "pdf"
+) {
   cli::cli_alert_info(
     "Coercing `header` from {.cls {'character'}} to {.cls {'fancyhead'}} with {length(x)} row{?s}"
   )
   lapply(x, fancyrow) |>
-    process_rows(type = "head", escape_latex = escape_latex, engine = engine)
+    process_rows(
+      type = "head",
+      escape_latex = escape_latex,
+      fontsize = fontsize,
+      engine = engine
+    )
 }
 
 #' @export
 #' @rdname hf_process
 #' @keywords internal
-hf_process.fancyhead <- function(x, escape_latex = TRUE, engine = "pdf") {
-  process_rows(x, type = "head", escape_latex = escape_latex, engine = engine)
+hf_process.fancyhead <- function(
+  x,
+  escape_latex = TRUE,
+  fontsize = 10,
+  engine = "pdf"
+) {
+  process_rows(
+    x,
+    type = "head",
+    escape_latex = escape_latex,
+    fontsize = fontsize,
+    engine = engine
+  )
 }
 
 #' @export
 #' @rdname hf_process
 #' @keywords internal
-hf_process.fancyfoot <- function(x, escape_latex = TRUE, engine = "pdf") {
-  process_rows(x, type = "foot", escape_latex = escape_latex, engine = engine)
+hf_process.fancyfoot <- function(
+  x,
+  escape_latex = TRUE,
+  fontsize = fontsize,
+  engine = "pdf"
+) {
+  process_rows(
+    x,
+    type = "foot",
+    escape_latex = escape_latex,
+    fontsize = fontsize,
+    engine = engine
+  )
 }
 
 #' Process list of `fancyrow` objects for different render engines
@@ -252,6 +289,7 @@ process_rows <- function(
   x,
   type = c("head", "foot"),
   escape_latex = TRUE,
+  fontsize = 10,
   engine = "pdf"
 ) {
   type <- match.arg(type)
@@ -261,7 +299,7 @@ process_rows <- function(
   switch(
     engine,
     pdf = process_rows_pdf(x_df, type = type, escape_latex = escape_latex),
-    docx = process_rows_docx(x)
+    docx = process_rows_docx(x, fontsize = fontsize)
   )
 }
 
@@ -323,13 +361,12 @@ process_rows_pdf <- function(x, type = c("head", "foot"), escape_latex = TRUE) {
 #' Process list of `fancyrow` objects into `fpar` objects for Word document headers and footers
 #'
 #' @param x list of `fancyrow` objects
-#' @param type Text positioning in the header (`head`) or footer (`foot`) of
-#'   document. Defaults to `head`.
+#' @param fontsize Document font size (pt)
 #' @inheritParams hf_process
 #'
 #' @return list of `fpar` objects for Word document headers and footers
 #' @noRd
-process_rows_docx <- function(x) {
+process_rows_docx <- function(x, fontsize = 10) {
   # set header/footer positions
   header_footer_tabs <- officer::fp_tabs(
     officer::fp_tab(pos = 4.5, style = "center"),
@@ -337,7 +374,7 @@ process_rows_docx <- function(x) {
   )
 
   # font property
-  font <- officer::fp_text(font.family = "Arial", font.size = 10)
+  font <- officer::fp_text(font.family = "Arial", font.size = fontsize)
 
   # create headers from docorator
   fpar_list <- lapply(x, function(row) {

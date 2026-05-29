@@ -64,8 +64,8 @@ render_docx <- function(x, display_loc = NULL, version_check = TRUE) {
   )
 
   # process headers and footers
-  fpar_head_list <- hf_process(x$header, engine = engine)
-  fpar_foot_list <- hf_process(x$footer, engine = engine)
+  fpar_head_list <- hf_process(x$header, fontsize = x$fontsize, engine = engine)
+  fpar_foot_list <- hf_process(x$footer, fontsize = x$fontsize, engine = engine)
 
   if (length(fpar_head_list) > 0) {
     section_args$header_default <- do.call(officer::block_list, fpar_head_list)
