@@ -39,12 +39,16 @@ render_docx <- function(x, display_loc = NULL, version_check = TRUE) {
   # initialize empty docx file
   doc <- officer::read_docx()
 
+  # convert geometry values to numeric for officer
+  geometry <- geom_process(geometry = x$geometry, engine = engine)
+
   # page properties
+  # these are all in inches
   page_margins <- officer::page_mar(
-    header = 1.25,
-    footer = 1.25,
-    left = 1,
-    right = 1,
+    header = geometry$top,
+    footer = geometry$bottom,
+    left = geometry$left,
+    right = geometry$right,
     gutter = 0
   )
 

@@ -1,4 +1,4 @@
-#' Process geometry for latex
+#' Process geometry
 #'
 #' @param header Document header
 #' @param footer Document footer
@@ -7,17 +7,56 @@
 #'
 #' @return Character string
 #' @noRd
-geom_process <- function(header, footer, fontsize, geometry){
+geom_process <- function(
+  header = NULL,
+  footer = NULL,
+  fontsize = 10,
+  geometry = geom_set(),
+  engine = "pdf"
+) {
+  switch(
+    engine,
+    pdf = geom_process_pdf(
+      header = header,
+      footer = footer,
+      fontsize = fontsize,
+      geometry = geometry
+    ),
+    docx = geom_process_docx(
+      geometry = geometry
+    )
+  )
+}
 
-  if (is.null(geometry$headheight)){
+geom_process_pdf <- function(header, footer, fontsize, geometry) {
+  if (is.null(geometry$headheight)) {
     geometry$headheight <- paste0(hf_height(header, fontsize), "pt")
   }
-  if (is.null(geometry$footskip)){
+  if (is.null(geometry$footskip)) {
     geometry$footskip <- paste0(hf_height(footer, fontsize), "pt")
   }
 
   paste(names(geometry), geometry, sep = "=", collapse = ", ")
+}
 
+geom_process_docx <- function(geometry) {
+  # only want left right top bottom for docx geometry - the rest are not applicable
+  geometry <- geometry[c("left", "right", "top", "bottom")]
+
+  # the attributes here contain a unit in a text string ie "8in" - need to convert to numeric and flag if not inches
+  lapply(geometry, function(x) {
+    if (grepl("in", x)) {
+      as.numeric(gsub("in", "", x))
+      # if no characters are present assume it's a numeric value in inches and return as is
+    } else if (!grepl("[a-zA-Z]", x)) {
+      as.numeric(x)
+    } else {
+      cli::cli_text(
+        "Geometry value {.val {x}} must be in inches for docx output"
+      )
+      as.numeric(gsub("[a-zA-Z]", "", x))
+    }
+  })
 }
 
 #' Set document geometry defaults
@@ -43,14 +82,13 @@ geom_process <- function(header, footer, fontsize, geometry){
 #' # add new defaults
 #' geom_set(paper = "legalpaper")
 #'
-geom_set <- function(...){
-
+geom_set <- function(...) {
   args <- list(...)
 
   # default list
   geom_list <- list(
-    paperheight="8.5in",
-    paperwidth="11in",
+    paperheight = "8.5in",
+    paperwidth = "11in",
     left = "1in",
     right = "1in",
     top = "1.25in",
@@ -65,11 +103,8 @@ geom_set <- function(...){
   # overwrite any user-specified defaults
   idx_drop <- which(names(geom_list) %in% names(args))
 
-  if(length(idx_drop)>0){
+  if (length(idx_drop) > 0) {
     geom_list <- geom_list[-idx_drop]
   }
-  c(geom_list,
-    args)
+  c(geom_list, args)
 }
-
-
