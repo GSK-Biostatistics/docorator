@@ -1,5 +1,7 @@
 #' Render to docx
 #'
+#' `r lifecycle::badge('experimental')`
+#'
 #' @param x `docorator` object
 #' @param display_loc optional path to save the output docx to
 #' @param version_check Boolean indicating whether to print a note if gt or ggplot versions dont match between the original docorator object and the one being used for rendering
@@ -8,7 +10,7 @@
 #' @export
 #'
 #' @section Examples:
-#'
+
 #' ```r
 #' gt::gtcars |>
 #'   dplyr::slice_head(n = 10) |>

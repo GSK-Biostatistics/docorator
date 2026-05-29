@@ -17,7 +17,7 @@ render_docx(x, display_loc = NULL, version_check = TRUE)
 This function saves a docx to a specified location
 }
 \description{
-Render to docx
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 }
 \section{Examples}{
 
