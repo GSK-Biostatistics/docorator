@@ -239,14 +239,14 @@ hf_process.fancyfoot <- function(x, escape_latex = TRUE, engine = "pdf") {
   process_rows(x, type = "foot", escape_latex = escape_latex, engine = engine)
 }
 
-#' Process list of `fancyrow` objects into character string containing latex code
+#' Process list of `fancyrow` objects for different render engines
 #'
 #' @param x list of `fancyrow` objects
 #' @param type Text positioning in the header (`head`) or footer (`foot`) of
 #'   document. Defaults to `head`.
 #' @inheritParams hf_process
 #'
-#' @return Character string
+#' @return processed headers and footers for the specified render engine
 #' @noRd
 process_rows <- function(
   x,

@@ -5,7 +5,7 @@
 #' @param fontsize Font size for headers and footers
 #' @param geometry Named list of geometry options
 #'
-#' @return Character string
+#' @return geometry for the specified render engine
 #' @noRd
 geom_process <- function(
   header = NULL,
@@ -28,6 +28,15 @@ geom_process <- function(
   )
 }
 
+#' Process geometry for latex
+#'
+#' @param header Document header
+#' @param footer Document footer
+#' @param fontsize Font size for headers and footers
+#' @param geometry Named list of geometry options
+#'
+#' @return Character string
+#' @noRd
 geom_process_pdf <- function(header, footer, fontsize, geometry) {
   if (is.null(geometry$headheight)) {
     geometry$headheight <- paste0(hf_height(header, fontsize), "pt")
@@ -39,6 +48,12 @@ geom_process_pdf <- function(header, footer, fontsize, geometry) {
   paste(names(geometry), geometry, sep = "=", collapse = ", ")
 }
 
+#' Process geometry for docx
+#'
+#' @param geometry Named list of geometry options
+#'
+#' @return Named list of geometry options with numeric values in inches
+#' @noRd
 geom_process_docx <- function(geometry) {
   # only want left right top bottom for docx geometry - the rest are not applicable
   geometry <- geometry[c("left", "right", "top", "bottom")]
