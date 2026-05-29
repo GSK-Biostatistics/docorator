@@ -1,0 +1,51 @@
+---
+title: "Multi Page Displays"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Multi Page Displays}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+Below we demonstrate how a list of objects can be passed to `as_docorator` to output a multi-page PDF document, with page numbers generated using `doc_pagenum()`. Note: `doc_pagenum()` is only supported for PDF output.
+
+Your list can consist of any combination of docorator supported objects e.g gt tables, ggplots, PNGs etc. In the example below we create a list with a ggplot and a gt table.
+```{r setup, eval = FALSE}
+library(docorator)
+library(ggplot2)
+library(gt)
+
+# Create a plot
+plot <- ggplot(mtcars, aes(wt, mpg)) +
+  geom_point() +
+  labs(title = "Weight vs MPG")
+
+# Create a table
+tbl <- head(mtcars) |>
+  gt::gt()
+
+# Combine into a list
+output_list <- list(
+  plot,
+  tbl
+)
+
+# Run `as_docorator` and set headers and footers
+as_docorator(
+  output_list,
+  display_name = "multi_page_example",
+  header = fancyhead(fancyrow(right = doc_pagenum()), # `doc_pagenum` will set pagenumbers in the right header
+                     fancyrow(center = "Multipage Display")),
+  footer = fancyfoot(fancyrow(left = "Footnote1"))
+) |>  # render
+render_pdf()
+```
+
+This will produce a PDF with a plot on the first page, a table on the second, and page numbers in the top right corner.

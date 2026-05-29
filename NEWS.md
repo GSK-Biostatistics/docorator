@@ -1,6 +1,7 @@
 # docorator development version
 Bug Fixes
-* use individual markdown chunks for each table in a gt_group to avoid issues with caption ids
+* use individual markdown chunks for each table in a gt_group to avoid issues with caption ids (#79)
+* remove RTF warning about gt version number (#100)
 
 # docorator 0.6.0
 
