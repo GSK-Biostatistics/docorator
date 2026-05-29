@@ -17,15 +17,16 @@
 #'  fancyrow(center = "Demographic Summary")
 #' )
 #'
-fancyhead <- function(...){
-
+fancyhead <- function(...) {
   dots <- list(...)
-  if (rlang::is_empty(dots)) return(NULL)
+  if (rlang::is_empty(dots)) {
+    return(NULL)
+  }
   check_fancyrows(dots)
 
   structure(
     dots,
-    class = c("fancyhead","fancyhdr")
+    class = c("fancyhead", "fancyhdr")
   )
 }
 
@@ -47,15 +48,16 @@ fancyhead <- function(...){
 #'  fancyrow(left = "My first footnote", right = doc_datetime())
 #' )
 #'
-fancyfoot <- function(...){
-
+fancyfoot <- function(...) {
   dots <- list(...)
-  if (rlang::is_empty(dots)) return(NULL)
+  if (rlang::is_empty(dots)) {
+    return(NULL)
+  }
   check_fancyrows(dots)
 
   structure(
     dots,
-    class = c("fancyfoot","fancyhdr")
+    class = c("fancyfoot", "fancyhdr")
   )
 }
 
@@ -77,20 +79,14 @@ fancyfoot <- function(...){
 #' fancyrow(center = "Just text in the center")
 #'
 #' fancyrow(left = "All", center = "Three", right = "Positions filled")
-fancyrow <- function(left = NA,
-                     center = NA,
-                     right = NA){
-
+fancyrow <- function(left = NA, center = NA, right = NA) {
   # Check that all arguments are single strings
   check_fancyrow_string(left = left, center = center, right = right)
 
   structure(
-    list(left = left,
-         center = center,
-         right = right),
+    list(left = left, center = center, right = right),
     class = "fancyrow"
   )
-
 }
 
 #' Check that all arguments in fancyrow() are single strings or NA
@@ -100,10 +96,7 @@ fancyrow <- function(left = NA,
 #' @noRd
 #' @keywords internal
 #'
-check_fancyrow_string <- function(left = NA,
-                                  center = NA,
-                                  right = NA){
-
+check_fancyrow_string <- function(left = NA, center = NA, right = NA) {
   # Create list of arguments for iteration
   args <- list(left = left, center = center, right = right)
   errors <- character(0)
@@ -114,7 +107,9 @@ check_fancyrow_string <- function(left = NA,
     if (length(value) > 1) {
       errors <- c(
         errors,
-        cli::format_message("{.arg {name}} must be a single value, but has a length of {length(value)}.")
+        cli::format_message(
+          "{.arg {name}} must be a single value, but has a length of {length(value)}."
+        )
       )
       next
     }
@@ -123,7 +118,9 @@ check_fancyrow_string <- function(left = NA,
     if (!is.na(value) && !is.character(value)) {
       errors <- c(
         errors,
-        cli::format_message("{.arg {name}} must be a character string or NA, but is {class(value)}.")
+        cli::format_message(
+          "{.arg {name}} must be a character string or NA, but is {class(value)}."
+        )
       )
     }
   }
@@ -140,20 +137,21 @@ check_fancyrow_string <- function(left = NA,
 #' @param chr_ok Whether to accept character vectors as input
 #' @noRd
 #'
-check_fancyhdr <- function(x, chr_ok = FALSE){
-
+check_fancyhdr <- function(x, chr_ok = FALSE) {
   if (rlang::is_empty(x)) {
     return(invisible(x))
   }
 
   class_ok <- "fancyhdr"
-  if (chr_ok){
-    class_ok <- c("fancyhdr","character")
+  if (chr_ok) {
+    class_ok <- c("fancyhdr", "character")
   }
 
   if (!inherits(x, class_ok)) {
-    cli::cli_abort("The {.arg {rlang::caller_arg(x)}} argument must be class {.cls {class_ok}} or empty, not {.obj_type_friendly {x}}.",
-              call = rlang::caller_env())
+    cli::cli_abort(
+      "The {.arg {rlang::caller_arg(x)}} argument must be class {.cls {class_ok}} or empty, not {.obj_type_friendly {x}}.",
+      call = rlang::caller_env()
+    )
   }
   invisible(x)
 }
@@ -163,11 +161,13 @@ check_fancyhdr <- function(x, chr_ok = FALSE){
 #' @param x List of entries passed to `fancyheader` or `fancyfooter`
 #'
 #' @noRd
-check_fancyrows <- function(x){
-  for(idx in seq_along(x)){
-    if(!inherits(x[[idx]], "fancyrow")){
-      cli::cli_abort("Entry number {idx} is not an object of class `fancyrow`.",
-                call = rlang::caller_env())
+check_fancyrows <- function(x) {
+  for (idx in seq_along(x)) {
+    if (!inherits(x[[idx]], "fancyrow")) {
+      cli::cli_abort(
+        "Entry number {idx} is not an object of class `fancyrow`.",
+        call = rlang::caller_env()
+      )
     }
   }
 }
@@ -178,16 +178,15 @@ check_fancyrows <- function(x){
 #'
 #' @return tibble
 #' @noRd
-as_tibble_fancyrow <- function(x, ...){
-  dplyr::tibble(left = x$left,
-         center = x$center,
-         right = x$right)
+as_tibble_fancyrow <- function(x, ...) {
+  dplyr::tibble(left = x$left, center = x$center, right = x$right)
 }
 
 #' Process headers/footers
 #'
 #' @param x header or footer
 #' @param escape_latex Boolean to escape latex in header/footer
+#' @param engine render engine to dictate how the headers and footers should be constructed
 #'
 #' @return character string containing headers and footers latex code
 #' @export
@@ -200,15 +199,16 @@ as_tibble_fancyrow <- function(x, ...){
 #'
 #' hf_process(header)
 #'
-hf_process <- function(x, escape_latex = TRUE){
+hf_process <- function(x, escape_latex = TRUE, engine = "pdf") {
+  engine <- match.arg(engine, choices = c("pdf", "docx"))
   UseMethod("hf_process", x)
 }
 
 #' @export
 #' @rdname hf_process
 #' @keywords internal
-hf_process.default <- function(x, escape_latex = TRUE){
-  if(is.null(x)){
+hf_process.default <- function(x, escape_latex = TRUE, engine = "pdf") {
+  if (is.null(x)) {
     return(NULL)
   }
   x
@@ -217,24 +217,52 @@ hf_process.default <- function(x, escape_latex = TRUE){
 #' @export
 #' @rdname hf_process
 #' @keywords internal
-hf_process.character <- function(x, escape_latex = TRUE){
-  cli::cli_alert_info("Coercing `header` from {.cls {'character'}} to {.cls {'fancyhead'}} with {length(x)} row{?s}")
+hf_process.character <- function(x, escape_latex = TRUE, engine = "pdf") {
+  cli::cli_alert_info(
+    "Coercing `header` from {.cls {'character'}} to {.cls {'fancyhead'}} with {length(x)} row{?s}"
+  )
   lapply(x, fancyrow) |>
-    process_rows(type = "head", escape_latex = escape_latex)
+    process_rows(type = "head", escape_latex = escape_latex, engine = engine)
 }
 
 #' @export
 #' @rdname hf_process
 #' @keywords internal
-hf_process.fancyhead <- function(x, escape_latex = TRUE){
-  process_rows(x, type = "head", escape_latex = escape_latex)
+hf_process.fancyhead <- function(x, escape_latex = TRUE, engine = "pdf") {
+  process_rows(x, type = "head", escape_latex = escape_latex, engine = engine)
 }
 
 #' @export
 #' @rdname hf_process
 #' @keywords internal
-hf_process.fancyfoot <- function(x, escape_latex = TRUE){
-  process_rows(x, type = "foot", escape_latex = escape_latex)
+hf_process.fancyfoot <- function(x, escape_latex = TRUE, engine = "pdf") {
+  process_rows(x, type = "foot", escape_latex = escape_latex, engine = engine)
+}
+
+#' Process list of `fancyrow` objects into character string containing latex code
+#'
+#' @param x list of `fancyrow` objects
+#' @param type Text positioning in the header (`head`) or footer (`foot`) of
+#'   document. Defaults to `head`.
+#' @inheritParams hf_process
+#'
+#' @return Character string
+#' @noRd
+process_rows <- function(
+  x,
+  type = c("head", "foot"),
+  escape_latex = TRUE,
+  engine = "pdf"
+) {
+  type <- match.arg(type)
+
+  x_df <- purrr::map_dfr(x, as_tibble_fancyrow)
+
+  switch(
+    engine,
+    pdf = process_rows_pdf(x_df, type = type, escape_latex = escape_latex),
+    docx = process_rows_docx(x)
+  )
 }
 
 
@@ -243,39 +271,88 @@ hf_process.fancyfoot <- function(x, escape_latex = TRUE){
 #' @param x list of `fancyrow` objects
 #' @param type Text positioning in the header (`head`) or footer (`foot`) of
 #'   document. Defaults to `head`.
+#' @inheritParams hf_process
 #'
 #' @return Character string
 #' @noRd
-process_rows <- function(x, type = c("head","foot"), escape_latex = TRUE){
-
-  type <- match.arg(type)
-
-  x_df <- purrr::map_dfr(x, as_tibble_fancyrow)
-
-  if(isTRUE(escape_latex)){
-    x_df <- x_df |>
+process_rows_pdf <- function(x, type = c("head", "foot"), escape_latex = TRUE) {
+  if (isTRUE(escape_latex)) {
+    x <- x |>
       dplyr::mutate(
         # escape latex characters
-        dplyr::across(dplyr::everything(), hf_escape))
+        dplyr::across(dplyr::everything(), hf_escape)
+      )
   }
 
-  x_df <- x_df |>
+  x_df <- x |>
     dplyr::mutate(
-      dplyr::across(dplyr::everything(), \(x) as.character(x) |>
-               tidyr::replace_na("\\phantom{}"))
+      dplyr::across(dplyr::everything(), \(x) {
+        as.character(x) |>
+          tidyr::replace_na("\\phantom{}")
+      })
     ) |>
-  dplyr::summarise(
-    dplyr::across(
-      dplyr::everything(), \(x) {
-        x_braces <- paste0("{", x, "}")
-        paste(x_braces, collapse = "\\\\")
-      }
+    dplyr::summarise(
+      dplyr::across(
+        dplyr::everything(),
+        \(x) {
+          x_braces <- paste0("{", x, "}")
+          paste(x_braces, collapse = "\\\\")
+        }
+      )
     )
+
+  paste0(
+    "\\fancy",
+    type,
+    "[L]{\\begin{tabular}[b]{@{}l@{}}",
+    x_df$left,
+    "\\end{tabular}}",
+    "\\fancy",
+    type,
+    "[C]{\\begin{tabular}[b]{@{}c@{}}",
+    x_df$center,
+    "\\end{tabular}}",
+    "\\fancy",
+    type,
+    "[R]{\\begin{tabular}[b]{@{}r@{}}",
+    x_df$right,
+    "\\end{tabular}}"
+  )
+}
+
+#' Process list of `fancyrow` objects into `fpar` objects for Word document headers and footers
+#'
+#' @param x list of `fancyrow` objects
+#' @param type Text positioning in the header (`head`) or footer (`foot`) of
+#'   document. Defaults to `head`.
+#' @inheritParams hf_process
+#'
+#' @return list of `fpar` objects for Word document headers and footers
+#' @noRd
+process_rows_docx <- function(x) {
+  # set header/footer positions
+  header_footer_tabs <- officer::fp_tabs(
+    officer::fp_tab(pos = 4.5, style = "center"),
+    officer::fp_tab(pos = 10, style = "right")
   )
 
-  paste0("\\fancy", type, "[L]{\\begin{tabular}[b]{@{}l@{}}", x_df$left, "\\end{tabular}}",
-         "\\fancy", type, "[C]{\\begin{tabular}[b]{@{}c@{}}", x_df$center, "\\end{tabular}}",
-         "\\fancy", type, "[R]{\\begin{tabular}[b]{@{}r@{}}", x_df$right, "\\end{tabular}}")
+  # font property
+  font <- officer::fp_text(font.family = "Arial", font.size = 10)
+
+  # create headers from docorator
+  fpar_list <- lapply(x, function(row) {
+    row <- row[!is.na(row)]
+    officer::fpar(
+      officer::ftext(row$left, font),
+      officer::run_tab(),
+      officer::ftext(row$center, font),
+      officer::run_tab(),
+      officer::ftext(row$right, font),
+      fp_p = officer::fp_par(tabs = header_footer_tabs)
+    )
+  })
+
+  fpar_list
 }
 
 #' Calculate desired header or footer height for the document
@@ -293,35 +370,36 @@ process_rows <- function(x, type = c("head","foot"), escape_latex = TRUE){
 #'
 #' hf_height(header, 10)
 #'
-hf_height <- function(x, fontsize){
+hf_height <- function(x, fontsize) {
   UseMethod("hf_height", x)
 }
 
 #' @export
 #' @rdname hf_height
 #' @keywords internal
-hf_height.default <- function(x, fontsize){
-  ceiling(fontsize*1.2)
+hf_height.default <- function(x, fontsize) {
+  ceiling(fontsize * 1.2)
 }
 
 #' @export
 #' @rdname hf_height
 #' @keywords internal
-hf_height.fancyhdr <- function(x, fontsize){
-  if (is.null(x)) return(0)
+hf_height.fancyhdr <- function(x, fontsize) {
+  if (is.null(x)) {
+    return(0)
+  }
 
   # find # of rows
   num_rows <- purrr::map_dfr(x, as_tibble_fancyrow) |> nrow()
 
   # rough estimate but should be sufficient to avoid the fancyhdr warning
-  ceiling(num_rows*fontsize*1.2)
+  ceiling(num_rows * fontsize * 1.2)
 }
 
 #' escape the latex characters, but keep the output of doc_pagenum unescaped
 #' @param x text string to be escaped
 #' @noRd
 hf_escape <- function(x) {
-
   latex_text <- gt::escape_latex(x, unicode_conversion = TRUE)
 
   # keep the display page number unescaped
@@ -331,7 +409,6 @@ hf_escape <- function(x) {
   )
   escaped_full <- latex_text |>
     stringr::str_replace_all(page_num_pattern)
-
 }
 
 
@@ -351,15 +428,15 @@ hf_escape <- function(x) {
 #'
 #' fancywrap(header, 5)
 #'
-fancywrap <- function(x, chars){
+fancywrap <- function(x, chars) {
   UseMethod("fancywrap", x)
 }
 
 #' @rdname fancywrap
 #' @export
 #' @noRd
-fancywrap.default <- function(x, chars){
-  if(is.null(x)){
+fancywrap.default <- function(x, chars) {
+  if (is.null(x)) {
     return(NULL)
   }
   x
@@ -368,20 +445,21 @@ fancywrap.default <- function(x, chars){
 #' @rdname fancywrap
 #' @export
 #' @noRd
-fancywrap.fancyrow <- function(x, chars){
+fancywrap.fancyrow <- function(x, chars) {
   # which elements have strings in them
   str_to_wrap <- which(!is.na(x))
   if (length(str_to_wrap) != 1) {
     # check if the total of the elements are too long for the page
     total_length <- sum(nchar(x[str_to_wrap]))
     total_string <- paste(x[str_to_wrap], collapse = ", ")
-    if(total_length>chars){
-      cli::cli_text("Note: Text is only wrapped for `fancyrows` with one element. Your fancyrow text {.arg {total_string}} is over the character limit of {.arg {chars}} and could overrun the page margins.")
+    if (total_length > chars) {
+      cli::cli_text(
+        "Note: Text is only wrapped for `fancyrows` with one element. Your fancyrow text {.arg {total_string}} is over the character limit of {.arg {chars}} and could overrun the page margins."
+      )
     }
     wrapped_rows <- list(x)
-  }
-  else{
-    row <-  x[[str_to_wrap]]
+  } else {
+    row <- x[[str_to_wrap]]
     # let stringi do the hard part of the string wrapping
     rows <- stringi::stri_wrap(row, chars, whitespace_only = TRUE)
 
@@ -390,7 +468,6 @@ fancywrap.fancyrow <- function(x, chars){
       names(args) <- names(str_to_wrap)
       do.call(fancyrow, args)
     })
-
   }
 
   wrapped_rows
@@ -410,19 +487,19 @@ fancywrap.fancyhead <- function(x, chars) {
 #' @rdname fancywrap
 #' @export
 #' @noRd
-fancywrap.fancyfoot <- function(x, chars){
-  wrapped_footers <- lapply(x, function(row){
+fancywrap.fancyfoot <- function(x, chars) {
+  wrapped_footers <- lapply(x, function(row) {
     fancywrap(row, chars)
   })
 
-  do.call(fancyfoot, unlist(wrapped_footers, recursive=FALSE))
+  do.call(fancyfoot, unlist(wrapped_footers, recursive = FALSE))
 }
 
 
 #' @rdname fancywrap
 #' @export
 #' @noRd
-fancywrap.docorator <- function(x, chars){
+fancywrap.docorator <- function(x, chars) {
   # width in pts is roughly 50% font size
   # 1 inch 72 points
   # 11 inch page without margins, 9 inches
@@ -431,11 +508,11 @@ fancywrap.docorator <- function(x, chars){
   ch_width <- x$fontsize * 0.5
   characters <- floor(630 / ch_width)
 
-  if(!is.null(x$header)){
+  if (!is.null(x$header)) {
     x$header <- fancywrap(x$header, chars = characters)
   }
 
-  if(!is.null(x$footer)){
+  if (!is.null(x$footer)) {
     x$footer <- fancywrap(x$footer, chars = characters)
   }
 
