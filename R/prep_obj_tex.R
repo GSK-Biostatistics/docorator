@@ -59,18 +59,6 @@ prep_obj_tex.gt_tbl <- function(x, transform = NULL, ...) {
     cat()
 }
 
-#' @rdname prep_obj_tex
-#' @export
-#' @keywords internal
-prep_obj_tex.gt_group <- function(x, transform = NULL, ...) {
-  res <- lapply(seq_len(nrow(x$display$gt_tbls)), function(idx) {
-    tbl <- gt::grp_pull(x$display, idx)
-
-    gt_to_tex(tbl, transform)
-  })
-  cat(unlist(res), sep = '\\pagebreak')
-}
-
 #' convert gt_tbl object to latex
 #' @noRd
 gt_to_tex <- function(x, transform = NULL){
