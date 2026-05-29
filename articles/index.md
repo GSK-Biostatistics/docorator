@@ -10,4 +10,6 @@
   Sizing](https://GSK-Biostatistics.github.io/docorator/articles/document_sizing.md):
 - [Headers and
   Footers](https://GSK-Biostatistics.github.io/docorator/articles/headers_footers.md):
+- [Multi Page
+  Displays](https://GSK-Biostatistics.github.io/docorator/articles/multi_page.md):
 - [Render](https://GSK-Biostatistics.github.io/docorator/articles/render.md):
