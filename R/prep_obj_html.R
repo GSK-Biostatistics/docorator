@@ -39,15 +39,17 @@ prep_obj_html.gt_tbl <- function(x, ...) {
 #' @keywords internal
 prep_obj_html.gt_group <- function(x, ...) {
 
-  tbl_divs <- sapply(seq_len(nrow(x$display$gt_tbls)), function(idx) {
+  n <- nrow(x$display$gt_tbls)
+
+  tbl_divs <- sapply(seq_len(n), function(idx) {
+
     tbl <- gt::grp_pull(x$display, idx)
+    style <- if (idx < n) ' style="break-after: page;"' else ""
+    paste0("<div", style, ">", gt::as_raw_html(tbl), "</div>")
+    
+  })
 
-    gt::as_raw_html(tbl) 
-  })  
-
-  paste0("<div>",
-    paste(tbl_divs, collapse = ""),
-   "</div>")
+  paste(tbl_divs, collapse = "")
 }
 
 #' @rdname prep_obj_html
