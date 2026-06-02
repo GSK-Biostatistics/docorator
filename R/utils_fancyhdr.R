@@ -369,6 +369,13 @@ fancywrap.default <- function(x, chars){
 #' @export
 #' @noRd
 fancywrap.fancyrow <- function(x, chars){
+
+  # check chars is numeric length 1 
+  if(!is.numeric(chars) || length(chars) != 1){
+    cli::cli_abort("The {.arg chars} argument must be a single numeric value, but is {.obj_type_friendly {chars}} length {length(chars)}.",
+              call = rlang::caller_env())
+  }
+
   # which elements have strings in them
   str_to_wrap <- which(!is.na(x))
   if (length(str_to_wrap) != 1) {

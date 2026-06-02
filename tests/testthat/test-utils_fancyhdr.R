@@ -146,6 +146,8 @@ test_that("fancyrows are split when required", {
   fancywrap6 <- fancywrap(fancyrow6, chars = 10)
   expect_equal(list(fancyrow6), fancywrap6)
 
+  # error if chars is not numeric length 1
+  expect_error(fancywrap(fancyrow1, chars = "not a number")) 
 
 })
 
@@ -171,6 +173,7 @@ test_that("splitting of fancyhead and fancyfoot elements are handled correctly",
       fancyrow(center = "The quick brown fox jumps over the lazy dog, showcasing a vibrant array of colors and swift movements across the tranquil, sun-drenched landscape. This idyllic scene unfolds gracefully.", right = "second element that will prevent wrapping")
     ),
     fancywrap1
+
   )
 
 
