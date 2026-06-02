@@ -75,3 +75,13 @@ test_that("prep_obj_html.gg errors when ggsave fails", {
     )
   })
 })
+
+
+test_that("png objects are prepared correctly ",{
+  png <- png_path(path = system.file("extdata/test_image.png", package = "docorator"))
+  docorator <- as_docorator(png, display_name = "myfig", save_object = FALSE)
+  html_png <- prep_obj_html(docorator)
+
+  expect_type(html_png, "character")
+  expect_true(grepl('<img src=', html_png))
+})

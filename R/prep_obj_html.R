@@ -56,8 +56,8 @@ prep_obj_html.gt_group <- function(x, ...) {
 #' @export
 #' @keywords internal
 prep_obj_html.gg <- function(x, ...) {
-  temp <- tempfile(fileext = ".png")
-  on.exit(unlink(temp), add = TRUE)
+
+  temp <- tempfile(fileext = ".png", tmpdir = tempdir())
 
   png_success <- tryCatch(
     ggplot2::ggsave(temp, plot = x$display, device = "png"),
@@ -71,4 +71,14 @@ prep_obj_html.gg <- function(x, ...) {
   } 
 }
 
+#' @rdname prep_obj_html
+#' @export
+#' @keywords internal
+prep_obj_html.PNG <- function(x, ...) {
+  # save the png to a temp location 
+  temp <- tempfile(fileext = ".png", tmpdir = tempdir())
+  png::writePNG(x$display$png, temp)
+  
+  paste0('<img src="', knitr::image_uri(temp), '" style="max-width:100%;" />')
 
+}

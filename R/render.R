@@ -449,7 +449,7 @@ render_html <- function(x, display_loc = NULL) {
 #'
 render_pdf_html <- function(x,
                             display_loc = NULL,
-                            keep_html = TRUE,
+                            keep_html = FALSE,
                             wait = 3) {
 
   if (!inherits(x, "docorator")) {
@@ -472,7 +472,7 @@ render_pdf_html <- function(x,
   }
 
   # render intermediate html
-  render_html(x)
+  render_html(x, display_loc = display_loc)
 
   # convert to pdf via chromote
   b <- chromote::ChromoteSession$new()

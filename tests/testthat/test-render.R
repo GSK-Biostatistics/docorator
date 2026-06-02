@@ -644,22 +644,37 @@ test_that("html headers and footers", {
 
 test_that("render_html works with a ggplot display", {
 
-  plt <- ggplot2::ggplot(mtcars, ggplot2::aes(x = mpg, y = wt)) +
+  p1 <- ggplot2::ggplot(mtcars, ggplot2::aes(x = mpg, y = wt)) +
     ggplot2::geom_point()
 
+  p2 <- png_path(path = system.file("extdata/test_image.png", package = "docorator"))
+
   withr::with_tempdir({
-    doc <- as_docorator(
-      x            = plt,
-      display_name = "my_fig",
+    doc1 <- as_docorator(
+      x            = p1,
+      display_name = "my_fig1",
       header       = fancyhead(fancyrow(left = "Figure 1")),
       footer       = NULL,
       save_object  = FALSE
     )
-    suppressMessages(render_html(doc))
-    html <- readLines("my_fig.html") |> paste(collapse = "\n")
-    expect_true(file.exists("my_fig.html"))
+    suppressMessages(render_html(doc1))
+    html1 <- readLines("my_fig1.html") |> paste(collapse = "\n")
+    expect_true(file.exists("my_fig1.html"))
     # ggplot embedded as base64 img
-    expect_true(grepl('<img src="data:image/png;base64', html, fixed = TRUE))
+    expect_true(grepl('<img src="data:image/png;base64', html1, fixed = TRUE))
+
+
+    doc2 <- as_docorator(
+      x            = p2,
+      display_name = "my_fig2",
+      header       = fancyhead(fancyrow(left = "Figure 1")),
+      footer       = NULL,
+      save_object  = FALSE
+    )
+    suppressMessages(render_html(doc2))
+    html2 <- readLines("my_fig2.html") |> paste(collapse = "\n")
+    expect_true(file.exists("my_fig2.html")) 
+    expect_true(grepl('<img src="data:image/png;base64', html2, fixed = TRUE))
   })
 })
 
@@ -686,7 +701,7 @@ test_that("render_pdf_html creates pdf and html files", {
       save_object = FALSE
     )
 
-    res <- suppressMessages( docorator |> render_pdf_html()
+    res <- suppressMessages( docorator |> render_pdf_html(keep_html = TRUE)
     )
 
     expect_true(file.exists("my_first_gt.html"))

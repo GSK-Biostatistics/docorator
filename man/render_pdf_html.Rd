@@ -4,7 +4,7 @@
 \alias{render_pdf_html}
 \title{Render to PDF via HTML}
 \usage{
-render_pdf_html(x, display_loc = NULL, keep_html = TRUE, wait = 3)
+render_pdf_html(x, display_loc = NULL, keep_html = FALSE, wait = 3)
 }
 \arguments{
 \item{x}{\code{docorator} object}
