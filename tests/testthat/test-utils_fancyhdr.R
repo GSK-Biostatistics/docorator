@@ -146,6 +146,8 @@ test_that("fancyrows are split when required", {
   fancywrap6 <- fancywrap(fancyrow6, chars = 10)
   expect_equal(list(fancyrow6), fancywrap6)
 
+  # error if chars is not numeric length 1
+  expect_error(fancywrap(fancyrow1, chars = "not a number")) 
 
 })
 
@@ -171,6 +173,7 @@ test_that("splitting of fancyhead and fancyfoot elements are handled correctly",
       fancyrow(center = "The quick brown fox jumps over the lazy dog, showcasing a vibrant array of colors and swift movements across the tranquil, sun-drenched landscape. This idyllic scene unfolds gracefully.", right = "second element that will prevent wrapping")
     ),
     fancywrap1
+
   )
 
 
@@ -250,6 +253,26 @@ test_that("splitting of fancyhead and fancyfoot elements in a docorator object i
       save_object = FALSE
     ),
     fancywrap2
+  )
+
+  # pass number of characters 
+  fancywrap3 <- fancywrap(docorator2, chars = 100)
+
+  # for font size 10 the characters should be 100
+  expect_equal(
+    as_docorator(
+      x = my_gt,
+      header = fancywrap(fancyhead(
+        fancyrow(left = "The quick brown fox jumps over the lazy dog, showcasing a vibrant array of colors and swift movements across the tranquil, sun-drenched landscape. This idyllic scene unfolds gracefully.")
+      ), 100),
+      footer = fancywrap(fancyfoot(
+        fancyrow(left = "The quick brown fox jumps over the lazy dog, showcasing a vibrant array of colors and swift movements across the tranquil, sun-drenched landscape. This idyllic scene unfolds gracefully.")
+      ), 100),
+      display_name = "headers_and_footers",
+      display_loc = NULL,
+      save_object = FALSE
+    ),
+    fancywrap3
   )
 
 })
