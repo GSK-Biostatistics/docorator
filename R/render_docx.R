@@ -39,7 +39,10 @@ render_docx <- function(x, display_loc = NULL, version_check = TRUE) {
   engine = "docx"
 
   # initialize empty docx file
-  doc <- officer::read_docx()
+  doc <- officer::read_docx(system.file(
+    "template/template.docx",
+    package = "docorator"
+  ))
 
   # convert geometry values to numeric for officer
   geometry <- geom_process(geometry = x$geometry, engine = engine)
@@ -104,6 +107,6 @@ render_docx <- function(x, display_loc = NULL, version_check = TRUE) {
   if (!is.null(doc)) {
     cli::cli_alert_success("Document created at: {x$display_name}.docx")
   }
-  
+
   invisible(x)
 }

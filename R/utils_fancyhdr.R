@@ -374,7 +374,7 @@ process_rows_docx <- function(x, fontsize = 10) {
   )
 
   # font property
-  font <- officer::fp_text(font.family = "Arial", font.size = fontsize)
+  font <- officer::fp_text(font.size = fontsize)
 
   # create headers from docorator
   fpar_list <- lapply(x, function(row) {

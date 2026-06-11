@@ -49,7 +49,6 @@ prep_obj_docx.gt_tbl <- function(x, ...) {
 prep_obj_docx.gt_group <- function(x, ...) {
   # list of ooxml - one for each table in the gt_group
   lapply(x$display$gt_tbls$gt_tbl, function(i) {
-    # new docorator object with gt_tbl as display
     gt_to_word(i)
   })
 }
@@ -57,6 +56,27 @@ prep_obj_docx.gt_group <- function(x, ...) {
 #' convert gt_tbl object to ooxml
 #' @noRd
 gt_to_word <- function(x) {
+  # apply options to the gt
+  # Arial font
+  font <- "Arial"
+  x <- x |>
+    gt::tab_style(
+      style = gt::cell_text(font = c(font)), ## size is in half points
+      locations = list(
+        gt::cells_title(),
+        gt::cells_column_labels(),
+        gt::cells_column_spanners(),
+        gt::cells_stubhead(),
+        gt::cells_stub(),
+        gt::cells_body(),
+        gt::cells_row_groups(),
+        gt::cells_footnotes()
+      )
+    ) |>
+    gt::tab_options(
+      table.font.names = c(font)
+    )
+
   # get ooxml from gt
   ooxml <- polish::polish_content_word(x, autonum = FALSE)
 
