@@ -104,4 +104,6 @@ render_docx <- function(x, display_loc = NULL, version_check = TRUE) {
   if (!is.null(doc)) {
     cli::cli_alert_success("Document created at: {x$display_name}.docx")
   }
+  
+  invisible(x)
 }
