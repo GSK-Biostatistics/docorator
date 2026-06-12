@@ -54,6 +54,8 @@ reference:
   contents:
   - render_pdf
   - render_rtf
+  - render_html
+  - render_pdf_html
 - title: Header and footer helpers
   contents:
   - fancyhead

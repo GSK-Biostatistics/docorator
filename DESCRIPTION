@@ -17,6 +17,7 @@ Imports:
     rlang,
     cli,
     dplyr,
+    htmltools,
     rstudioapi, 
     purrr,
     stringr,
@@ -26,7 +27,9 @@ Imports:
     png,
     knitr,
     withr,
-    quarto
+    quarto,
+    chromote,
+    base64enc
 Suggests: 
     rprojroot,
     testthat (>= 3.0.0),

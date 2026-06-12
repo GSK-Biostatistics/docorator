@@ -80,5 +80,8 @@ mytbl |>
 
 # Note
 
-{docorator} requires LaTeX libraries for PDF rendering. If using
-{tinytex}, the “TinyTeX” bundle covers the core dependencies.
+{docorator} requires the following system dependencies for PDF
+rendering: - LaTeX libraries for traditional PDF rendering. If using
+{tinytex}, the “TinyTeX” bundle covers the core dependencies. -
+Chrome/Chromium installation for HTML-based PDF rendering via the
+{chromote} package (experimental).
