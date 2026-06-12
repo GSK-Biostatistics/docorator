@@ -41,15 +41,13 @@ prep_obj_html.gt_group <- function(x, ...) {
 
   n <- nrow(x$display$gt_tbls)
 
-  tbl_divs <- sapply(seq_len(n), function(idx) {
+  sapply(seq_len(n), function(idx) {
 
     tbl <- gt::grp_pull(x$display, idx)
     style <- if (idx < n) ' style="break-after: page;"' else ""
     paste0("<div", style, ">", gt::as_raw_html(tbl), "</div>")
     
   })
-
-  paste(tbl_divs, collapse = "")
 }
 
 #' @rdname prep_obj_html
@@ -89,7 +87,7 @@ prep_obj_html.list <- function(x, ...){
 
   n <- length(x$display)
 
-  html_vec <- sapply(seq_len(n), function(idx) {
+  sapply(seq_len(n), function(idx) {
 
     x$display <- x$display[[idx]]
 
@@ -97,7 +95,6 @@ prep_obj_html.list <- function(x, ...){
     paste0("<div", style, ">", prep_obj_html(x), "</div>")
   })
 
-  paste(html_vec, collapse = "")
   #TODO figure out why this is not resulting in page breaks in pdf
 
 }

@@ -390,7 +390,7 @@ render_html <- function(x, display_loc = NULL) {
     hf_process(x$header, engine = "html"),
     '</td></tr></thead>',
     '<tbody><tr><td>', 
-    prep_obj_html(x), 
+    prep_obj_html(x) |> paste(collapse = ""), 
     '</td></tr></tbody>',
     '<tfoot><tr><td>',
     hf_process(x$footer, engine = "html"),
