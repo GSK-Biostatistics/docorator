@@ -309,6 +309,17 @@ process_rows_pdf <- function(x, type = c("head","foot"), escape_latex = TRUE){
 #' @return Character string
 #' @noRd
 process_rows_html <- function(x, type = c("head", "foot")) {
+
+  type <- match.arg(type)
+
+  if (type == "head" && !is.na(x$right[[1]])) {
+    cli::cli_warn(
+      "The {.arg right} position of the first {.fn fancyrow} in a {.fn fancyhead} is reserved for page number printing in HTML-style PDF output and will be set to NA.",
+      call = rlang::caller_env()
+    )
+    x$right[[1]] <- NA
+  }
+
   x <- x |>
     dplyr::mutate(
       dplyr::across(dplyr::everything(), \(x) {

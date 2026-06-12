@@ -255,6 +255,27 @@ test_that("splitting of fancyhead and fancyfoot elements in a docorator object i
 })
 
 
+test_that("right of first fancyrow in fancyhead warns and is cleared for html", {
+
+  header_with_right <- fancyhead(
+    fancyrow(left = "Protocol: 12345", right = "should be removed"),
+    fancyrow(left = "Table 1")
+  )
+
+  # warning and set to NA
+  expect_snapshot(result <- hf_process(header_with_right, engine = "html")) # expect_warning not picking up bc it occurs via process_rows
+  expect_false(grepl("should be removed", result))
+
+  # right in non-first rows is kept
+  header_right_row2 <- fancyhead(
+    fancyrow(left = "Protocol: 12345"),
+    fancyrow(left = "a", right = "keep this")
+  )
+  expect_silent(result2 <- hf_process(header_right_row2, engine = "html"))
+  expect_true(grepl("keep this", result2))
+
+})
+
 test_that("Header and footer processes into html",{
 
   # character (headers)

@@ -25,7 +25,7 @@ test_that("prep_obj_html for 2 tables", {
   result <- prep_obj_html(doc)
 
   expect_type(result, "character")
-  expect_equal(stringr::str_count(result, "<table class=\"gt_table\""), 2)
+  expect_equal(stringr::str_detect(result, "<table class=\"gt_table\"") |> sum(), 2)
 })
 
 
