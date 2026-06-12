@@ -78,7 +78,27 @@ prep_obj_html.PNG <- function(x, ...) {
   # save the png to a temp location 
   temp <- tempfile(fileext = ".png", tmpdir = tempdir())
   png::writePNG(x$display$png, temp)
-  
   paste0('<img src="', knitr::image_uri(temp), '" style="max-width:100%;" />')
 
 }
+
+#' @rdname prep_obj_html
+#' @export
+#' @keywords internal
+prep_obj_html.list <- function(x, ...){
+
+  n <- length(x$display)
+
+  html_vec <- sapply(seq_len(n), function(idx) {
+
+    x$display <- x$display[[idx]]
+
+    style <- if (idx < n) ' style="break-after: page;"' else ""
+    paste0("<div", style, ">", prep_obj_html(x), "</div>")
+  })
+
+  paste(html_vec, collapse = "")
+  #TODO figure out why this is not resulting in page breaks in pdf
+
+}
+

@@ -28,6 +28,7 @@ test_that("prep_obj_html for 2 tables", {
   expect_equal(stringr::str_count(result, "<table class=\"gt_table\""), 2)
 })
 
+
 test_that("prep_obj_html for ggplot", {
   gg <- ggplot2::ggplot(mtcars, ggplot2::aes(x = mpg, y = cyl)) +
     ggplot2::geom_point()
@@ -84,4 +85,23 @@ test_that("png objects are prepared correctly ",{
 
   expect_type(html_png, "character")
   expect_true(grepl('<img src=', html_png))
+})
+
+
+test_that("prep_obj_html for lists", {
+
+  gt_tbl <- gt::exibble |> gt::gt()
+  gg <- ggplot2::ggplot(mtcars, ggplot2::aes(x = mpg, y = cyl)) +
+    ggplot2::geom_point()
+  png <- png_path(path = system.file("extdata/test_image.png", package = "docorator"))
+
+  display_lst <- list(gt_tbl, gg, png)
+  docorator <- as_docorator(display_lst, display_name = "myfig", save_object = FALSE)
+
+  html_lst <- suppressMessages(prep_obj_html(docorator))
+
+  expect_type(html_lst, "character")
+  expect_length(html_lst, 3)
+  expect_equal(grep("<table class=\"gt_table\"", html_lst), 1)
+  expect_equal(grep('<img src=', html_lst), c(2,3))
 })
