@@ -113,10 +113,12 @@ test_that("geometry processing - docx", {
     )
   )
 
-  expect_message(geom_process(
-    geometry = geom_set(left = "1.27cm"),
-    engine = "docx"
-  ))
+  expect_snapshot(
+    geom <- geom_process(
+      geometry = geom_set(left = "1.27cm"),
+      engine = "docx"
+    )
+  )
 
   # no units
   expect_equal(
@@ -145,9 +147,11 @@ test_that("geometry processing - docx", {
       bottom = 1.25
     )
   )
-
-  expect_message(geom_process(
-    geometry = geom_set(left = "1.27cm"),
-    engine = "docx"
-  ))
+  # test cli_text message for missing values
+  expect_snapshot(
+    geom <- geom_process(
+      geometry = list(left = "1.27in"),
+      engine = "docx"
+    )
+  )
 })
