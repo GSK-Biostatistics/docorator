@@ -16,6 +16,8 @@
   : Render to pdf
 - [`render_rtf()`](https://GSK-Biostatistics.github.io/docorator/reference/render_rtf.md)
   **\[experimental\]** : Render to rtf
+- [`render_docx()`](https://GSK-Biostatistics.github.io/docorator/reference/render_docx.md)
+  **\[experimental\]** : Render to docx
 
 ## Header and footer helpers
 
