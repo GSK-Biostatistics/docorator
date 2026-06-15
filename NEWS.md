@@ -1,8 +1,12 @@
 # docorator development version
+Improvements
+* Add docx render engine `render_docx` (#97)
+
 Bug Fixes
 * use individual markdown chunks for each table in a gt_group to avoid issues with caption ids (#79)
 * remove RTF warning about gt version number (#100)
 * allow character number to be passed to fancywrap.docorator (#109)
+
 
 # docorator 0.6.0
 

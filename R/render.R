@@ -28,34 +28,39 @@
 #'  render_pdf()
 #' ```
 #'
-render_pdf <- function(x,
-                       display_loc = NULL,
-                       transform = NULL,
-                       header_latex = NULL,
-                       keep_tex = FALSE,
-                       escape_latex = TRUE,
-                       quarto = FALSE,
-                       version_check = TRUE,
-                       fancywrap = TRUE){
-
+render_pdf <- function(
+  x,
+  display_loc = NULL,
+  transform = NULL,
+  header_latex = NULL,
+  keep_tex = FALSE,
+  escape_latex = TRUE,
+  quarto = FALSE,
+  version_check = TRUE,
+  fancywrap = TRUE
+) {
   if (!inherits(x, "docorator")) {
-    cli::cli_abort("The {.arg {rlang::caller_arg(x)}} argument must be class docorator, not {.obj_type_friendly {x}}. See documentation for `as_docorator`.",
-              call = rlang::caller_env())
+    cli::cli_abort(
+      "The {.arg {rlang::caller_arg(x)}} argument must be class docorator, not {.obj_type_friendly {x}}. See documentation for `as_docorator`.",
+      call = rlang::caller_env()
+    )
   }
 
   # check package versions
-  if(isTRUE(version_check)){
+  if (isTRUE(version_check)) {
     check_pkg_version(x)
   }
 
-  if(isTRUE(fancywrap)){
+  if (isTRUE(fancywrap)) {
     x <- fancywrap(x)
   }
 
   # check transform is a function if not convert to NULL
   if (!is.null(transform) & !inherits(transform, "function")) {
-    cli::cli_warn("The transform argument must be a function, not {.obj_type_friendly {transform}}. No transform applied.",
-             call = rlang::caller_env())
+    cli::cli_warn(
+      "The transform argument must be a function, not {.obj_type_friendly {transform}}. No transform applied.",
+      call = rlang::caller_env()
+    )
     transform <- NULL
   }
 
@@ -63,54 +68,66 @@ render_pdf <- function(x,
   template <- system.file("template", package = "docorator")
   temp_dir <- tempdir()
   file.copy(template, temp_dir, overwrite = TRUE, recursive = TRUE)
-  template_folder <- file.path(temp_dir,"template")
+  template_folder <- file.path(temp_dir, "template")
 
   # copy tex header to temp directory and rename if one exists
-  if(!is.null(header_latex)){
-    if(file.exists(header_latex) && tools::file_ext(header_latex) == "tex"){
+  if (!is.null(header_latex)) {
+    if (file.exists(header_latex) && tools::file_ext(header_latex) == "tex") {
       file_name <- basename(header_latex)
-      file.copy(header_latex, template_folder, overwrite = TRUE, recursive = TRUE)
-      file.rename(file.path(template_folder, file_name),file.path(template_folder,"header.tex"))
-    }else{
-      cli::cli_warn("The header_latex argument must point to a valid .tex file. No header options applied.",
-               call = rlang::caller_env())
+      file.copy(
+        header_latex,
+        template_folder,
+        overwrite = TRUE,
+        recursive = TRUE
+      )
+      file.rename(
+        file.path(template_folder, file_name),
+        file.path(template_folder, "header.tex")
+      )
+    } else {
+      cli::cli_warn(
+        "The header_latex argument must point to a valid .tex file. No header options applied.",
+        call = rlang::caller_env()
+      )
     }
   }
 
   # if no path is given, use docorator path
-  if(is.null(display_loc)){
+  if (is.null(display_loc)) {
     display_loc <- x$display_loc %||% "."
   }
 
   # set filename
-  filename <- paste0(x$display_name,".pdf")
+  filename <- paste0(x$display_name, ".pdf")
 
-  if(quarto){
+  if (quarto) {
     withr::with_envvar(
       new = c("DOCORATOR_RENDER_ENGINE" = "qmd"),
-      render_pdf_qmd(x, display_loc, transform, header_latex, clean=!keep_tex)
+      render_pdf_qmd(x, display_loc, transform, header_latex, clean = !keep_tex)
     )
   } else {
-
     # render rmd -> pdf
-    doc <- rmarkdown::render(file.path(temp_dir, "template", "template.Rmd"),
-                             output_file = filename,
-                             output_dir = display_loc,
-                             output_options = list(keep_tex = keep_tex),
-                             params = list(x = x,
-                                           header = hf_process(x$header, escape_latex = escape_latex),
-                                           footer = hf_process(x$footer, escape_latex = escape_latex),
-                                           geometry = geom_process(
-                                             x$header,
-                                             x$footer,
-                                             x$fontsize,
-                                             x$geometry
-                                           ),
-                                           transform = transform
-                             ),
-                             quiet = TRUE)
+    doc <- rmarkdown::render(
+      file.path(temp_dir, "template", "template.Rmd"),
+      output_file = filename,
+      output_dir = display_loc,
+      output_options = list(keep_tex = keep_tex),
+      params = list(
+        x = x,
+        header = hf_process(x$header, escape_latex = escape_latex),
+        footer = hf_process(x$footer, escape_latex = escape_latex),
+        geometry = geom_process(
+          x$header,
+          x$footer,
+          x$fontsize,
+          x$geometry
+        ),
+        transform = transform
+      ),
+      quiet = TRUE
+    )
 
-    if (!is.null(doc)){
+    if (!is.null(doc)) {
       cli::cli_alert_success("Document created at: {doc}")
     }
 
@@ -153,25 +170,32 @@ render_pdf <- function(x,
 #'  render_rtf()
 #' ```
 #'
-render_rtf <- function(x, display_loc = NULL, remove_unicode_ws = TRUE, use_page_header = FALSE, version_check = TRUE){
-
+render_rtf <- function(
+  x,
+  display_loc = NULL,
+  remove_unicode_ws = TRUE,
+  use_page_header = FALSE,
+  version_check = TRUE
+) {
   if (!inherits(x, "docorator")) {
-    cli::cli_abort("The {.arg {rlang::caller_arg(x)}} argument must be class docorator, not {.obj_type_friendly {x}}. See documentation for `as_docorator`.",
-              call = rlang::caller_env())
+    cli::cli_abort(
+      "The {.arg {rlang::caller_arg(x)}} argument must be class docorator, not {.obj_type_friendly {x}}. See documentation for `as_docorator`.",
+      call = rlang::caller_env()
+    )
   }
 
   # check package versions
-  if(isTRUE(version_check)){
+  if (isTRUE(version_check)) {
     check_pkg_version(x)
   }
 
   # if no path is given, use docorator path
-  if(is.null(display_loc)){
+  if (is.null(display_loc)) {
     display_loc <- x$display_loc %||% "."
   }
 
   # set name
-  filename <- paste0(x$display_name,".rtf")
+  filename <- paste0(x$display_name, ".rtf")
 
   # convert outputs to gt for rtf render
   gt <- prep_obj_rtf(x)
@@ -187,13 +211,10 @@ render_rtf <- function(x, display_loc = NULL, remove_unicode_ws = TRUE, use_page
   )
 
   # render rtf
-  doc <- gt::gtsave(gt,
-                filename = filename,
-                path = display_loc)
+  doc <- gt::gtsave(gt, filename = filename, path = display_loc)
 
-  if (!is.null(doc)){
-
-    if (remove_unicode_ws){
+  if (!is.null(doc)) {
+    if (remove_unicode_ws) {
       doc_tmp <- readLines(doc)
 
       doc_tmp_new <- gsub("\u00A0", " ", doc_tmp, perl = TRUE)
@@ -204,12 +225,13 @@ render_rtf <- function(x, display_loc = NULL, remove_unicode_ws = TRUE, use_page
         file.path(display_loc, filename)
       )
     }
-    cli::cli_alert_success("Document created at: {normalizePath(doc, winslash = \"/\")}")
+    cli::cli_alert_success(
+      "Document created at: {normalizePath(doc, winslash = \"/\")}"
+    )
   }
 
   # return docorator object for further renders
   invisible(x)
-
 }
 
 
@@ -223,41 +245,49 @@ render_rtf <- function(x, display_loc = NULL, remove_unicode_ws = TRUE, use_page
 #'
 #' @returns This function saves a pdf to a specified location
 #' @noRd
-render_pdf_qmd <- function(x,
-                           display_loc = NULL,
-                           transform = NULL,
-                           header_latex = NULL,
-                           clean = TRUE){
-
+render_pdf_qmd <- function(
+  x,
+  display_loc = NULL,
+  transform = NULL,
+  header_latex = NULL,
+  clean = TRUE
+) {
   if (!is.null(transform)) {
-    cli::cli_warn("The {.arg {rlang::caller_arg(transform)}} argument is not currently available for quarto rendered documents. Try `quarto = FALSE`",
-                  call = rlang::caller_env())
+    cli::cli_warn(
+      "The {.arg {rlang::caller_arg(transform)}} argument is not currently available for quarto rendered documents. Try `quarto = FALSE`",
+      call = rlang::caller_env()
+    )
   }
 
   # create a full path
-  if (!is.null(display_loc)){
+  if (!is.null(display_loc)) {
     display_loc <- normalizePath(display_loc, winslash = "/")
   }
 
-  qmd_name <- paste0(x$display_name,".qmd")
+  qmd_name <- paste0(x$display_name, ".qmd")
   pdf_name <- paste0(x$display_name, ".pdf")
   docorator_name <- paste0(x$display_name, "_docorator_obj.Rds")
 
-  if (!is.null(display_loc)){
-    render_dir <- file.path(display_loc, paste0(x$display_name, "_docorator_files"))
+  if (!is.null(display_loc)) {
+    render_dir <- file.path(
+      display_loc,
+      paste0(x$display_name, "_docorator_files")
+    )
   } else {
     render_dir <- file.path(paste0(x$display_name, "_docorator_files"))
   }
-  if(!dir.exists(render_dir)){
+  if (!dir.exists(render_dir)) {
     dir.create(render_dir)
   }
 
-  on.exit({
-    if(isTRUE(clean)){
-      unlink(render_dir, recursive = TRUE)
-    }
-  },
-  add = TRUE)
+  on.exit(
+    {
+      if (isTRUE(clean)) {
+        unlink(render_dir, recursive = TRUE)
+      }
+    },
+    add = TRUE
+  )
 
   withr::with_dir(
     new = render_dir,
@@ -268,14 +298,18 @@ render_pdf_qmd <- function(x,
       file.rename("template.qmd", qmd_name)
 
       # copy tex header to render dir and rename if one exists
-      if(!is.null(header_latex)){
-        if(file.exists(header_latex) && tools::file_ext(header_latex) == "tex"){
+      if (!is.null(header_latex)) {
+        if (
+          file.exists(header_latex) && tools::file_ext(header_latex) == "tex"
+        ) {
           file_name <- basename(header_latex)
           file.copy(header_latex, ".", overwrite = TRUE, recursive = TRUE)
           file.rename(file_name, "header.tex")
-        }else{
-          cli::cli_warn("The header_latex argument must point to a valid .tex file. No header options applied.",
-                        call = rlang::caller_env())
+        } else {
+          cli::cli_warn(
+            "The header_latex argument must point to a valid .tex file. No header options applied.",
+            call = rlang::caller_env()
+          )
         }
       }
 
@@ -293,20 +327,24 @@ render_pdf_qmd <- function(x,
             pkg_path = "", #set to cur_dir in development
             transform = NULL # disabled for quarto
           ),
-          quiet = TRUE)
-    })
+          quiet = TRUE
+        )
+    }
+  )
 
-  if (file.exists(file.path(render_dir, pdf_name))){
-    if (!is.null(display_loc)){
+  if (file.exists(file.path(render_dir, pdf_name))) {
+    if (!is.null(display_loc)) {
       out_path <- file.path(display_loc, pdf_name)
     } else {
       out_path <- pdf_name
     }
-    file_ok <- file.copy(from = file.path(render_dir, pdf_name),
-                         to = out_path,
-                         overwrite = TRUE)
+    file_ok <- file.copy(
+      from = file.path(render_dir, pdf_name),
+      to = out_path,
+      overwrite = TRUE
+    )
 
-    if (file_ok){
+    if (file_ok) {
       cli::cli_alert_success("Document created at: {out_path}")
     }
   }
