@@ -80,10 +80,11 @@ geom_process_docx <- function(geometry) {
     } else if (!grepl("[a-zA-Z]", x)) {
       as.numeric(x)
     } else {
+      inches <- as.numeric(gsub("[a-zA-Z]", "", x))
       cli::cli_text(
-        "Geometry value {.val {x}} must be in inches for docx output"
+        "Geometry value {.val {x}} changed to {.val {inches}} inches for docx output"
       )
-      as.numeric(gsub("[a-zA-Z]", "", x))
+      inches
     }
   })
 }
