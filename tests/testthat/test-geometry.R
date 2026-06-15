@@ -131,4 +131,23 @@ test_that("geometry processing - docx", {
       bottom = 1.25
     )
   )
+
+  # some values are missing
+  expect_equal(
+    suppressMessages(geom_process(
+      geometry = list(left = "1.27in"),
+      engine = "docx"
+    )),
+    list(
+      left = 1.27,
+      right = 1,
+      top = 1.25,
+      bottom = 1.25
+    )
+  )
+
+  expect_message(geom_process(
+    geometry = geom_set(left = "1.27cm"),
+    engine = "docx"
+  ))
 })

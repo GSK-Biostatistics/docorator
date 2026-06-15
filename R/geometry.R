@@ -55,6 +55,20 @@ geom_process_pdf <- function(header, footer, fontsize, geometry) {
 #' @return Named list of geometry options with numeric values in inches
 #' @noRd
 geom_process_docx <- function(geometry) {
+  # if geometry doesnt contain all required margins, add from geom_set
+  if (!all(c("left", "right", "top", "bottom") %in% names(geometry))) {
+    missing <- setdiff(c("left", "right", "top", "bottom"), names(geometry))
+
+    geometry <- modifyList(
+      geom_set()[c("left", "right", "top", "bottom")],
+      geometry
+    )
+    # note that defaults are being used
+    cli::cli_text(
+      "Geometry values for {.val {missing}} are not specified. Using defaults from geom_set()"
+    )
+  }
+
   # only want left right top bottom for docx geometry - the rest are not applicable
   geometry <- geometry[c("left", "right", "top", "bottom")]
 
