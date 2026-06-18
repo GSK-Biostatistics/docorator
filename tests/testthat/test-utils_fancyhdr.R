@@ -377,8 +377,7 @@ test_that("splitting of fancyhead and fancyfoot elements in a docorator object i
   )
 })
 
-test_that("doc_pagenum renders correctly in different render engines")
-{
+test_that("doc_pagenum renders correctly in different render engines", {
   fancyrows <- fancyhead(fancyrow(
     left = "Left text",
     center = "Center text",
@@ -391,4 +390,4 @@ test_that("doc_pagenum renders correctly in different render engines")
   docx_fpar <- process_rows_docx(fancyrows)
   expect_true((grepl("PAGE", docx_fpar[[1]]$chunks[[6]]$field)))
   expect_true((grepl("NUMPAGES", docx_fpar[[1]]$chunks[[8]]$field)))
-}
+})
