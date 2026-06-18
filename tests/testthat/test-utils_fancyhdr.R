@@ -1,11 +1,10 @@
-test_that("Header and footer processes into latex",{
-
+test_that("Header and footer processes into latex", {
   # character (headers)
   expect_snapshot(
     hf_process("My first line")
   )
   expect_snapshot(
-    hf_process(c("Two","Lines"))
+    hf_process(c("Two", "Lines"))
   )
 
   # fancyhead
@@ -29,14 +28,13 @@ test_that("Header and footer processes into latex",{
   )
 })
 
-test_that("Header and footer heights are calculated correctly",{
-
+test_that("Header and footer heights are calculated correctly", {
   fontsize <- 12
   my_header <- fancyhead(fancyrow("one line"))
 
   expect_equal(
     hf_height(my_header, fontsize),
-    ceiling(fontsize*1.2)
+    ceiling(fontsize * 1.2)
   )
 
   fontsize <- 14
@@ -44,26 +42,30 @@ test_that("Header and footer heights are calculated correctly",{
 
   expect_equal(
     hf_height(my_header, fontsize),
-    ceiling(fontsize*1.2*2)
+    ceiling(fontsize * 1.2 * 2)
   )
 
-
   fontsize <- 9
-  my_header <- fancyfoot(fancyrow("one"),
-                         fancyrow("two"),
-                         fancyrow("three"),
-                         fancyrow("four"),
-                         fancyrow("five"))
+  my_header <- fancyfoot(
+    fancyrow("one"),
+    fancyrow("two"),
+    fancyrow("three"),
+    fancyrow("four"),
+    fancyrow("five")
+  )
 
   expect_equal(
     hf_height(my_header, fontsize),
-    ceiling(fontsize*1.2*5)
+    ceiling(fontsize * 1.2 * 5)
   )
 })
 
-test_that("Footnote characters are escaped correctly",{
-
-  footnote_string <- hf_process(fancyfoot(fancyrow(file.path("path","to", "my_file.R"))))
+test_that("Footnote characters are escaped correctly", {
+  footnote_string <- hf_process(fancyfoot(fancyrow(file.path(
+    "path",
+    "to",
+    "my_file.R"
+  ))))
   title_string <- hf_process(fancyhead(fancyrow("hello_world")))
   pagenum <- hf_process(fancyhead(fancyrow(doc_pagenum())))
 
@@ -72,74 +74,132 @@ test_that("Footnote characters are escaped correctly",{
   expect_snapshot(pagenum)
 
   # escape_latex false
-  footnote_string <- hf_process(fancyfoot(fancyrow(file.path("path","to", "my_file.R"))), escape_latex = FALSE)
-  title_string <- hf_process(fancyhead(fancyrow("hello_world")), escape_latex = FALSE)
-
+  footnote_string <- hf_process(
+    fancyfoot(fancyrow(file.path("path", "to", "my_file.R"))),
+    escape_latex = FALSE
+  )
+  title_string <- hf_process(
+    fancyhead(fancyrow("hello_world")),
+    escape_latex = FALSE
+  )
 
   expect_true(stringr::str_detect(footnote_string, "path/to/my_file.R"))
   expect_true(stringr::str_detect(title_string, "hello_world"))
 })
 
-test_that("fancyrow() accepts valid arguments",{
-
+test_that("fancyrow() accepts valid arguments", {
   expect_silent(fancyrow(left = "Left text", center = "Center text"))
   expect_silent(fancyrow(left = NA, center = "Center text", right = NA))
-  expect_invisible(check_fancyrow_string(left = NA, center = "Center text", right = NA), TRUE)
+  expect_invisible(
+    check_fancyrow_string(left = NA, center = "Center text", right = NA),
+    TRUE
+  )
 })
 
-test_that("fancyrow() flags non-character arguments",{
-
-  expect_error(fancyrow(left = 123, center = "Center text", right = "Right text"), "`left` must be a character string or NA, but is numeric.")
-  expect_error(fancyrow(left = "Left text", center = list("Center"), right = "Right text"), "`center` must be a character string or NA, but is list.")
+test_that("fancyrow() flags non-character arguments", {
+  expect_error(
+    fancyrow(left = 123, center = "Center text", right = "Right text"),
+    "`left` must be a character string or NA, but is numeric."
+  )
+  expect_error(
+    fancyrow(left = "Left text", center = list("Center"), right = "Right text"),
+    "`center` must be a character string or NA, but is list."
+  )
 })
 
-test_that("fancyrow() flags arguments with length > 1",{
-
-  expect_error(fancyrow(left = c("Left1", "Left2"), center = "Center text", right = "Right text"), "`left` must be a single value, but has a length of 2.")
-  expect_error(fancyrow(left = 123, center = c("Center1", "Center2"), right = "`left` must be a character string or NA, but is numeric.
-`center` must be a single value, but has a length of 2."))
-  expect_error(fancyrow(left = 123, center = c("Center1", "Center2", "Center3")),"`left` must be a character string or NA, but is numeric.
-`center` must be a single value, but has a length of 3.")
+test_that("fancyrow() flags arguments with length > 1", {
+  expect_error(
+    fancyrow(
+      left = c("Left1", "Left2"),
+      center = "Center text",
+      right = "Right text"
+    ),
+    "`left` must be a single value, but has a length of 2."
+  )
+  expect_error(fancyrow(
+    left = 123,
+    center = c("Center1", "Center2"),
+    right = "`left` must be a character string or NA, but is numeric.
+`center` must be a single value, but has a length of 2."
+  ))
+  expect_error(
+    fancyrow(left = 123, center = c("Center1", "Center2", "Center3")),
+    "`left` must be a character string or NA, but is numeric.
+`center` must be a single value, but has a length of 3."
+  )
 })
 
 test_that("fancyrows are split when required", {
   # 185 char fancyrow with only 1 element, should be split into 3
-  fancyrow1 <- fancyrow(left = "The quick brown fox jumps over the lazy dog, showcasing a vibrant array of colors and swift movements across the tranquil, sun-drenched landscape. This idyllic scene unfolds gracefully.")
+  fancyrow1 <- fancyrow(
+    left = "The quick brown fox jumps over the lazy dog, showcasing a vibrant array of colors and swift movements across the tranquil, sun-drenched landscape. This idyllic scene unfolds gracefully."
+  )
   fancywrap1 <- fancywrap(fancyrow1, chars = 70)
-  expect_equal(fancywrap1,
-               list(fancyrow(left = "The quick brown fox jumps over the lazy dog, showcasing a vibrant"),
-                    fancyrow(left = "array of colors and swift movements across the tranquil, sun-drenched"),
-                    fancyrow(left = "landscape. This idyllic scene unfolds gracefully.")))
+  expect_equal(
+    fancywrap1,
+    list(
+      fancyrow(
+        left = "The quick brown fox jumps over the lazy dog, showcasing a vibrant"
+      ),
+      fancyrow(
+        left = "array of colors and swift movements across the tranquil, sun-drenched"
+      ),
+      fancyrow(left = "landscape. This idyllic scene unfolds gracefully.")
+    )
+  )
   # right
-  fancyrow2 <- fancyrow(right = "The quick brown fox jumps over the lazy dog, showcasing a vibrant array of colors and swift movements across the tranquil, sun-drenched landscape. This idyllic scene unfolds gracefully.")
+  fancyrow2 <- fancyrow(
+    right = "The quick brown fox jumps over the lazy dog, showcasing a vibrant array of colors and swift movements across the tranquil, sun-drenched landscape. This idyllic scene unfolds gracefully."
+  )
   fancywrap2 <- fancywrap(fancyrow2, chars = 70)
-  expect_equal(fancywrap2,
-               list(fancyrow(right = "The quick brown fox jumps over the lazy dog, showcasing a vibrant"),
-                    fancyrow(right = "array of colors and swift movements across the tranquil, sun-drenched"),
-                    fancyrow(right = "landscape. This idyllic scene unfolds gracefully.")))
+  expect_equal(
+    fancywrap2,
+    list(
+      fancyrow(
+        right = "The quick brown fox jumps over the lazy dog, showcasing a vibrant"
+      ),
+      fancyrow(
+        right = "array of colors and swift movements across the tranquil, sun-drenched"
+      ),
+      fancyrow(right = "landscape. This idyllic scene unfolds gracefully.")
+    )
+  )
 
   # center
-  fancyrow3 <- fancyrow(center = "The quick brown fox jumps over the lazy dog, showcasing a vibrant array of colors and swift movements across the tranquil, sun-drenched landscape. This idyllic scene unfolds gracefully.")
+  fancyrow3 <- fancyrow(
+    center = "The quick brown fox jumps over the lazy dog, showcasing a vibrant array of colors and swift movements across the tranquil, sun-drenched landscape. This idyllic scene unfolds gracefully."
+  )
   fancywrap3 <- fancywrap(fancyrow3, chars = 70)
-  expect_equal(fancywrap3,
-               list(fancyrow(center = "The quick brown fox jumps over the lazy dog, showcasing a vibrant"),
-                    fancyrow(center = "array of colors and swift movements across the tranquil, sun-drenched"),
-                    fancyrow(center = "landscape. This idyllic scene unfolds gracefully.")))
+  expect_equal(
+    fancywrap3,
+    list(
+      fancyrow(
+        center = "The quick brown fox jumps over the lazy dog, showcasing a vibrant"
+      ),
+      fancyrow(
+        center = "array of colors and swift movements across the tranquil, sun-drenched"
+      ),
+      fancyrow(center = "landscape. This idyllic scene unfolds gracefully.")
+    )
+  )
 
   # 2 elements - no wrapping just adds to list, too long to fit
-  fancyrow4 <- fancyrow(left = "The quick brown fox jumps over the lazy dog, showcasing a vibrant array of colors and swift movements across the tranquil, sun-drenched landscape. This idyllic scene unfolds gracefully.",
-                        right = "second element which prevents wrapping")
+  fancyrow4 <- fancyrow(
+    left = "The quick brown fox jumps over the lazy dog, showcasing a vibrant array of colors and swift movements across the tranquil, sun-drenched landscape. This idyllic scene unfolds gracefully.",
+    right = "second element which prevents wrapping"
+  )
   fancywrap4 <- suppressMessages(fancywrap(fancyrow4, chars = 70))
   # tells you it's too long and won't fit
   expect_message(fancywrap(fancyrow4, chars = 70))
   expect_equal(fancywrap4, list(fancyrow4))
 
   # 2 elements - no wrapping just adds to list, everything fits
-  fancyrow5 <- fancyrow(left = "The quick brown fox",
-                        right = "second element which prevents wrapping")
+  fancyrow5 <- fancyrow(
+    left = "The quick brown fox",
+    right = "second element which prevents wrapping"
+  )
   fancywrap5 <- fancywrap(fancyrow5, chars = 70)
   expect_equal(list(fancyrow5), fancywrap5)
-
 
   # empty fancyrow - no change
   fancyrow6 <- fancyrow()
@@ -147,18 +207,20 @@ test_that("fancyrows are split when required", {
   expect_equal(list(fancyrow6), fancywrap6)
 
   # error if chars is not numeric length 1
-  expect_error(fancywrap(fancyrow1, chars = "not a number")) 
-
+  expect_error(fancywrap(fancyrow1, chars = "not a number"))
 })
 
-test_that("splitting of fancyhead and fancyfoot elements are handled correctly",{
-
+test_that("splitting of fancyhead and fancyfoot elements are handled correctly", {
   fancyhead1 <- fancyhead(
     # one element should be wrapped into 2
-    fancyrow(left = "The quick brown fox jumps over the lazy dog, showcasing a vibrant array of colors and swift movements across the tranquil, sun-drenched landscape. This idyllic scene unfolds gracefully."),
+    fancyrow(
+      left = "The quick brown fox jumps over the lazy dog, showcasing a vibrant array of colors and swift movements across the tranquil, sun-drenched landscape. This idyllic scene unfolds gracefully."
+    ),
     # two elements should be left as is
-    fancyrow(center = "The quick brown fox jumps over the lazy dog, showcasing a vibrant array of colors and swift movements across the tranquil, sun-drenched landscape. This idyllic scene unfolds gracefully.",
-             right = "second element that will prevent wrapping")
+    fancyrow(
+      center = "The quick brown fox jumps over the lazy dog, showcasing a vibrant array of colors and swift movements across the tranquil, sun-drenched landscape. This idyllic scene unfolds gracefully.",
+      right = "second element that will prevent wrapping"
+    )
   )
   fancywrap1 <- suppressMessages(fancywrap(fancyhead1, chars = 70))
 
@@ -167,22 +229,31 @@ test_that("splitting of fancyhead and fancyfoot elements are handled correctly",
   expect_equal(
     # 4 fancyrows
     fancyhead(
-      fancyrow(left = "The quick brown fox jumps over the lazy dog, showcasing a vibrant"),
-      fancyrow(left = "array of colors and swift movements across the tranquil, sun-drenched"),
+      fancyrow(
+        left = "The quick brown fox jumps over the lazy dog, showcasing a vibrant"
+      ),
+      fancyrow(
+        left = "array of colors and swift movements across the tranquil, sun-drenched"
+      ),
       fancyrow(left = "landscape. This idyllic scene unfolds gracefully."),
-      fancyrow(center = "The quick brown fox jumps over the lazy dog, showcasing a vibrant array of colors and swift movements across the tranquil, sun-drenched landscape. This idyllic scene unfolds gracefully.", right = "second element that will prevent wrapping")
+      fancyrow(
+        center = "The quick brown fox jumps over the lazy dog, showcasing a vibrant array of colors and swift movements across the tranquil, sun-drenched landscape. This idyllic scene unfolds gracefully.",
+        right = "second element that will prevent wrapping"
+      )
     ),
     fancywrap1
-
   )
-
 
   fancyfoot1 <- fancyfoot(
     # two elements should be left as is
-    fancyrow(center = "The quick brown fox jumps over the lazy dog, showcasing a vibrant array of colors and swift movements across the tranquil, sun-drenched landscape. This idyllic scene unfolds gracefully.",
-             right = "second element that will prevent wrapping"),
+    fancyrow(
+      center = "The quick brown fox jumps over the lazy dog, showcasing a vibrant array of colors and swift movements across the tranquil, sun-drenched landscape. This idyllic scene unfolds gracefully.",
+      right = "second element that will prevent wrapping"
+    ),
     # one element should be wrapped into 2
-    fancyrow(left = "The quick brown fox jumps over the lazy dog, showcasing a vibrant array of colors and swift movements across the tranquil, sun-drenched landscape. This idyllic scene unfolds gracefully.")
+    fancyrow(
+      left = "The quick brown fox jumps over the lazy dog, showcasing a vibrant array of colors and swift movements across the tranquil, sun-drenched landscape. This idyllic scene unfolds gracefully."
+    )
   )
   fancywrap2 <- suppressMessages(fancywrap(fancyfoot1, chars = 70))
 
@@ -191,17 +262,23 @@ test_that("splitting of fancyhead and fancyfoot elements are handled correctly",
   expect_equal(
     # 4 fancyrows
     fancyfoot(
-      fancyrow(center = "The quick brown fox jumps over the lazy dog, showcasing a vibrant array of colors and swift movements across the tranquil, sun-drenched landscape. This idyllic scene unfolds gracefully.", right = "second element that will prevent wrapping"),
-      fancyrow(left = "The quick brown fox jumps over the lazy dog, showcasing a vibrant"),
-      fancyrow(left = "array of colors and swift movements across the tranquil, sun-drenched"),
+      fancyrow(
+        center = "The quick brown fox jumps over the lazy dog, showcasing a vibrant array of colors and swift movements across the tranquil, sun-drenched landscape. This idyllic scene unfolds gracefully.",
+        right = "second element that will prevent wrapping"
+      ),
+      fancyrow(
+        left = "The quick brown fox jumps over the lazy dog, showcasing a vibrant"
+      ),
+      fancyrow(
+        left = "array of colors and swift movements across the tranquil, sun-drenched"
+      ),
       fancyrow(left = "landscape. This idyllic scene unfolds gracefully.")
     ),
     fancywrap2
   )
-
 })
 
-test_that("splitting of fancyhead and fancyfoot elements in a docorator object is handled correctly",{
+test_that("splitting of fancyhead and fancyfoot elements in a docorator object is handled correctly", {
   my_gt <- gt::exibble |>
     gt::gt(
       rowname_col = "row",
@@ -212,7 +289,7 @@ test_that("splitting of fancyhead and fancyfoot elements in a docorator object i
   docorator1 <- as_docorator(
     x = my_gt,
     header = NULL,
-    footer=NULL,
+    footer = NULL,
     display_name = "no_headers_or_footers",
     display_loc = NULL,
     save_object = FALSE
@@ -226,10 +303,14 @@ test_that("splitting of fancyhead and fancyfoot elements in a docorator object i
   docorator2 <- as_docorator(
     x = my_gt,
     header = fancyhead(
-      fancyrow(left = "The quick brown fox jumps over the lazy dog, showcasing a vibrant array of colors and swift movements across the tranquil, sun-drenched landscape. This idyllic scene unfolds gracefully.")
+      fancyrow(
+        left = "The quick brown fox jumps over the lazy dog, showcasing a vibrant array of colors and swift movements across the tranquil, sun-drenched landscape. This idyllic scene unfolds gracefully."
+      )
     ),
     footer = fancyfoot(
-      fancyrow(left = "The quick brown fox jumps over the lazy dog, showcasing a vibrant array of colors and swift movements across the tranquil, sun-drenched landscape. This idyllic scene unfolds gracefully.")
+      fancyrow(
+        left = "The quick brown fox jumps over the lazy dog, showcasing a vibrant array of colors and swift movements across the tranquil, sun-drenched landscape. This idyllic scene unfolds gracefully."
+      )
     ),
     display_name = "headers_and_footers",
     display_loc = NULL,
@@ -242,12 +323,22 @@ test_that("splitting of fancyhead and fancyfoot elements in a docorator object i
   expect_equal(
     as_docorator(
       x = my_gt,
-      header = fancywrap(fancyhead(
-        fancyrow(left = "The quick brown fox jumps over the lazy dog, showcasing a vibrant array of colors and swift movements across the tranquil, sun-drenched landscape. This idyllic scene unfolds gracefully.")
-      ), 126),
-      footer = fancywrap(fancyfoot(
-        fancyrow(left = "The quick brown fox jumps over the lazy dog, showcasing a vibrant array of colors and swift movements across the tranquil, sun-drenched landscape. This idyllic scene unfolds gracefully.")
-      ), 126),
+      header = fancywrap(
+        fancyhead(
+          fancyrow(
+            left = "The quick brown fox jumps over the lazy dog, showcasing a vibrant array of colors and swift movements across the tranquil, sun-drenched landscape. This idyllic scene unfolds gracefully."
+          )
+        ),
+        126
+      ),
+      footer = fancywrap(
+        fancyfoot(
+          fancyrow(
+            left = "The quick brown fox jumps over the lazy dog, showcasing a vibrant array of colors and swift movements across the tranquil, sun-drenched landscape. This idyllic scene unfolds gracefully."
+          )
+        ),
+        126
+      ),
       display_name = "headers_and_footers",
       display_loc = NULL,
       save_object = FALSE
@@ -255,24 +346,49 @@ test_that("splitting of fancyhead and fancyfoot elements in a docorator object i
     fancywrap2
   )
 
-  # pass number of characters 
+  # pass number of characters
   fancywrap3 <- fancywrap(docorator2, chars = 100)
 
   # for font size 10 the characters should be 100
   expect_equal(
     as_docorator(
       x = my_gt,
-      header = fancywrap(fancyhead(
-        fancyrow(left = "The quick brown fox jumps over the lazy dog, showcasing a vibrant array of colors and swift movements across the tranquil, sun-drenched landscape. This idyllic scene unfolds gracefully.")
-      ), 100),
-      footer = fancywrap(fancyfoot(
-        fancyrow(left = "The quick brown fox jumps over the lazy dog, showcasing a vibrant array of colors and swift movements across the tranquil, sun-drenched landscape. This idyllic scene unfolds gracefully.")
-      ), 100),
+      header = fancywrap(
+        fancyhead(
+          fancyrow(
+            left = "The quick brown fox jumps over the lazy dog, showcasing a vibrant array of colors and swift movements across the tranquil, sun-drenched landscape. This idyllic scene unfolds gracefully."
+          )
+        ),
+        100
+      ),
+      footer = fancywrap(
+        fancyfoot(
+          fancyrow(
+            left = "The quick brown fox jumps over the lazy dog, showcasing a vibrant array of colors and swift movements across the tranquil, sun-drenched landscape. This idyllic scene unfolds gracefully."
+          )
+        ),
+        100
+      ),
       display_name = "headers_and_footers",
       display_loc = NULL,
       save_object = FALSE
     ),
     fancywrap3
   )
-
 })
+
+test_that("doc_pagenum renders correctly in different render engines")
+{
+  fancyrows <- fancyhead(fancyrow(
+    left = "Left text",
+    center = "Center text",
+    right = doc_pagenum()
+  ))
+  rows_df <- purrr::map_dfr(fancyrows, as_tibble_fancyrow)
+  latex <- process_rows_pdf(rows_df, type = "head")
+  expect_true(grep("Page \\\\thepage", latex) > 0)
+
+  docx_fpar <- process_rows_docx(fancyrows)
+  expect_true((grepl("PAGE", docx_fpar[[1]]$chunks[[6]]$field)))
+  expect_true((grepl("NUMPAGES", docx_fpar[[1]]$chunks[[8]]$field)))
+}

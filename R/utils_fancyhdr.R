@@ -298,8 +298,15 @@ process_rows <- function(
 
   switch(
     engine,
-    pdf = process_rows_pdf(x_df, type = type, escape_latex = escape_latex),
-    docx = process_rows_docx(x, fontsize = fontsize)
+    pdf = process_rows_pdf(
+      x_df,
+      type = type,
+      escape_latex = escape_latex
+    ),
+    docx = process_rows_docx(
+      x,
+      fontsize = fontsize
+    )
   )
 }
 
@@ -325,7 +332,13 @@ process_rows_pdf <- function(x, type = c("head", "foot"), escape_latex = TRUE) {
   x_df <- x |>
     dplyr::mutate(
       dplyr::across(dplyr::everything(), \(x) {
-        as.character(x) |>
+        # replace the page number placeholder with the latex code for page numbering
+        stringr::str_replace_all(
+          x,
+          stringr::fixed("\\_DOCORATOR\\_PAGE\\_PLACEHOLDER\\_"),
+          "Page \\thepage\\ of \\pageref*{LastPage}"
+        ) |>
+          as.character() |>
           tidyr::replace_na("\\phantom{}")
       })
     ) |>
@@ -378,14 +391,17 @@ process_rows_docx <- function(x, fontsize = 10) {
 
   # create headers from docorator
   fpar_list <- lapply(x, function(row) {
-    row <- row[!is.na(row)]
-    officer::fpar(
-      officer::ftext(row$left, font),
-      officer::run_tab(),
-      officer::ftext(row$center, font),
-      officer::run_tab(),
-      officer::ftext(row$right, font),
-      fp_p = officer::fp_par(tabs = header_footer_tabs)
+    headers <- c(
+      make_hf_run(row$left, font),
+      list(officer::run_tab()),
+      make_hf_run(row$center, font),
+      list(officer::run_tab()),
+      make_hf_run(row$right, font)
+    )
+
+    do.call(
+      officer::fpar,
+      c(headers, list(fp_p = officer::fp_par(tabs = header_footer_tabs)))
     )
   })
 
@@ -482,12 +498,13 @@ fancywrap.default <- function(x, chars) {
 #' @rdname fancywrap
 #' @export
 #' @noRd
-fancywrap.fancyrow <- function(x, chars){
-
-  # check chars is numeric length 1 
-  if(!is.numeric(chars) || length(chars) != 1){
-    cli::cli_abort("The {.arg chars} argument must be a single numeric value, but is {.obj_type_friendly {chars}} length {length(chars)}.",
-              call = rlang::caller_env())
+fancywrap.fancyrow <- function(x, chars) {
+  # check chars is numeric length 1
+  if (!is.numeric(chars) || length(chars) != 1) {
+    cli::cli_abort(
+      "The {.arg chars} argument must be a single numeric value, but is {.obj_type_friendly {chars}} length {length(chars)}.",
+      call = rlang::caller_env()
+    )
   }
 
   # which elements have strings in them
@@ -543,10 +560,9 @@ fancywrap.fancyfoot <- function(x, chars) {
 #' @rdname fancywrap
 #' @export
 #' @noRd
-fancywrap.docorator <- function(x, chars = NULL){
-
+fancywrap.docorator <- function(x, chars = NULL) {
   # calculate if not provided
-  if(is.null(chars)){
+  if (is.null(chars)) {
     # width in pts is roughly 50% font size
     # 1 inch 72 points
     # 11 inch page without margins, 9 inches
@@ -556,14 +572,34 @@ fancywrap.docorator <- function(x, chars = NULL){
     chars <- floor(630 / ch_width)
   }
 
-
-  if(!is.null(x$header)){
+  if (!is.null(x$header)) {
     x$header <- fancywrap(x$header, chars = chars)
   }
 
-  if(!is.null(x$footer)){
+  if (!is.null(x$footer)) {
     x$footer <- fancywrap(x$footer, chars = chars)
   }
 
   x
+}
+
+
+#' Build a header/footer run, substituting the page number placeholder if needed
+#' @param x text value (may be empty or the page placeholder string)
+#' @param font `fp_text` object for styling
+#' @noRd
+#' @keywords internal
+make_hf_run <- function(x, font) {
+  if (is.na(x) || is.null(x)) {
+    return(list(officer::ftext("", font)))
+  }
+  if (x == "_DOCORATOR_PAGE_PLACEHOLDER_") {
+    return(list(
+      officer::ftext("Page ", prop = font),
+      officer::run_word_field("PAGE"),
+      officer::ftext(" of ", prop = font),
+      officer::run_word_field("NUMPAGES")
+    ))
+  }
+  list(officer::ftext(x, font))
 }
