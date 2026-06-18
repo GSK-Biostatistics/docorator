@@ -7,7 +7,6 @@
 \alias{prep_obj_rtf.PNG}
 \alias{prep_obj_rtf.ggplot}
 \alias{prep_obj_rtf.gt_tbl}
-\alias{prep_obj_rtf.gt_group}
 \alias{prep_obj_rtf.list}
 \title{Prepare table, listing, figure object for output to rtf}
 \usage{
@@ -22,8 +21,6 @@ prep_obj_rtf(x, ...)
 \method{prep_obj_rtf}{ggplot}(x, ...)
 
 \method{prep_obj_rtf}{gt_tbl}(x, ...)
-
-\method{prep_obj_rtf}{gt_group}(x, ...)
 
 \method{prep_obj_rtf}{list}(x, ...)
 }
