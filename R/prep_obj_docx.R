@@ -85,7 +85,11 @@ gt_to_word <- function(x) {
     )
 
   # get ooxml from gt
-  ooxml <- polish::polish_content_word(x, autonum = FALSE)
+  ooxml <- polish::polish_content_word(
+    x,
+    autonum = FALSE,
+    keep_with_next = TRUE
+  )
 
   # as_word from gt returns multiple ooxml elements
   # wrap these elements together so that they can be read in as xml for officer
