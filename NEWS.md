@@ -1,6 +1,7 @@
 # docorator development version
 Improvements
 * Add docx render engine `render_docx` (#97)
+* update doc_pagenum() to support different render engines
 
 Bug Fixes
 * use individual markdown chunks for each table in a gt_group to avoid issues with caption ids (#79)
