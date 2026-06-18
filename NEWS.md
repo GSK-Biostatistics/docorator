@@ -1,6 +1,7 @@
 # docorator development version
 Improvements
 * Add docx render engine `render_docx` (#97)
+* Convert all gt_groups to lists of gt_tbls for easier handling in render functions (#113)
 
 Bug Fixes
 * use individual markdown chunks for each table in a gt_group to avoid issues with caption ids (#79)
