@@ -5,7 +5,6 @@
 \alias{prep_obj_rtf.default}
 \alias{prep_obj_rtf.character}
 \alias{prep_obj_rtf.PNG}
-\alias{prep_obj_rtf.ggplot}
 \alias{prep_obj_rtf.gt_tbl}
 \alias{prep_obj_rtf.gt_group}
 \alias{prep_obj_rtf.list}
@@ -18,8 +17,6 @@ prep_obj_rtf(x, ...)
 \method{prep_obj_rtf}{character}(x, ...)
 
 \method{prep_obj_rtf}{PNG}(x, ...)
-
-\method{prep_obj_rtf}{ggplot}(x, ...)
 
 \method{prep_obj_rtf}{gt_tbl}(x, ...)
 

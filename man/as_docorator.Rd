@@ -17,7 +17,8 @@ as_docorator(
   geometry = geom_set(),
   fig_dim = c(5, 8),
   tbl_scale = TRUE,
-  tbl_stub_pct = 0.3
+  tbl_stub_pct = 0.3,
+  convert_ggplot = TRUE
 )
 }
 \arguments{
@@ -48,6 +49,8 @@ to \code{c(5,8)}}
 \item{tbl_scale}{Boolean for whether or not to automatically scale table columns to fit display area. Defaults to TRUE. Note that this will overwrite scaling set in the table directly unless set to FALSE.}
 
 \item{tbl_stub_pct}{percent of total width that should be dedicated to stub column(s). If more than 1 stub column then this is the total for both.}
+
+\item{convert_ggplot}{Boolean for whether or not to convert ggplot objects to PNG files to preserve scaling for all render engines. Defaults to TRUE.}
 }
 \value{
 docorator object

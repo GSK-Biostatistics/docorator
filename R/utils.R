@@ -9,10 +9,10 @@
 #' \dontrun{
 #'  doc_path(filename = "my_tbl.pdf", path = NULL)
 #'}
-doc_path <- function(filename = NULL, path = NULL){
+doc_path <- function(filename = NULL, path = NULL) {
   path <- path %||% "."
   doc_path <- thisfile(filename, path)
-  if(length(doc_path)==0){
+  if (length(doc_path) == 0) {
     return(NA)
   }
   doc_path
@@ -26,7 +26,7 @@ doc_path <- function(filename = NULL, path = NULL){
 #' \donttest{
 #'  doc_datetime()
 #'}
-doc_datetime <- function(){
+doc_datetime <- function() {
   as.POSIXct(Sys.time(), tz = "UTC") |>
     format("%d%B%Y %H:%M")
 }
@@ -38,7 +38,7 @@ doc_datetime <- function(){
 #' @examples
 #' doc_pagenum()
 #'
-doc_pagenum <- function(){
+doc_pagenum <- function() {
   "Page \\thepage\\ of \\pageref*{LastPage}"
 }
 
@@ -54,13 +54,18 @@ thisfile <- function(filename, path) {
     res
   } else if (!is.null(res <- thisfile_rscript())) {
     res
-  } else if (Sys.getenv("RSTUDIO") == "1" &&
-             !is.null(rstudioapi::getSourceEditorContext()$path) &&
-             !rstudioapi::getSourceEditorContext()$path==""){
+  } else if (
+    Sys.getenv("RSTUDIO") == "1" &&
+      !is.null(rstudioapi::getSourceEditorContext()$path) &&
+      !rstudioapi::getSourceEditorContext()$path == ""
+  ) {
     normalizePath(rstudioapi::getSourceEditorContext()$path, winslash = "/")
-  } else if (!is.null(filename)){
+  } else if (!is.null(filename)) {
     paste0(
-      normalizePath(path, winslash = "/"), "/", tools::file_path_sans_ext(filename), ".R"
+      normalizePath(path, winslash = "/"),
+      "/",
+      tools::file_path_sans_ext(filename),
+      ".R"
     )
   } else {
     NULL
@@ -71,7 +76,7 @@ thisfile <- function(filename, path) {
 thisfile_source <- function() {
   for (i in -(1:sys.nframe())) {
     if (identical(args(sys.function(i)), args(base::source))) {
-      return(normalizePath(sys.frame(i)$ofile,winslash = '/'))
+      return(normalizePath(sys.frame(i)$ofile, winslash = '/'))
     }
   }
 
@@ -81,7 +86,13 @@ thisfile_source <- function() {
 #' @noRd
 thisfile_r <- function() {
   cmd_args <- commandArgs(trailingOnly = FALSE)
-  if (!grepl("^R(?:|term)(?:|[.]exe)$", basename(cmd_args[[1L]]), ignore.case = TRUE)) {
+  if (
+    !grepl(
+      "^R(?:|term)(?:|[.]exe)$",
+      basename(cmd_args[[1L]]),
+      ignore.case = TRUE
+    )
+  ) {
     return(NULL)
   }
 
@@ -104,7 +115,13 @@ thisfile_r <- function() {
 #' @noRd
 thisfile_rscript <- function() {
   cmd_args <- commandArgs(trailingOnly = FALSE)
-  if (!grepl("^R(?:term|script)(?:|[.]exe)$", basename(cmd_args[[1L]]), ignore.case = TRUE)) {
+  if (
+    !grepl(
+      "^R(?:term|script)(?:|[.]exe)$",
+      basename(cmd_args[[1L]]),
+      ignore.case = TRUE
+    )
+  ) {
     return(NULL)
   }
 
@@ -133,19 +150,25 @@ thisfile_rscript <- function() {
 #' \dontrun{
 #' png_path <- png_path(path = "path_to_my_png.png")
 #' }
-png_path <- function(path = NULL){
+png_path <- function(path = NULL) {
   # path provided, is valid, is png
-  if(is.null(path) | !file.exists(path) | toupper(tools::file_ext(path)) != "PNG"){
-    cli::cli_abort("Please provide a valid path to a PNG file.",
-              call = rlang::caller_env())
+  if (
+    is.null(path) | !file.exists(path) | toupper(tools::file_ext(path)) != "PNG"
+  ) {
+    cli::cli_abort(
+      "Please provide a valid path to a PNG file.",
+      call = rlang::caller_env()
+    )
   }
 
   png <- png::readPNG(path)
 
-  structure(list(
-    png = png),
-    class = "PNG")
-
+  structure(
+    list(
+      png = png
+    ),
+    class = "PNG"
+  )
 }
 
 #' Create prep_obj_tex code chunks
@@ -165,19 +188,32 @@ png_path <- function(path = NULL){
 #' create_chunk(docorator, transform = NULL)
 #' }
 create_chunk <- function(x, id = 1, transform) {
-  deparsed <- paste0(deparse(
-    function() {
-      prep_obj_tex(x, transform)
-    }
-  ), collapse = '')
+  deparsed <- paste0(
+    deparse(
+      function() {
+        prep_obj_tex(x, transform)
+      }
+    ),
+    collapse = ''
+  )
 
-  new_chunk <- paste0("
-  `","``{r new_chunk", id, ", fig.height=", x$fig_dim[1], ", fig.width=", x$fig_dim[2], ", echo=FALSE, results='asis', output='asis'}",
-                      "\n(",
-                      deparsed
-                      , ")()",
-                      "\n  `","``
-  ")
+  new_chunk <- paste0(
+    "
+  `",
+    "``{r new_chunk",
+    id,
+    ", fig.height=",
+    x$fig_dim[1],
+    ", fig.width=",
+    x$fig_dim[2],
+    ", echo=FALSE, results='asis', output='asis'}",
+    "\n(",
+    deparsed,
+    ")()",
+    "\n  `",
+    "``
+  "
+  )
 
   cat(knitr::knit(text = knitr::knit_expand(text = new_chunk), quiet = TRUE))
 }
@@ -199,30 +235,32 @@ create_chunk <- function(x, id = 1, transform) {
 #' }
 create_chunks_all <- function(x, transform) {
   if (!inherits(x, "docorator")) {
-    cli::cli_abort("The {.arg {rlang::caller_arg(x)}} argument must be class docorator, not {.obj_type_friendly {x}}. See documentation for `as_docorator`.",
-                   call = rlang::caller_env())
+    cli::cli_abort(
+      "The {.arg {rlang::caller_arg(x)}} argument must be class docorator, not {.obj_type_friendly {x}}. See documentation for `as_docorator`.",
+      call = rlang::caller_env()
+    )
   }
 
   display <- x$display
 
-  if(identical(class(display), "list")) {
+  if (identical(class(display), "list")) {
     for (i in 1:length(display)) {
       new_docorator <- x
       new_docorator$display <- display[[i]]
-      create_chunk(new_docorator,i,transform)
-      if(length(display)>1){
+      create_chunk(new_docorator, i, transform)
+      if (length(display) > 1) {
         cat("\\pagebreak\n")
       }
     }
-  } else if(inherits(display, "gt_group")){
+  } else if (inherits(display, "gt_group")) {
     # each table in the gt_group gets its own chunk to avoid issues with caption ids
-    for(i in 1:nrow(display$gt_tbls)){
+    for (i in 1:nrow(display$gt_tbls)) {
       new_docorator <- x
-      new_docorator$display <- gt::grp_pull(display,i)
-      create_chunk(new_docorator,i,transform)
-       if(i!=nrow(display$gt_tbls)){
+      new_docorator$display <- gt::grp_pull(display, i)
+      create_chunk(new_docorator, i, transform)
+      if (i != nrow(display$gt_tbls)) {
         cat("\\pagebreak\n")
-       }
+      }
     }
   } else {
     create_chunk(x, 1, transform)
@@ -234,21 +272,57 @@ create_chunks_all <- function(x, transform) {
 #' @param x docorator object
 #' @keywords internal
 check_pkg_version <- function(x) {
-
   if (rlang::inherits_any(x$display, c("gt_tbl", "gt_group"))) {
     pkg <- "gt"
-  }else if (inherits(x$display,"ggplot")) {
+  } else if (inherits(x$display, "ggplot")) {
     pkg <- "ggplot2"
-  }else{
+  } else {
     return()
   }
 
- package_list <- append(x$session_info$otherPkgs,x$session_info$loadedOnly)
- pkg_version <- package_list[[pkg]][["Version"]]
+  package_list <- append(x$session_info$otherPkgs, x$session_info$loadedOnly)
+  pkg_version <- package_list[[pkg]][["Version"]]
 
- # get current version if it exists
- current_version = as.character(utils::packageVersion(pkg))
+  # get current version if it exists
+  current_version = as.character(utils::packageVersion(pkg))
 
- if(utils::compareVersion(current_version, pkg_version)!= 0){
-   cli::cli_text("Note: docorator object was created with {.pkg {pkg} {pkg_version}}. You are now running {.pkg {pkg} {current_version}}. There may be issues rendering your document.")}
+  if (utils::compareVersion(current_version, pkg_version) != 0) {
+    cli::cli_text(
+      "Note: docorator object was created with {.pkg {pkg} {pkg_version}}. You are now running {.pkg {pkg} {current_version}}. There may be issues rendering your document."
+    )
+  }
+}
+
+#' Convert ggplot2 to png to preserve scaling for all render engines
+#' @param x display object
+#' @param fig_dim figure dimensions
+#' @return display object
+#' @noRd
+#' @keywords internal
+convert_ggplot <- function(x, fig_dim = c(5, 8)) {
+  # convert to list if not already
+  if (!identical(class(x), "list")) {
+    x <- list(x)
+  }
+
+  x <- lapply(x, function(i) {
+    if (inherits(i, "ggplot")) {
+      # convert ggplot2 to png
+      tmpfile <- tempfile(fileext = ".png")
+      ggplot2::ggsave(
+        tmpfile,
+        plot = i,
+        width = fig_dim[2],
+        height = fig_dim[1],
+        units = "in"
+      )
+      i <- png_path(tmpfile)
+    }
+    i
+  })
+
+  if (length(x) == 1) {
+    x <- x[[1]]
+  }
+  x
 }
