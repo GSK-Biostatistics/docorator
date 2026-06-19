@@ -7,6 +7,7 @@ Bug Fixes
 * remove RTF warning about gt version number (#100)
 * allow character number to be passed to fancywrap.docorator (#109)
 * keep_with_next = FALSE for docx outputs to prevent unwanted page breaks
+* empty md strings in gt labels cause issues in word, replace them with empty strings
 
 
 # docorator 0.6.0

@@ -63,6 +63,9 @@ prep_obj_docx.list <- function(x, ...) {
 #' convert gt_tbl object to ooxml
 #' @noRd
 gt_to_word <- function(x) {
+  # replace empty mds with a string
+  x <- replace_empty_md_labels(x)
+
   # apply options to the gt
   # Arial font
   font <- "Arial"
