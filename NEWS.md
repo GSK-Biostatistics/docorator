@@ -6,6 +6,7 @@ Bug Fixes
 * use individual markdown chunks for each table in a gt_group to avoid issues with caption ids (#79)
 * remove RTF warning about gt version number (#100)
 * allow character number to be passed to fancywrap.docorator (#109)
+* keep_with_next = FALSE for docx outputs to prevent unwanted page breaks
 
 
 # docorator 0.6.0
