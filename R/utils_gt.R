@@ -394,6 +394,8 @@ hf_strip <- function(x) {
 #' @keywords internal
 #' @noRd
 replace_empty_md <- function(x) {
+  #TODO: remove this and set gt dep when this is released: https://github.com/rstudio/gt/pull/2120/changes
+
   if (inherits(x, "gt_tbl")) {
     # boxhead
     gt_tbl_labs <- x$`_boxhead`
