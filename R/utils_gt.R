@@ -393,7 +393,7 @@ hf_strip <- function(x) {
 #' @param x a gt_tbl or gt_group
 #' @keywords internal
 #' @noRd
-replace_empty_md_labels <- function(x) {
+replace_empty_md <- function(x) {
   if (inherits(x, "gt_tbl")) {
     # boxhead
     gt_tbl_labs <- x$`_boxhead`
@@ -428,6 +428,9 @@ replace_empty_md_labels <- function(x) {
 
     x$`_stubhead` <- gt_stub_labs
 
-    return(x)
+    # data - replace empty with invisible whitespace
+    x$`_data`[x$`_data` == ""] <- "\u200B"
   }
+
+  x
 }

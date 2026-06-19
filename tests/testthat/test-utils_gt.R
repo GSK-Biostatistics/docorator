@@ -408,6 +408,12 @@ test_that("replace empty md labels works", {
     gt::gt(rowname_col = "row") |>
     gt::tab_stubhead(gt::md("test"))
 
+  # md in the body of the table
+  gt_with_md_body <- gt::exibble |>
+    dplyr::mutate(char = "") |>
+    gt() |>
+    fmt_markdown()
+
   expect_equal(
     lapply(gt_tbl$`_boxhead`$column_label, class),
     list(
@@ -423,7 +429,7 @@ test_that("replace empty md labels works", {
     )
   )
 
-  cleaned_gt <- replace_empty_md_labels(gt_tbl)
+  cleaned_gt <- replace_empty_md(gt_tbl)
 
   expect_equal(
     lapply(cleaned_gt$`_boxhead`$column_label, class),
@@ -469,7 +475,7 @@ test_that("replace empty md labels works", {
     )
   )
 
-  cleaned_gt_stub <- replace_empty_md_labels(gt_with_stub)
+  cleaned_gt_stub <- replace_empty_md(gt_with_stub)
 
   expect_equal(
     class(cleaned_gt_stub$`_stubhead`$label),
@@ -493,11 +499,28 @@ test_that("replace empty md labels works", {
 
   # non empty stub md()
 
-  cleaned_with_char_stub <- replace_empty_md_labels(gt_with_char_stub)
+  cleaned_with_char_stub <- replace_empty_md(gt_with_char_stub)
 
   # shouldnt change the stubhead
   expect_equal(
     cleaned_with_char_stub$`_stubhead`,
     gt_with_char_stub$`_stubhead`
+  )
+
+  # empty md in the body of the table
+  expect_equal(gt_with_md_body$`_data`$char, c("", "", "", "", "", "", "", ""))
+  cleaned_md_body <- replace_empty_md(gt_with_md_body)
+  expect_equal(
+    cleaned_md_body$`_data`$char,
+    c(
+      "\u200B",
+      "\u200B",
+      "\u200B",
+      "\u200B",
+      "\u200B",
+      "\u200B",
+      "\u200B",
+      "\u200B"
+    )
   )
 })

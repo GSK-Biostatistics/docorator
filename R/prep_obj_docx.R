@@ -64,7 +64,7 @@ prep_obj_docx.list <- function(x, ...) {
 #' @noRd
 gt_to_word <- function(x) {
   # replace empty mds with a string
-  x <- replace_empty_md_labels(x)
+  x <- replace_empty_md(x)
 
   # apply options to the gt
   # Arial font
