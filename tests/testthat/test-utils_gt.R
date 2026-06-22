@@ -411,8 +411,8 @@ test_that("replace empty md labels works", {
   # md in the body of the table
   gt_with_md_body <- gt::exibble |>
     dplyr::mutate(char = "") |>
-    gt() |>
-    fmt_markdown()
+    gt::gt() |>
+    gt::fmt_markdown()
 
   expect_equal(
     lapply(gt_tbl$`_boxhead`$column_label, class),
