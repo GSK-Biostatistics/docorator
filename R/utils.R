@@ -39,7 +39,7 @@ doc_datetime <- function(){
 #' doc_pagenum()
 #'
 doc_pagenum <- function(){
-  "Page \\thepage\\ of \\pageref*{LastPage}"
+  "_DOCORATOR_PAGE_PLACEHOLDER_"
 }
 
 
