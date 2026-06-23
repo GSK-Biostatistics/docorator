@@ -1,7 +1,7 @@
 # docorator development version
 Improvements
 * Add docx render engine `render_docx` (#97)
-* Convert ggplot2 objects to png for consistency between render engines 
+* Convert ggplot2 objects to png for consistency between render engines (#84)
 
 Bug Fixes
 * use individual markdown chunks for each table in a gt_group to avoid issues with caption ids (#79)
