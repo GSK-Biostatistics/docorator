@@ -26,28 +26,40 @@
 #' hf_to_gt(docorator)
 
 hf_to_gt <- function(x) {
-
   if (!inherits(x, "docorator")) {
-    cli::cli_abort("The {.arg {rlang::caller_arg(x)}} argument must be class docorator, not {.obj_type_friendly {x}}. See documentation for `as_docorator`.",
-              call = rlang::caller_env())
+    cli::cli_abort(
+      "The {.arg {rlang::caller_arg(x)}} argument must be class docorator, not {.obj_type_friendly {x}}. See documentation for `as_docorator`.",
+      call = rlang::caller_env()
+    )
   }
 
   gt <- x$display
 
   if (!rlang::inherits_any(gt, c("gt_tbl", "gt_group"))) {
-    cli::cli_abort("The {.arg {rlang::caller_arg(x)}} argument must be class gt_tbl or gt_group, not {.obj_type_friendly {x}}.",
-              call = rlang::caller_env())
+    cli::cli_abort(
+      "The {.arg {rlang::caller_arg(x)}} argument must be class gt_tbl or gt_group, not {.obj_type_friendly {x}}.",
+      call = rlang::caller_env()
+    )
   }
 
   head_foot <- hf_extract(x)
 
-
   # for gt_group objects iteratively add headers and footers
 
-  if(inherits(gt, "gt_group")){
-    gt <- hf_to_gt_group(gt, head_foot$head_data, head_foot$subhead_data, head_foot$foot_data)
-  }else if(inherits(gt, "gt_tbl")){
-    gt <- hf_to_gt_tbl(gt, head_foot$head_data, head_foot$subhead_data, head_foot$foot_data)
+  if (inherits(gt, "gt_group")) {
+    gt <- hf_to_gt_group(
+      gt,
+      head_foot$head_data,
+      head_foot$subhead_data,
+      head_foot$foot_data
+    )
+  } else if (inherits(gt, "gt_tbl")) {
+    gt <- hf_to_gt_tbl(
+      gt,
+      head_foot$head_data,
+      head_foot$subhead_data,
+      head_foot$foot_data
+    )
   }
 
   return(gt)
@@ -60,42 +72,46 @@ hf_to_gt <- function(x) {
 #' @param footer a character vector containing footnote information
 #'
 #' @noRd
-hf_to_gt_tbl <- function(gt, header, subheader, footer){
-  if(inherits(gt, "gt_tbl")){
-
+hf_to_gt_tbl <- function(gt, header, subheader, footer) {
+  if (inherits(gt, "gt_tbl")) {
     # order of titles should be: all docorator headers (header and subheader) then gt title, then gt subtitles.
     subtitle <- NULL # will create a vector of new subtitles and split with <br> characters
     gt_headers <- NULL # vector of existing gt headers to be added at the end of docorator headers
 
     # check title and subtitle arent empty strings and add to gt_headers.
-    if(!is.null(gt$`_heading`$title) && !identical(gt$`_heading`$title, "")){
+    if (!is.null(gt$`_heading`$title) && !identical(gt$`_heading`$title, "")) {
       gt_headers <- gt$`_heading`$title
     }
 
     # check if existing subtitle exists, if so add to gt_headers
-    if(!is.null(gt$`_heading`$subtitle) && !identical(gt$`_heading`$subtitle, "")){
-      gt_headers <- c(gt_headers,gt$`_heading`$subtitle)
+    if (
+      !is.null(gt$`_heading`$subtitle) && !identical(gt$`_heading`$subtitle, "")
+    ) {
+      gt_headers <- c(gt_headers, gt$`_heading`$subtitle)
     }
 
     # add docorator subtitle text before old gt headers.
     subtitle <- c(subheader, gt_headers)
 
     # if not null or empty, add breaks and md()
-    if(!is.null(subtitle) && !identical(subtitle,"")){
+    if (!is.null(subtitle) && !identical(subtitle, "")) {
       subtitle <- gt::md(paste0(subtitle, collapse = "<br>"))
     }
     # header
-    if(length(header)>0 | length(subtitle)>0){
+    if (length(header) > 0 | length(subtitle) > 0) {
       gt <- gt |>
-        gt::tab_header(title = paste0(header, collapse = " "), subtitle = subtitle)
+        gt::tab_header(
+          title = paste0(header, collapse = " "),
+          subtitle = subtitle
+        )
     }
     # footer
-  if(length(footer)>0){
-    for(footnote in footer){
-      gt <- gt |>
-        gt::tab_footnote(footnote = footnote)
+    if (length(footer) > 0) {
+      for (footnote in footer) {
+        gt <- gt |>
+          gt::tab_footnote(footnote = footnote)
+      }
     }
-  }
   }
   return(gt)
 }
@@ -108,12 +124,16 @@ hf_to_gt_tbl <- function(gt, header, subheader, footer){
 #' @param footer a dataframe containing footnote information
 #'
 #' @noRd
-hf_to_gt_group <- function(gt_group, header, subheader, footer){
-  if(inherits(gt_group, "gt_group")){
-    for(i in 1:nrow(gt_group$gt_tbls)){
+hf_to_gt_group <- function(gt_group, header, subheader, footer) {
+  if (inherits(gt_group, "gt_group")) {
+    for (i in 1:nrow(gt_group$gt_tbls)) {
       gt <- gt::grp_pull(gt_group, i)
       # replace
-      gt_group <- gt::grp_replace(gt_group, hf_to_gt_tbl(gt, header, subheader, footer),.which = i)
+      gt_group <- gt::grp_replace(
+        gt_group,
+        hf_to_gt_tbl(gt, header, subheader, footer),
+        .which = i
+      )
     }
   }
   return(gt_group)
@@ -140,37 +160,40 @@ hf_to_gt_group <- function(gt_group, header, subheader, footer){
 #'   save_object = FALSE)
 #'
 #' hf_extract(docorator)
-hf_extract <- function(x){
+hf_extract <- function(x) {
   # get header and footer information
   header <- x$header
   footer <- x$footer
 
   # Take titles that are alignment center, remove any missing
   # First value is title, any remaining are subtitles
-  all_headers <- unlist(lapply(header, function(x){
-    if(!is.na(x$center)){
+  all_headers <- unlist(lapply(header, function(x) {
+    if (!is.na(x$center)) {
       x$center
-    }}))
+    }
+  }))
 
   head_data <- all_headers[1]
 
   # subheaders
-  if(length(all_headers[-1])>0){
+  if (length(all_headers[-1]) > 0) {
     subhead_data <- all_headers[-1]
-  }else{
+  } else {
     subhead_data <- NULL
   }
 
   # Take footers that are alignment left, remove any missing
-  foot_data <- unlist(lapply(footer, function(x){
-    if(!is.na(x$left)){
+  foot_data <- unlist(lapply(footer, function(x) {
+    if (!is.na(x$left)) {
       x$left
-    }}))
+    }
+  }))
 
-  list(head_data = head_data,
-       subhead_data = subhead_data,
-       foot_data = foot_data)
-
+  list(
+    head_data = head_data,
+    subhead_data = subhead_data,
+    foot_data = foot_data
+  )
 }
 
 #' apply a gt function to a gt_group
@@ -188,29 +211,32 @@ hf_extract <- function(x){
 #'
 #' apply_to_gt_group(gt_group, func,arg_list_group)
 #'
-apply_to_gt_group <- function(x, func, args, call = rlang::caller_env()){
-
-  if(!(inherits(x, c("gt_tbl", "gt_group")))){
-    cli::cli_abort("First arg must be a gt_tbl or gt_group object, not {.obj_type_friendly {x}}")
+apply_to_gt_group <- function(x, func, args, call = rlang::caller_env()) {
+  if (!(inherits(x, c("gt_tbl", "gt_group")))) {
+    cli::cli_abort(
+      "First arg must be a gt_tbl or gt_group object, not {.obj_type_friendly {x}}"
+    )
   }
   # add gt to args list as first element
   full_args <- append(args, list(x), after = 0)
 
-  if(inherits(x, "gt_tbl")){
+  if (inherits(x, "gt_tbl")) {
     x <- do.call(func, full_args, envir = call)
-  }else if(inherits(x, "gt_group")){
+  } else if (inherits(x, "gt_group")) {
     for (i in seq_len(nrow(x$gt_tbls))) {
       # pull out gt_tbl, apply function, reinsert into group
       gt_tbl <- gt::grp_pull(x, i)
       # replace data arg with current gt_tbl
       full_args[[1]] <- gt_tbl
       #make it clear which table if an error occurs
-      gt_tbl <- tryCatch({
-        do.call(func, full_args, envir = call)
-      },
-      error = function(e) {
-        cli::cli_abort("Failure in Table {i}", parent = e)
-      })
+      gt_tbl <- tryCatch(
+        {
+          do.call(func, full_args, envir = call)
+        },
+        error = function(e) {
+          cli::cli_abort("Failure in Table {i}", parent = e)
+        }
+      )
 
       x <- gt::grp_replace(x, gt_tbl, .which = i)
     }
@@ -223,18 +249,18 @@ apply_to_gt_group <- function(x, func, args, call = rlang::caller_env()){
 #' @param x docorator object
 #' @noRd
 #' @keywords internal
-png_to_gt <- function(x){
-
+png_to_gt <- function(x) {
   # save png to temp file
- temp_png <- tempfile(
+  temp_png <- tempfile(
     pattern = "temp_png_",
     tmpdir = tempdir(),
-    fileext = ".png")
+    fileext = ".png"
+  )
 
- png::writePNG(x$display$png, temp_png)
+  png::writePNG(x$display$png, temp_png)
 
   # convert to gt
-  gt <- dplyr::tibble(ggplot =  temp_png) |>
+  gt <- dplyr::tibble(ggplot = temp_png) |>
     gt::gt() |>
     gt::fmt_image(columns = dplyr::everything(), sep = ",", width = "6in") |>
     # remove column headers and borders
@@ -245,30 +271,35 @@ png_to_gt <- function(x){
     )
 
   gt
-
 }
 
 #' Convert ggplot object to gt from docorator object
 #' @param x docorator object
 #' @noRd
 #' @keywords internal
-gg_to_gt <- function(x){
-
+gg_to_gt <- function(x) {
   if (!inherits(x$display, "ggplot")) {
-    cli::cli_abort("The display must be class `ggplot`, not {.obj_type_friendly {x$display}}.",
-                   call = rlang::caller_env())
+    cli::cli_abort(
+      "The display must be class `ggplot`, not {.obj_type_friendly {x$display}}.",
+      call = rlang::caller_env()
+    )
   }
 
   # remove header footer information
   display_info <- hf_strip(x$display)
 
   # convert to gt
-  gt <- dplyr::tibble(ggplot =  display_info$display |>
-                 gg_to_image(fig_dim = x$fig_dim, path = tempdir())) |>
+  gt <- dplyr::tibble(
+    ggplot = display_info$display |>
+      gg_to_image(fig_dim = x$fig_dim, path = tempdir())
+  ) |>
     gt::gt() |>
     gt::fmt_image(columns = dplyr::everything(), sep = ",", width = "6in") |>
     # add header and footer information
-    gt::tab_header(title = display_info$head_data, subtitle = display_info$subhead_data) |>
+    gt::tab_header(
+      title = display_info$head_data,
+      subtitle = display_info$subhead_data
+    ) |>
     # remove column headers and borders
     gt::tab_options(
       column_labels.hidden = TRUE,
@@ -277,13 +308,12 @@ gg_to_gt <- function(x){
     )
 
   # add footnotes if not NULL - avoids null row being added
-  if(!is.null(display_info$foot_data)){
+  if (!is.null(display_info$foot_data)) {
     gt <- gt |>
       gt::tab_footnote(footnote = display_info$foot_data)
   }
 
   gt
-
 }
 
 #' ggplot to image filepath
@@ -294,9 +324,7 @@ gg_to_gt <- function(x){
 #' @return filepath to snap of ggplot
 #' @keywords internal
 #' @noRd
-gg_to_image <- function(plot_object, fig_dim = c(5,8), path = NULL) {
-
-
+gg_to_image <- function(plot_object, fig_dim = c(5, 8), path = NULL) {
   # Upgrade x to a list if only a single ggplot object is provided
   if (inherits(plot_object, "gg")) {
     plot_object <- list(plot_object)
@@ -307,11 +335,11 @@ gg_to_image <- function(plot_object, fig_dim = c(5,8), path = NULL) {
     FUN.VALUE = character(1L),
     USE.NAMES = FALSE,
     FUN = function(x) {
-
       filename <- tempfile(
         pattern = "temp_gt_ggplot_",
         tmpdir = path,
-        fileext = ".png")
+        fileext = ".png"
+      )
 
       # Save PNG file to disk
       ggplot2::ggsave(
@@ -326,7 +354,6 @@ gg_to_image <- function(plot_object, fig_dim = c(5,8), path = NULL) {
       )
 
       filename
-
     }
   )
 }
@@ -338,25 +365,26 @@ gg_to_image <- function(plot_object, fig_dim = c(5,8), path = NULL) {
 #'
 #' @noRd
 #' @keywords internal
-hf_strip <- function(x){
-
-
+hf_strip <- function(x) {
   if (!inherits(x, "ggplot")) {
-    cli::cli_abort("The display must be class `ggplot`, not {.obj_type_friendly {x}}.",
-                   call = rlang::caller_env())
+    cli::cli_abort(
+      "The display must be class `ggplot`, not {.obj_type_friendly {x}}.",
+      call = rlang::caller_env()
+    )
   }
 
   head_data <- x$labels$title
   # move tag to subtitle
-  subhead_data <- c(x$labels$subtitle,x$labels$tag)
+  subhead_data <- c(x$labels$subtitle, x$labels$tag)
   foot_data <- x$labels$caption
 
   # set to null in ggplot object
-  x$labels[c("title","subtitle", "caption", "tag")] <- NULL
+  x$labels[c("title", "subtitle", "caption", "tag")] <- NULL
 
-  list(display = x,
-       head_data = head_data,
-       subhead_data = subhead_data,
-       foot_data = foot_data)
-
+  list(
+    display = x,
+    head_data = head_data,
+    subhead_data = subhead_data,
+    foot_data = foot_data
+  )
 }

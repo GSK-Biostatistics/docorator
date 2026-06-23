@@ -1,5 +1,4 @@
 test_that("render to pdf works", {
-
   skip_on_cran()
   skip_on_ci()
 
@@ -11,7 +10,10 @@ test_that("render to pdf works", {
 
   docorator <- as_docorator(
     x = my_gt,
-    header = fancyhead(fancyrow("first line header"), fancyrow("second line header")),
+    header = fancyhead(
+      fancyrow("first line header"),
+      fancyrow("second line header")
+    ),
     footer = NULL,
     display_name = "my_first_gt",
     display_loc = NULL,
@@ -20,8 +22,7 @@ test_that("render to pdf works", {
 
   # path set to NULL
   withr::with_tempdir({
-    res <- suppressMessages( docorator |> render_pdf()
-    )
+    res <- suppressMessages(docorator |> render_pdf())
 
     expect_true(file.exists("my_first_gt.pdf"))
   })
@@ -29,9 +30,11 @@ test_that("render to pdf works", {
   # with path supplied
   withr::with_tempdir({
     dir.create("tempdir2")
-    res <- suppressMessages(docorator |> render_pdf(
-      display_loc = "tempdir2"
-    )
+    res <- suppressMessages(
+      docorator |>
+        render_pdf(
+          display_loc = "tempdir2"
+        )
     )
 
     expect_true(file.exists(file.path("tempdir2", "my_first_gt.pdf")))
@@ -39,13 +42,14 @@ test_that("render to pdf works", {
 
   # quarto render with path supplied
   withr::with_tempdir({
-
     dir.create("tempdir3")
 
-    res <- suppressMessages( docorator |> render_pdf(
-      quarto = TRUE,
-      display_loc = "tempdir3"
-    )
+    res <- suppressMessages(
+      docorator |>
+        render_pdf(
+          quarto = TRUE,
+          display_loc = "tempdir3"
+        )
     )
     expect_true(file.exists(file.path("tempdir3", "my_first_gt.pdf")))
   })
@@ -54,41 +58,49 @@ test_that("render to pdf works", {
   withr::with_tempdir({
     docorator <- as_docorator(
       x = my_gt,
-      header = fancyhead(fancyrow("first line header"), fancyrow("second line header")),
+      header = fancyhead(
+        fancyrow("first line header"),
+        fancyrow("second line header")
+      ),
       footer = NULL,
       display_name = "my_first_gt",
       save_object = FALSE
     )
-    res <- suppressMessages( docorator |> render_pdf(
-      quarto = TRUE
-    )
+    res <- suppressMessages(
+      docorator |>
+        render_pdf(
+          quarto = TRUE
+        )
     )
 
     expect_true(file.exists("my_first_gt.pdf"))
-
   })
 })
 
 test_that("render to pdf, lists", {
-
   skip_on_cran()
   skip_on_ci()
 
-  png_obj1 <- png_path(path = system.file("extdata/test_image.png", package = "docorator"))
-  png_obj2 <- png_path(path = system.file("extdata/test_image.png", package = "docorator"))
+  png_obj1 <- png_path(
+    path = system.file("extdata/test_image.png", package = "docorator")
+  )
+  png_obj2 <- png_path(
+    path = system.file("extdata/test_image.png", package = "docorator")
+  )
 
-  ggplot1 <- ggplot2::ggplot(data = mtcars, ggplot2::aes(y=cyl, x=mpg)) +
+  ggplot1 <- ggplot2::ggplot(data = mtcars, ggplot2::aes(y = cyl, x = mpg)) +
     ggplot2::geom_point()
-  ggplot2 <- ggplot2::ggplot(data = mtcars, ggplot2::aes(x=cyl, y=mpg)) +
+  ggplot2 <- ggplot2::ggplot(data = mtcars, ggplot2::aes(x = cyl, y = mpg)) +
     ggplot2::geom_point()
-
 
   withr::with_tempdir({
-
     # list of pngs
     docorator <- as_docorator(
       x = list(png_obj1, png_obj2),
-      header = fancyhead(fancyrow("first line header"), fancyrow("second line header")),
+      header = fancyhead(
+        fancyrow("first line header"),
+        fancyrow("second line header")
+      ),
       footer = NULL,
       display_name = "my_first_list",
       display_loc = NULL,
@@ -98,47 +110,51 @@ test_that("render to pdf, lists", {
     # list of ggplots
     docorator2 <- as_docorator(
       x = list(ggplot1, ggplot2),
-      header = fancyhead(fancyrow("first line header"), fancyrow("second line header")),
+      header = fancyhead(
+        fancyrow("first line header"),
+        fancyrow("second line header")
+      ),
       footer = NULL,
       display_name = "my_first_ggplot_list",
       display_loc = NULL,
       save_object = FALSE
     )
 
-
-    res <- suppressMessages( docorator |> render_pdf()
-    )
-    res2 <- suppressMessages( docorator2 |> render_pdf()
-    )
+    res <- suppressMessages(docorator |> render_pdf())
+    res2 <- suppressMessages(docorator2 |> render_pdf())
 
     expect_true(file.exists("my_first_list.pdf"))
     expect_true(file.exists("my_first_ggplot_list.pdf"))
 
     # 2 pages
-    expect_equal(pdftools::pdf_info("my_first_list.pdf")$pages,2)
-    expect_equal(pdftools::pdf_info("my_first_ggplot_list.pdf")$pages,2)
+    expect_equal(pdftools::pdf_info("my_first_list.pdf")$pages, 2)
+    expect_equal(pdftools::pdf_info("my_first_ggplot_list.pdf")$pages, 2)
   })
-
 })
 
 test_that("render to pdf, lists - quarto", {
-
   skip_on_cran()
   skip_on_ci()
 
-  png_obj1 <- png_path(path = system.file("extdata/test_image.png", package = "docorator"))
-  png_obj2 <- png_path(path = system.file("extdata/test_image.png", package = "docorator"))
+  png_obj1 <- png_path(
+    path = system.file("extdata/test_image.png", package = "docorator")
+  )
+  png_obj2 <- png_path(
+    path = system.file("extdata/test_image.png", package = "docorator")
+  )
 
-  ggplot1 <- ggplot2::ggplot(data = mtcars, ggplot2::aes(y=cyl, x=mpg)) +
+  ggplot1 <- ggplot2::ggplot(data = mtcars, ggplot2::aes(y = cyl, x = mpg)) +
     ggplot2::geom_point()
-  ggplot2 <- ggplot2::ggplot(data = mtcars, ggplot2::aes(x=cyl, y=mpg)) +
+  ggplot2 <- ggplot2::ggplot(data = mtcars, ggplot2::aes(x = cyl, y = mpg)) +
     ggplot2::geom_point()
 
   withr::with_tempdir({
-
     docorator <- as_docorator(
       x = list(png_obj1, png_obj2),
-      header = fancyhead(fancyrow("first line header"), fancyrow("second line header")),
+      header = fancyhead(
+        fancyrow("first line header"),
+        fancyrow("second line header")
+      ),
       footer = NULL,
       display_name = "my_first_list",
       display_loc = NULL,
@@ -148,32 +164,30 @@ test_that("render to pdf, lists - quarto", {
     # list of ggplots
     docorator2 <- as_docorator(
       x = list(ggplot1, ggplot2),
-      header = fancyhead(fancyrow("first line header"), fancyrow("second line header")),
+      header = fancyhead(
+        fancyrow("first line header"),
+        fancyrow("second line header")
+      ),
       footer = NULL,
       display_name = "my_first_ggplot_list",
       display_loc = NULL,
       save_object = FALSE
     )
 
+    res <- suppressMessages(docorator |> render_pdf(quarto = TRUE))
 
-    res <- suppressMessages( docorator |> render_pdf(quarto = TRUE))
-
-    res2 <- suppressMessages( docorator2 |> render_pdf(quarto = TRUE))
-
+    res2 <- suppressMessages(docorator2 |> render_pdf(quarto = TRUE))
 
     expect_true(file.exists("my_first_list.pdf"))
     expect_true(file.exists("my_first_ggplot_list.pdf"))
 
     # 2 pages
-    expect_equal(pdftools::pdf_info("my_first_list.pdf")$pages,2)
-    expect_equal(pdftools::pdf_info("my_first_ggplot_list.pdf")$pages,2)
-  }
-  )
-
+    expect_equal(pdftools::pdf_info("my_first_list.pdf")$pages, 2)
+    expect_equal(pdftools::pdf_info("my_first_ggplot_list.pdf")$pages, 2)
+  })
 })
 
 test_that("render to pdf - transform", {
-
   skip_on_cran()
   skip_on_ci()
 
@@ -183,49 +197,61 @@ test_that("render to pdf - transform", {
       groupname_col = "group"
     )
 
-  transform <- function(x){stringr::str_replace_all(x,"num", "NUM")}
+  transform <- function(x) {
+    stringr::str_replace_all(x, "num", "NUM")
+  }
 
   withr::with_tempdir({
-
     docorator <- as_docorator(
       x = my_gt,
-      header = fancyhead(fancyrow("first line header"), fancyrow("second line header")),
+      header = fancyhead(
+        fancyrow("first line header"),
+        fancyrow("second line header")
+      ),
       footer = NULL,
       display_name = "my_first_gt",
       display_loc = NULL,
       save_object = FALSE
     )
 
-    res <- suppressMessages( docorator |> render_pdf(transform = transform)
-    )
+    res <- suppressMessages(docorator |> render_pdf(transform = transform))
 
     expect_true(file.exists("my_first_gt.pdf"))
-    expect_true(stringr::str_detect(pdftools::pdf_text("my_first_gt.pdf"),"NUM"))
-    expect_false(stringr::str_detect(pdftools::pdf_text("my_first_gt.pdf"),"num"))
-
+    expect_true(stringr::str_detect(
+      pdftools::pdf_text("my_first_gt.pdf"),
+      "NUM"
+    ))
+    expect_false(stringr::str_detect(
+      pdftools::pdf_text("my_first_gt.pdf"),
+      "num"
+    ))
   })
 
   # quarto render
   withr::with_tempdir({
-
     docorator <- as_docorator(
       x = my_gt,
-      header = fancyhead(fancyrow("first line header"), fancyrow("second line header")),
+      header = fancyhead(
+        fancyrow("first line header"),
+        fancyrow("second line header")
+      ),
       footer = NULL,
       display_name = "my_first_gt",
       save_object = FALSE
     )
-    expect_warning(suppressMessages( docorator |> render_pdf(
-      quarto = TRUE, transform = transform
-    )))
+    expect_warning(suppressMessages(
+      docorator |>
+        render_pdf(
+          quarto = TRUE,
+          transform = transform
+        )
+    ))
 
     expect_true(file.exists("my_first_gt.pdf"))
-
-   })
+  })
 })
 
 test_that("render to rtf works", {
-
   skip_on_cran()
   skip_on_ci()
 
@@ -236,27 +262,25 @@ test_that("render to rtf works", {
     )
 
   withr::with_tempdir({
-
     docorator <- as_docorator(
       x = my_gt,
-      header = fancyhead(fancyrow(left = "first line header"), fancyrow(center = "second line header")),
+      header = fancyhead(
+        fancyrow(left = "first line header"),
+        fancyrow(center = "second line header")
+      ),
       footer = NULL,
       display_name = "my_first_gt",
       display_loc = NULL,
       save_object = FALSE
     )
 
-    res <- suppressMessages( docorator |> render_rtf()
-    )
+    res <- suppressMessages(docorator |> render_rtf())
 
     expect_true(file.exists("my_first_gt.rtf"))
   })
-
 })
 
-test_that("rtf unicode characters",{
-
-
+test_that("rtf unicode characters", {
   my_gt <- gt::exibble |>
     gt::gt(
       rowname_col = "row",
@@ -265,12 +289,11 @@ test_that("rtf unicode characters",{
     gt::text_transform(
       locations = gt::cells_body(columns = everything()),
       fn = function(x) {
-        paste0("\U00A0", x ,"\U00A0")
+        paste0("\U00A0", x, "\U00A0")
       }
     )
 
   withr::with_tempdir({
-
     docorator <- as_docorator(
       x = my_gt,
       display_name = "my_gt_with_spaces",
@@ -279,25 +302,23 @@ test_that("rtf unicode characters",{
     )
 
     # unicode spaces have been replaced with actual spaces
-    res <- suppressMessages( docorator |> render_rtf())
-    doc <- readLines("my_gt_with_spaces.rtf")|> paste0(collapse = "")
+    res <- suppressMessages(docorator |> render_rtf())
+    doc <- readLines("my_gt_with_spaces.rtf") |> paste0(collapse = "")
     expect_false(grepl("\u00A0", doc, perl = TRUE))
 
     # unicode spaces are still present
-    res <- suppressMessages( docorator |> render_rtf(remove_unicode_ws = FALSE))
+    res <- suppressMessages(docorator |> render_rtf(remove_unicode_ws = FALSE))
     doc <- readLines("my_gt_with_spaces.rtf") |> paste0(collapse = "")
     expect_true(grepl("\u00A0", doc, perl = TRUE))
   })
-
 })
 
-test_that("rtf headers",{
-
+test_that("rtf headers", {
   my_gt <- gt::exibble |>
     gt::gt(
       rowname_col = "row",
       groupname_col = "group"
-    )|>
+    ) |>
     gt::tab_options(
       page.header.use_tbl_headings = TRUE
     )
@@ -312,38 +333,51 @@ test_that("rtf headers",{
       footer = fancyfoot(fancyrow("test footnote"))
     )
 
-    res <- suppressMessages( docorator |> render_rtf())
-    doc <- readLines("my_gt_header.rtf") |> paste0(collapse="")
-    expect_false(grepl("\\{\\\\header",doc))
-    res2 <- suppressMessages( docorator |> render_rtf(use_page_header = TRUE))
-    doc2 <- readLines("my_gt_header.rtf")|> paste0(collapse="")
-    expect_true(grepl("\\{\\\\header",doc2))
-
+    res <- suppressMessages(docorator |> render_rtf())
+    doc <- readLines("my_gt_header.rtf") |> paste0(collapse = "")
+    expect_false(grepl("\\{\\\\header", doc))
+    res2 <- suppressMessages(docorator |> render_rtf(use_page_header = TRUE))
+    doc2 <- readLines("my_gt_header.rtf") |> paste0(collapse = "")
+    expect_true(grepl("\\{\\\\header", doc2))
   })
 })
 
 test_that("render to rtf, lists of figures", {
-
   skip_on_cran()
   skip_on_ci()
 
-  png_obj1 <- png_path(path = system.file("extdata/test_image.png", package = "docorator"))
-  png_obj2 <- png_path(path = system.file("extdata/test_image.png", package = "docorator"))
+  png_obj1 <- png_path(
+    path = system.file("extdata/test_image.png", package = "docorator")
+  )
+  png_obj2 <- png_path(
+    path = system.file("extdata/test_image.png", package = "docorator")
+  )
 
-  ggplot1 <- ggplot2::ggplot(data = mtcars, ggplot2::aes(y=cyl, x=mpg)) +
+  ggplot1 <- ggplot2::ggplot(data = mtcars, ggplot2::aes(y = cyl, x = mpg)) +
     ggplot2::geom_point() +
-    ggplot2::labs(title = "title1", subtitle = "subtitle1", tag = "tag1", caption = "footnote1")
-  ggplot2 <- ggplot2::ggplot(data = mtcars, ggplot2::aes(x=cyl, y=mpg)) +
+    ggplot2::labs(
+      title = "title1",
+      subtitle = "subtitle1",
+      tag = "tag1",
+      caption = "footnote1"
+    )
+  ggplot2 <- ggplot2::ggplot(data = mtcars, ggplot2::aes(x = cyl, y = mpg)) +
     ggplot2::geom_point() +
-    ggplot2::labs(title = "title2", subtitle = "subtitle2", tag = "tag2", caption = "footnote2")
-
+    ggplot2::labs(
+      title = "title2",
+      subtitle = "subtitle2",
+      tag = "tag2",
+      caption = "footnote2"
+    )
 
   withr::with_tempdir({
-
     # list of pngs
     docorator <- as_docorator(
       x = list(png_obj1, png_obj2),
-      header = fancyhead(fancyrow(center = "first line header"), fancyrow(center = "second line header")),
+      header = fancyhead(
+        fancyrow(center = "first line header"),
+        fancyrow(center = "second line header")
+      ),
       footer = NULL,
       display_name = "my_first_list",
       display_loc = NULL,
@@ -353,7 +387,10 @@ test_that("render to rtf, lists of figures", {
     # list of ggplots
     docorator2 <- as_docorator(
       x = list(ggplot1, ggplot2),
-      header = fancyhead(fancyrow(center = "first line header"), fancyrow(center = "second line header")),
+      header = fancyhead(
+        fancyrow(center = "first line header"),
+        fancyrow(center = "second line header")
+      ),
       footer = NULL,
       display_name = "my_first_ggplot_list",
       display_loc = NULL,
@@ -361,20 +398,15 @@ test_that("render to rtf, lists of figures", {
     )
 
     # warnings as gt cannot handle rtf figures yet
-    res <- suppressWarnings(suppressMessages( docorator |> render_rtf()
-    ))
-    res2 <- suppressWarnings(suppressMessages( docorator2 |> render_rtf()
-    ))
+    res <- suppressWarnings(suppressMessages(docorator |> render_rtf()))
+    res2 <- suppressWarnings(suppressMessages(docorator2 |> render_rtf()))
 
     expect_true(file.exists("my_first_list.rtf"))
     expect_true(file.exists("my_first_ggplot_list.rtf"))
-
   })
-
 })
 
-test_that("pipe together renders",{
-
+test_that("pipe together renders", {
   skip_on_cran()
   skip_on_ci()
 
@@ -385,18 +417,19 @@ test_that("pipe together renders",{
     )
 
   withr::with_tempdir({
-
     docorator <- as_docorator(
       x = my_gt,
-      header = fancyhead(fancyrow(left = "first line header"), fancyrow(center = "second line header")),
+      header = fancyhead(
+        fancyrow(left = "first line header"),
+        fancyrow(center = "second line header")
+      ),
       footer = NULL,
       display_name = "my_first_gt",
       display_loc = NULL,
       save_object = FALSE
     )
 
-    res <- suppressMessages( docorator |> render_rtf() |> render_pdf()
-    )
+    res <- suppressMessages(docorator |> render_rtf() |> render_pdf())
 
     expect_true(file.exists("my_first_gt.rtf"))
     expect_true(file.exists("my_first_gt.pdf"))
@@ -404,7 +437,6 @@ test_that("pipe together renders",{
 })
 
 test_that("render non docorator object fails", {
-
   skip_on_cran()
   skip_on_ci()
 
@@ -414,7 +446,10 @@ test_that("render non docorator object fails", {
       groupname_col = "group"
     )
 
-  expect_error(render_pdf(my_gt), "The `my_gt` argument must be class docorator, not a <gt_tbl> object. See documentation for `as_docorator`.")
+  expect_error(
+    render_pdf(my_gt),
+    "The `my_gt` argument must be class docorator, not a <gt_tbl> object. See documentation for `as_docorator`."
+  )
 })
 
 test_that("render invalid transform", {
@@ -430,16 +465,23 @@ test_that("render invalid transform", {
   withr::with_tempdir({
     docorator <- as_docorator(
       x = my_gt,
-      header = fancyhead(fancyrow("first line header"), fancyrow("second line header")),
+      header = fancyhead(
+        fancyrow("first line header"),
+        fancyrow("second line header")
+      ),
       footer = NULL,
       display_name = "my_first_gt",
       display_loc = NULL,
       save_object = FALSE
     )
 
-    expect_warning(suppressMessages( docorator |> render_pdf(transform = "INVALID_TRANSFORM")), "The transform argument must be a function, not a string. No transform applied.")
+    expect_warning(
+      suppressMessages(
+        docorator |> render_pdf(transform = "INVALID_TRANSFORM")
+      ),
+      "The transform argument must be a function, not a string. No transform applied."
+    )
     expect_true(file.exists("my_first_gt.pdf"))
-
   })
 })
 
@@ -456,16 +498,23 @@ test_that("render invalid header_latex", {
   withr::with_tempdir({
     docorator <- as_docorator(
       x = my_gt,
-      header = fancyhead(fancyrow("first line header"), fancyrow("second line header")),
+      header = fancyhead(
+        fancyrow("first line header"),
+        fancyrow("second line header")
+      ),
       footer = NULL,
       display_name = "my_first_gt",
       display_loc = NULL,
       save_object = FALSE
     )
 
-    expect_warning(suppressMessages( docorator |> render_pdf(header_latex = "INVALID_TRANSFORM.R")), "The header_latex argument must point to a valid .tex file. No header options applied.")
+    expect_warning(
+      suppressMessages(
+        docorator |> render_pdf(header_latex = "INVALID_TRANSFORM.R")
+      ),
+      "The header_latex argument must point to a valid .tex file. No header options applied."
+    )
     expect_true(file.exists("my_first_gt.pdf"))
-
   })
 })
 
@@ -480,7 +529,6 @@ test_that("render header_latex", {
     )
 
   withr::with_tempdir({
-
     # write .tex header file
     latex_commands <- c(
       "\\begin{document}",
@@ -491,21 +539,27 @@ test_that("render header_latex", {
 
     docorator <- as_docorator(
       x = my_gt,
-      header = fancyhead(fancyrow("first line header"), fancyrow("second line header")),
+      header = fancyhead(
+        fancyrow("first line header"),
+        fancyrow("second line header")
+      ),
       footer = NULL,
       display_name = "my_first_gt",
       display_loc = NULL,
       save_object = FALSE
     )
 
-    res <- suppressMessages( docorator |> render_pdf(header_latex = "latex_header_file.tex")
+    res <- suppressMessages(
+      docorator |> render_pdf(header_latex = "latex_header_file.tex")
     )
 
     expect_true(file.exists("my_first_gt.pdf"))
 
     pdf_text <- pdftools::pdf_text("my_first_gt.pdf")
-    expect_true(stringr::str_detect(pdf_text,"This will be the only content in the document"))
-
+    expect_true(stringr::str_detect(
+      pdf_text,
+      "This will be the only content in the document"
+    ))
   })
 })
 
@@ -523,40 +577,44 @@ test_that("render keep tex file", {
   withr::with_tempdir({
     docorator <- as_docorator(
       x = my_gt,
-      header = fancyhead(fancyrow("first line header"), fancyrow("second line header")),
+      header = fancyhead(
+        fancyrow("first line header"),
+        fancyrow("second line header")
+      ),
       footer = NULL,
       display_name = "my_first_gt",
       display_loc = NULL,
       save_object = FALSE
     )
 
-    res <- suppressMessages( docorator |> render_pdf()
-    )
+    res <- suppressMessages(docorator |> render_pdf())
 
     expect_false(file.exists("my_first_gt.tex"))
 
-    res <- suppressMessages( docorator |> render_pdf(keep_tex = TRUE)
-    )
+    res <- suppressMessages(docorator |> render_pdf(keep_tex = TRUE))
 
     expect_true(file.exists("my_first_gt.tex"))
   })
-
 })
 
 
 test_that("render to pdf works with brackets in headers/footers", {
-
   skip_on_cran()
   skip_on_ci()
 
   my_gt <- gt::exibble |>
-    gt::gt(
-    )
+    gt::gt()
 
   docorator <- as_docorator(
     x = my_gt,
-    header = fancyhead(fancyrow("[a] first line header"), fancyrow("[b] second line header")),
-    footer = fancyfoot(fancyrow("[1] first line footer"), fancyrow("[2] second line footer")),
+    header = fancyhead(
+      fancyrow("[a] first line header"),
+      fancyrow("[b] second line header")
+    ),
+    footer = fancyfoot(
+      fancyrow("[1] first line footer"),
+      fancyrow("[2] second line footer")
+    ),
     display_name = "my_first_gt",
     display_loc = NULL,
     save_object = FALSE
@@ -564,12 +622,10 @@ test_that("render to pdf works with brackets in headers/footers", {
 
   # rmd render pdf
   withr::with_tempdir({
-    res <- suppressMessages( docorator |> render_pdf()
-    )
+    res <- suppressMessages(docorator |> render_pdf())
 
     expect_true(file.exists("my_first_gt.pdf"))
   })
-
 
   # # quarto render pdf - doesn't work
   # withr::with_tempdir({
@@ -584,6 +640,4 @@ test_that("render to pdf works with brackets in headers/footers", {
   #   )
   #   expect_true(file.exists(file.path("tempdir2", "my_first_gt.pdf")))
   # })
-
 })
-

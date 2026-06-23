@@ -16,7 +16,7 @@
 #' save_object = FALSE)
 #'
 #' prepared_obj <- prep_obj_tex(docorator)
-prep_obj_tex <- function (x, transform = NULL, ...) {
+prep_obj_tex <- function(x, transform = NULL, ...) {
   UseMethod("prep_obj_tex", x$display)
 }
 
@@ -37,9 +37,8 @@ prep_obj_tex.character <- function(x, transform = NULL, ...) {
 #' @rdname prep_obj_tex
 #' @export
 #' @keywords internal
-prep_obj_tex.PNG <- function(x, transform = NULL, ... ) {
-
-  if (Sys.getenv("DOCORATOR_RENDER_ENGINE")=="qmd"){
+prep_obj_tex.PNG <- function(x, transform = NULL, ...) {
+  if (Sys.getenv("DOCORATOR_RENDER_ENGINE") == "qmd") {
     tmpdir <- "."
   } else {
     tmpdir <- tempdir()
@@ -61,11 +60,9 @@ prep_obj_tex.gt_tbl <- function(x, transform = NULL, ...) {
 
 #' convert gt_tbl object to latex
 #' @noRd
-gt_to_tex <- function(x, transform = NULL){
-
-  if (Sys.getenv("DOCORATOR_RENDER_ENGINE")=="qmd"){
-
-    if ("latex_use_longtable" %in% x$`_options`$parameter){
+gt_to_tex <- function(x, transform = NULL) {
+  if (Sys.getenv("DOCORATOR_RENDER_ENGINE") == "qmd") {
+    if ("latex_use_longtable" %in% x$`_options`$parameter) {
       x <- x |>
         gt::tab_options(
           latex.use_longtable = FALSE,
@@ -74,11 +71,10 @@ gt_to_tex <- function(x, transform = NULL){
     }
 
     tbl_tex <- x |>
-      gt::as_latex() |> as.character()
-
+      gt::as_latex() |>
+      as.character()
   } else {
-
-    if ("latex_use_longtable" %in% x$`_options`$parameter){
+    if ("latex_use_longtable" %in% x$`_options`$parameter) {
       x <- x |>
         gt::tab_options(
           latex.use_longtable = TRUE
@@ -86,17 +82,18 @@ gt_to_tex <- function(x, transform = NULL){
     }
 
     tbl_tex <- x |>
-      gt::as_latex() |> as.character()
+      gt::as_latex() |>
+      as.character()
 
     # add line for repeated headers if table breaks on multiple pages
     #  longtable only
-    tbl_tex <- sub("\\\\midrule","\\\\midrule\\\\endhead",tbl_tex)
+    tbl_tex <- sub("\\\\midrule", "\\\\midrule\\\\endhead", tbl_tex)
   }
 
   # apply optional latex transform
-  if(!is.null(transform)){
+  if (!is.null(transform)) {
     tbl_tex |> transform()
-  }else{
+  } else {
     tbl_tex
   }
 }

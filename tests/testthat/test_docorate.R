@@ -1,5 +1,4 @@
 test_that("save docorator object works", {
-
   skip_on_cran()
   skip_on_ci()
 
@@ -19,8 +18,7 @@ test_that("save docorator object works", {
       footer = NULL,
       display_name = "my_first_gt",
       display_loc = NULL
-    )
-    )
+    ))
 
     expect_true(file.exists("my_first_gt.RDS"))
 
@@ -28,12 +26,10 @@ test_that("save docorator object works", {
     docorator_obj <- readRDS("my_first_gt.RDS")
 
     expect_equal(docorator_obj, res)
-
   })
 })
 
 test_that("deprecated - docorate works", {
-
   skip_on_cran()
   skip_on_ci()
 
@@ -44,7 +40,6 @@ test_that("deprecated - docorate works", {
     )
 
   withr::with_tempdir({
-
     expect_error(
       docorate(
         x = my_gt,
@@ -55,15 +50,14 @@ test_that("deprecated - docorate works", {
         footer = NULL,
         filename = "my_first_gt.pdf",
         path = NULL
-      ))
+      )
+    )
 
     expect_false(file.exists("my_first_gt.pdf"))
-
   })
 })
 
-test_that("Create docorator object without display_name errors",{
-
+test_that("Create docorator object without display_name errors", {
   skip_on_cran()
   skip_on_ci()
 
@@ -76,17 +70,14 @@ test_that("Create docorator object without display_name errors",{
   expect_error(
     suppressMessages(
       as_docorator(
-      x = my_gt,
-      header = fancyhead(
-        fancyrow("first line header")
-      ),
-      footer = NULL,
-      save_object = FALSE
-    )
+        x = my_gt,
+        header = fancyhead(
+          fancyrow("first line header")
+        ),
+        footer = NULL,
+        save_object = FALSE
+      )
     ),
     "The `display_name` argument must be specified"
   )
-
-
-
 })

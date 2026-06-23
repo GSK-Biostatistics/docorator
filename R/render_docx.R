@@ -36,7 +36,7 @@ render_docx <- function(x, display_loc = NULL, version_check = TRUE) {
     check_pkg_version(x)
   }
 
-  engine = "docx"
+  engine <- "docx"
 
   # initialize empty docx file
   doc <- officer::read_docx(system.file(

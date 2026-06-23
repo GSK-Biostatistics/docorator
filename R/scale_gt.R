@@ -31,7 +31,6 @@ apply_scale.default <- function(x, fontsize, tbl_scale, tbl_stub_pct) {
 #' @export
 #' @keywords internal
 apply_scale.gt_tbl <- function(x, fontsize, tbl_scale, tbl_stub_pct) {
-
   table_width <- "100%"
   if (isFALSE(tbl_scale)) {
     scaling <- check_gt_widths(x)

@@ -482,12 +482,13 @@ fancywrap.default <- function(x, chars) {
 #' @rdname fancywrap
 #' @export
 #' @noRd
-fancywrap.fancyrow <- function(x, chars){
-
-  # check chars is numeric length 1 
-  if(!is.numeric(chars) || length(chars) != 1){
-    cli::cli_abort("The {.arg chars} argument must be a single numeric value, but is {.obj_type_friendly {chars}} length {length(chars)}.",
-              call = rlang::caller_env())
+fancywrap.fancyrow <- function(x, chars) {
+  # check chars is numeric length 1
+  if (!is.numeric(chars) || length(chars) != 1) {
+    cli::cli_abort(
+      "The {.arg chars} argument must be a single numeric value, but is {.obj_type_friendly {chars}} length {length(chars)}.",
+      call = rlang::caller_env()
+    )
   }
 
   # which elements have strings in them
@@ -543,10 +544,9 @@ fancywrap.fancyfoot <- function(x, chars) {
 #' @rdname fancywrap
 #' @export
 #' @noRd
-fancywrap.docorator <- function(x, chars = NULL){
-
+fancywrap.docorator <- function(x, chars = NULL) {
   # calculate if not provided
-  if(is.null(chars)){
+  if (is.null(chars)) {
     # width in pts is roughly 50% font size
     # 1 inch 72 points
     # 11 inch page without margins, 9 inches
@@ -556,12 +556,11 @@ fancywrap.docorator <- function(x, chars = NULL){
     chars <- floor(630 / ch_width)
   }
 
-
-  if(!is.null(x$header)){
+  if (!is.null(x$header)) {
     x$header <- fancywrap(x$header, chars = chars)
   }
 
-  if(!is.null(x$footer)){
+  if (!is.null(x$footer)) {
     x$footer <- fancywrap(x$footer, chars = chars)
   }
 
