@@ -37,7 +37,7 @@ fancyhead(
 #> [1] NA
 #> 
 #> $right
-#> [1] "Page \\thepage\\ of \\pageref*{LastPage}"
+#> [1] "_DOCORATOR_PAGE_PLACEHOLDER_"
 #> 
 #> attr(,"class")
 #> [1] "fancyrow"

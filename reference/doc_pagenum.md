@@ -16,5 +16,5 @@ character string containing latex code
 
 ``` r
 doc_pagenum()
-#> [1] "Page \\thepage\\ of \\pageref*{LastPage}"
+#> [1] "_DOCORATOR_PAGE_PLACEHOLDER_"
 ```
