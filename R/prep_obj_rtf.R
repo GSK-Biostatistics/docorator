@@ -49,14 +49,6 @@ prep_obj_rtf.PNG <- function(x,  ... ) {
 
 }
 
-#' @rdname prep_obj_rtf
-#' @export
-#' @keywords internal
-prep_obj_rtf.ggplot <- function(x,  ... ) {
-  x$display <- gg_to_gt(x)
-  hf_to_gt(x)
-
-}
 
 #' @rdname prep_obj_rtf
 #' @export

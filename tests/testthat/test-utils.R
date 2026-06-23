@@ -92,3 +92,24 @@ test_that("package version messages are printed correctly",{
   })
 
 })
+
+
+test_that("ggplot2 objects are converted to PNG", {
+  ggplot1 <- ggplot2::ggplot(data = mtcars, ggplot2::aes(y = cyl, x = mpg)) +
+    ggplot2::geom_point() +
+    ggplot2::labs(
+      title = "title1",
+      subtitle = "subtitle1",
+      tag = "tag1",
+      caption = "footnote1"
+    )
+
+  docorator <- as_docorator(
+    ggplot1,
+    display_name = "my_plot",
+    save_object = FALSE
+  )
+
+  # check that the display is a PNG object
+  expect_equal(class(docorator$display), "PNG")
+})

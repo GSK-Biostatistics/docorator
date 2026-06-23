@@ -252,3 +252,37 @@ check_pkg_version <- function(x) {
  if(utils::compareVersion(current_version, pkg_version)!= 0){
    cli::cli_text("Note: docorator object was created with {.pkg {pkg} {pkg_version}}. You are now running {.pkg {pkg} {current_version}}. There may be issues rendering your document.")}
 }
+
+#' Convert ggplot2 to png to preserve scaling for all render engines
+#' @param x display object
+#' @param fig_dim figure dimensions
+#' @return display object
+#' @noRd
+#' @keywords internal
+convert_ggplot <- function(x, fig_dim = c(5, 8)) {
+  # convert to list if not already
+  if (!identical(class(x), "list")) {
+    x <- list(x)
+  }
+
+  x <- lapply(x, function(i) {
+    if (inherits(i, "ggplot")) {
+      # convert ggplot2 to png
+      tmpfile <- tempfile(fileext = ".png")
+      ggplot2::ggsave(
+        tmpfile,
+        plot = i,
+        width = fig_dim[2],
+        height = fig_dim[1],
+        units = "in"
+      )
+      i <- png_path(tmpfile)
+    }
+    i
+  })
+
+  if (length(x) == 1) {
+    x <- x[[1]]
+  }
+  x
+}
