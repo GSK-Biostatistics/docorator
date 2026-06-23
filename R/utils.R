@@ -275,7 +275,7 @@ check_pkg_version <- function(x) {
   pkg_version <- package_list[[pkg]][["Version"]]
 
   # get current version if it exists
-  current_version = as.character(utils::packageVersion(pkg))
+  current_version <- as.character(utils::packageVersion(pkg))
 
   if (utils::compareVersion(current_version, pkg_version) != 0) {
     cli::cli_text(
@@ -286,7 +286,7 @@ check_pkg_version <- function(x) {
 
 # convert any gt_groups to a list, flatten any lists containing gt_groups to a list of gt_tbls
 #' @param x object containing the display.
-#' @return docorator object
+#' @return object containing the display, converted to list if appropriate
 #' @noRd
 #' @keywords internal
 convert_list_displays <- function(x) {
