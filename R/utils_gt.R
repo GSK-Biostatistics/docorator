@@ -35,25 +35,16 @@ hf_to_gt <- function(x) {
 
   gt <- x$display
 
-  if (!rlang::inherits_any(gt, c("gt_tbl", "gt_group"))) {
+  if (!inherits(gt, "gt_tbl")) {
     cli::cli_abort(
-      "The {.arg {rlang::caller_arg(x$display)}} argument must be class gt_tbl or gt_group, not {.obj_type_friendly {gt}}.",
+      "The {.arg {rlang::caller_arg(x$display)}} argument must be class gt_tbl, not {.obj_type_friendly {gt}}.",
       call = rlang::caller_env()
     )
   }
 
   head_foot <- hf_extract(x)
 
-  # for gt_group objects iteratively add headers and footers
-
-  if (inherits(gt, "gt_group")) {
-    gt <- hf_to_gt_group(
-      gt,
-      head_foot$head_data,
-      head_foot$subhead_data,
-      head_foot$foot_data
-    )
-  } else if (inherits(gt, "gt_tbl")) {
+  if (inherits(gt, "gt_tbl")) {
     gt <- hf_to_gt_tbl(
       gt,
       head_foot$head_data,
@@ -116,28 +107,6 @@ hf_to_gt_tbl <- function(gt, header, subheader, footer) {
   return(gt)
 }
 
-
-#' headers and footers for gt_group
-#' @param gt_group a gt_group object
-#' @param header a dataframe containing header information
-#' @param subheader a dataframe containing subheader information
-#' @param footer a dataframe containing footnote information
-#'
-#' @noRd
-hf_to_gt_group <- function(gt_group, header, subheader, footer) {
-  if (inherits(gt_group, "gt_group")) {
-    for (i in 1:nrow(gt_group$gt_tbls)) {
-      gt <- gt::grp_pull(gt_group, i)
-      # replace
-      gt_group <- gt::grp_replace(
-        gt_group,
-        hf_to_gt_tbl(gt, header, subheader, footer),
-        .which = i
-      )
-    }
-  }
-  return(gt_group)
-}
 
 #' extract header footer info from docorator object
 #' @param x a docorator object
