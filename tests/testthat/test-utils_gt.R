@@ -56,7 +56,9 @@ test_that("add footnotes and headers - gt_group",{
 
   )
 
-  head_foot_gt_group <- hf_to_gt(docorator)
+# hf_to_gt is never called directly on a docorator with a gt_group, it is broken down into gt_tbls first
+# run prep_obj_rtf to see if hfs are applied
+  head_foot_gt_group <- prep_obj_rtf(docorator)
 
   # separate out the two tables
   tab1 <- gt::grp_pull(head_foot_gt_group,1)
