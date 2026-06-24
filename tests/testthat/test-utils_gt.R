@@ -1,9 +1,10 @@
-test_that("add footnotes and headers", {
+test_that("add footnotes and headers",{
   my_gt <- gt::exibble |>
     gt::gt(
       rowname_col = "row",
       groupname_col = "group"
     )
+
 
   docorator <- as_docorator(
     x = my_gt,
@@ -16,31 +17,27 @@ test_that("add footnotes and headers", {
     footer = fancyfoot(
       fancyrow(left = "footnote 1"),
       fancyrow(left = "footnote 2"),
-      fancyrow(right = "timestamp")
-    ),
+      fancyrow(right = "timestamp")),
     display_name = "my_first_gt",
     save_object = FALSE
+
   )
 
   head_foot_gt <- hf_to_gt(docorator)
 
   # footnote
-  expect_equal(
-    unlist(head_foot_gt$`_footnotes`$footnotes),
-    c("footnote 1", "footnote 2")
-  )
+  expect_equal(unlist(head_foot_gt$`_footnotes`$footnotes),c("footnote 1", "footnote 2"))
   # title
   expect_equal(head_foot_gt$`_heading`$title, "first line header")
   # subtitle
-  expect_equal(
-    head_foot_gt$`_heading`$subtitle,
-    gt::md("second line header<br>third line header")
-  )
+  expect_equal(head_foot_gt$`_heading`$subtitle, gt::md("second line header<br>third line header"))
+
 })
 
-test_that("add footnotes and headers - gt_group", {
+test_that("add footnotes and headers - gt_group",{
   # create docorator object
-  gt_group <- gt::gt_group(gt::gt(head(mtcars)), gt::gt(tail(mtcars)))
+  gt_group  <- gt::gt_group(gt::gt(head(mtcars)), gt::gt(tail(mtcars)))
+
 
   docorator <- as_docorator(
     x = gt_group,
@@ -53,55 +50,45 @@ test_that("add footnotes and headers - gt_group", {
     footer = fancyfoot(
       fancyrow(left = "footnote 1"),
       fancyrow(left = "footnote 2"),
-      fancyrow(right = "timestamp")
-    ),
+      fancyrow(right = "timestamp")),
     display_name = "my_first_gt",
     save_object = FALSE
+
   )
 
-  # hf_to_gt is never called directly on a docorator with a gt_group, it is broken down into gt_tbls first
-  # run prep_obj_rtf to see if hfs are applied
-  head_foot_gt_group <- prep_obj_rtf(docorator)
+  head_foot_gt_group <- hf_to_gt(docorator)
 
   # separate out the two tables
-  tab1 <- gt::grp_pull(head_foot_gt_group, 1)
-  tab2 <- gt::grp_pull(head_foot_gt_group, 2)
+  tab1 <- gt::grp_pull(head_foot_gt_group,1)
+  tab2 <- gt::grp_pull(head_foot_gt_group,2)
 
   # footnote
-  expect_equal(
-    unlist(tab1$`_footnotes`$footnotes),
-    c("footnote 1", "footnote 2")
-  )
+  expect_equal(unlist(tab1$`_footnotes`$footnotes),c("footnote 1", "footnote 2"))
   # title
   expect_equal(tab1$`_heading`$title, "first line header")
   # subtitle
-  expect_equal(
-    tab1$`_heading`$subtitle,
-    gt::md("second line header<br>third line header")
-  )
+  expect_equal(tab1$`_heading`$subtitle, gt::md("second line header<br>third line header"))
 
   # footnote
-  expect_equal(
-    unlist(tab2$`_footnotes`$footnotes),
-    c("footnote 1", "footnote 2")
-  )
+  expect_equal(unlist(tab2$`_footnotes`$footnotes),c("footnote 1", "footnote 2"))
   # title
   expect_equal(tab2$`_heading`$title, "first line header")
   # subtitle
-  expect_equal(
-    tab2$`_heading`$subtitle,
-    gt::md("second line header<br>third line header")
-  )
+  expect_equal(tab2$`_heading`$subtitle, gt::md("second line header<br>third line header"))
+
+
 })
 
-test_that("add footnotes and headers - existing subtitle info", {
+test_that("add footnotes and headers - existing subtitle info",{
   # create docorator object
   my_gt <- gt::exibble |>
     gt::gt(
       rowname_col = "row",
       groupname_col = "group"
     ) |>
-    gt::tab_header(title = "", subtitle = "TRT = Placebo, <br>X = Y")
+    gt::tab_header(title = "",subtitle = "TRT = Placebo, <br>X = Y")
+
+
 
   docorator <- as_docorator(
     x = my_gt,
@@ -114,21 +101,16 @@ test_that("add footnotes and headers - existing subtitle info", {
     footer = fancyfoot(
       fancyrow(left = "footnote 1"),
       fancyrow(left = "footnote 2"),
-      fancyrow(right = "timestamp")
-    ),
+      fancyrow(right = "timestamp")),
     display_name = "my_first_gt",
     save_object = FALSE
+
   )
 
   head_foot_gt <- hf_to_gt(docorator)
 
   # subtitle
-  expect_equal(
-    head_foot_gt$`_heading`$subtitle,
-    gt::md(
-      "second line header<br>third line header<br>TRT = Placebo, <br>X = Y"
-    )
-  )
+  expect_equal(head_foot_gt$`_heading`$subtitle, gt::md("second line header<br>third line header<br>TRT = Placebo, <br>X = Y"))
 
   # no additional subtitles
   docorator2 <- as_docorator(
@@ -140,13 +122,11 @@ test_that("add footnotes and headers - existing subtitle info", {
   head_foot_gt2 <- hf_to_gt(docorator2)
 
   # subtitle
-  expect_equal(
-    head_foot_gt2$`_heading`$subtitle,
-    gt::md("TRT = Placebo, <br>X = Y")
-  )
+  expect_equal(head_foot_gt2$`_heading`$subtitle, gt::md("TRT = Placebo, <br>X = Y"))
+
 })
 
-test_that("add footnotes and headers - existing title info, no subtitle", {
+test_that("add footnotes and headers - existing title info, no subtitle",{
   # create docorator object
   my_gt <- gt::exibble |>
     gt::gt(
@@ -154,6 +134,8 @@ test_that("add footnotes and headers - existing title info, no subtitle", {
       groupname_col = "group"
     ) |>
     gt::tab_header(title = "existing title")
+
+
 
   docorator <- as_docorator(
     x = my_gt,
@@ -166,19 +148,16 @@ test_that("add footnotes and headers - existing title info, no subtitle", {
     footer = fancyfoot(
       fancyrow(left = "footnote 1"),
       fancyrow(left = "footnote 2"),
-      fancyrow(right = "timestamp")
-    ),
+      fancyrow(right = "timestamp")),
     display_name = "my_first_gt",
     save_object = FALSE
+
   )
 
   head_foot_gt <- hf_to_gt(docorator)
 
   # subtitle
-  expect_equal(
-    head_foot_gt$`_heading`$subtitle,
-    gt::md("second line header<br>third line header<br>existing title")
-  )
+  expect_equal(head_foot_gt$`_heading`$subtitle, gt::md("second line header<br>third line header<br>existing title"))
 
   # no additional subtitles
   docorator2 <- as_docorator(
@@ -191,19 +170,19 @@ test_that("add footnotes and headers - existing title info, no subtitle", {
 
   # subtitle
   expect_equal(head_foot_gt2$`_heading`$subtitle, gt::md("existing title"))
+
 })
 
-test_that("add footnotes and headers - existing title + subtitle info", {
+test_that("add footnotes and headers - existing title + subtitle info",{
   # create docorator object
   my_gt <- gt::exibble |>
     gt::gt(
       rowname_col = "row",
       groupname_col = "group"
     ) |>
-    gt::tab_header(
-      title = "existing title",
-      subtitle = "TRT = Placebo, <br>X = Y"
-    )
+    gt::tab_header(title = "existing title",subtitle = "TRT = Placebo, <br>X = Y")
+
+
 
   docorator <- as_docorator(
     x = my_gt,
@@ -216,21 +195,16 @@ test_that("add footnotes and headers - existing title + subtitle info", {
     footer = fancyfoot(
       fancyrow(left = "footnote 1"),
       fancyrow(left = "footnote 2"),
-      fancyrow(right = "timestamp")
-    ),
+      fancyrow(right = "timestamp")),
     display_name = "my_first_gt",
     save_object = FALSE
+
   )
 
   head_foot_gt <- hf_to_gt(docorator)
 
   # subtitle
-  expect_equal(
-    head_foot_gt$`_heading`$subtitle,
-    gt::md(
-      "second line header<br>third line header<br>existing title<br>TRT = Placebo, <br>X = Y"
-    )
-  )
+  expect_equal(head_foot_gt$`_heading`$subtitle, gt::md("second line header<br>third line header<br>existing title<br>TRT = Placebo, <br>X = Y"))
 
   # no additional subtitles
   docorator2 <- as_docorator(
@@ -242,25 +216,24 @@ test_that("add footnotes and headers - existing title + subtitle info", {
   head_foot_gt2 <- hf_to_gt(docorator2)
 
   # subtitle
-  expect_equal(
-    head_foot_gt2$`_heading`$subtitle,
-    gt::md("existing title<br>TRT = Placebo, <br>X = Y")
-  )
+  expect_equal(head_foot_gt2$`_heading`$subtitle, gt::md("existing title<br>TRT = Placebo, <br>X = Y"))
+
 })
 
 
-test_that("no footnotes or headers", {
+test_that("no footnotes or headers",{
   my_gt <- gt::exibble |>
     gt::gt(
       rowname_col = "row",
       groupname_col = "group"
     )
 
+
   docorator <- as_docorator(
     x = my_gt,
     header = NULL,
     footer = NULL,
-    display_loc = "test",
+    display_loc ="test",
     display_name = "my_first_gt",
     save_object = FALSE
   )
@@ -268,11 +241,12 @@ test_that("no footnotes or headers", {
   head_foot_gt <- hf_to_gt(docorator)
 
   # footnote
-  expect_equal(unlist(head_foot_gt$`_footnotes`$footnotes), NULL)
+  expect_equal(unlist(head_foot_gt$`_footnotes`$footnotes),NULL)
   # title
   expect_equal(head_foot_gt$`_heading`$title, NULL)
   # subtitle
   expect_equal(head_foot_gt$`_heading`$subtitle, NULL)
+
 
   # no subtitle but title
   docorator2 <- as_docorator(
@@ -281,32 +255,30 @@ test_that("no footnotes or headers", {
       fancyrow(center = "first line header")
     ),
     footer = NULL,
-    display_loc = "test",
+    display_loc ="test",
     display_name = "my_first_gt",
     save_object = FALSE
+
   )
 
   head_foot_gt2 <- hf_to_gt(docorator2)
 
   # footnote
-  expect_equal(unlist(head_foot_gt2$`_footnotes`$footnotes), NULL)
+  expect_equal(unlist(head_foot_gt2$`_footnotes`$footnotes),NULL)
   # title
   expect_equal(head_foot_gt2$`_heading`$title, "first line header")
   # subtitle
   expect_equal(head_foot_gt2$`_heading`$subtitle, NULL)
 })
 
-test_that("apply_to_gt_group works", {
+test_that("apply_to_gt_group works",{
   # create gt group example
   gt_tbl <- gt::exibble |> gt::gt()
   gt_group <- gt::gt_group(gt_tbl, gt_tbl)
 
   # bad object
   arg_list <- list(data = mtcars)
-  expect_error(
-    apply_to_gt_group(mtcars, gt::tab_options, arg_list),
-    'First arg must be a gt_tbl or gt_group object, not a data frame'
-  )
+  expect_error(apply_to_gt_group(mtcars, gt::tab_options, arg_list), 'First arg must be a gt_tbl or gt_group object, not a data frame')
 
   # create arguments - cols_align function
   gt_group <- gt::gt_group(gt_tbl, gt_tbl)
@@ -320,7 +292,7 @@ test_that("apply_to_gt_group works", {
     )
 
   # aligned group 2 ways: one via apply_to_group one via individual aligned tables
-  options_group <- apply_to_gt_group(gt_group, func, arg_list)
+  options_group <- apply_to_gt_group(gt_group,func,arg_list)
   expect_identical(options_group, gt::gt_group(options_tbl, options_tbl))
 
   # check apply_to_gt_group works for gt_tbl
@@ -328,27 +300,32 @@ test_that("apply_to_gt_group works", {
 })
 
 test_that("Create png from ggplot", {
+
   withr::with_tempdir({
     gg <- ggplot2::ggplot(mtcars) +
       ggplot2::aes(x = disp, y = mpg) +
       ggplot2::geom_point()
 
+
     image_paths <- gg_to_image(gg, path = getwd())
 
     expect_length(image_paths, 1)
 
-    expect_equal(
-      file.exists(image_paths),
-      c(TRUE)
-    )
+      expect_equal(
+        file.exists(image_paths),
+        c(TRUE)
+      )
   })
+
 })
 
 test_that("Create set of png from list of ggplots", {
+
   withr::with_tempdir({
     gg1 <- ggplot2::ggplot(mtcars) +
       ggplot2::aes(x = disp, y = mpg) +
       ggplot2::geom_point()
+
 
     gg2 <- ggplot2::ggplot(mtcars) +
       ggplot2::aes(x = hp, y = mpg) +
@@ -366,20 +343,12 @@ test_that("Create set of png from list of ggplots", {
 })
 
 test_that("Extract header footer information from ggplot", {
-  ggplot1 <- ggplot2::ggplot(data = mtcars, ggplot2::aes(y = cyl, x = mpg)) +
-    ggplot2::geom_point() +
-    ggplot2::labs(
-      title = "title1",
-      subtitle = "subtitle1",
-      alt = "alt",
-      tag = "tag1",
-      caption = "footnote1"
-    )
 
-  stripped_ggplot <- ggplot2::ggplot(
-    data = mtcars,
-    ggplot2::aes(y = cyl, x = mpg)
-  ) +
+  ggplot1 <- ggplot2::ggplot(data = mtcars, ggplot2::aes(y=cyl, x=mpg)) +
+    ggplot2::geom_point() +
+    ggplot2::labs(title = "title1", subtitle = "subtitle1", alt = "alt", tag = "tag1", caption = "footnote1")
+
+  stripped_ggplot <- ggplot2::ggplot(data = mtcars, ggplot2::aes(y=cyl, x=mpg)) +
     ggplot2::geom_point() +
     ggplot2::labs(alt = "alt")
 
@@ -390,4 +359,5 @@ test_that("Extract header footer information from ggplot", {
   expect_equal(hf_ggplot$head_data, "title1")
   expect_equal(hf_ggplot$subhead_data, c("subtitle1", "tag1"))
   expect_equal(hf_ggplot$foot_data, "footnote1")
+
 })
