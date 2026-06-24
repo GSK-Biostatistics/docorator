@@ -38,8 +38,8 @@ doc_datetime <- function() {
 #' @examples
 #' doc_pagenum()
 #'
-doc_pagenum <- function() {
-  "Page \\thepage\\ of \\pageref*{LastPage}"
+doc_pagenum <- function(){
+  "_DOCORATOR_PAGE_PLACEHOLDER_"
 }
 
 
