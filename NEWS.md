@@ -1,15 +1,13 @@
 # docorator development version
 Improvements
-* Add docx render engine `render_docx` (#97)
-* Convert all gt_groups to lists of gt_tbls for easier handling in render functions (#113)
-* update doc_pagenum() to support different render engines (#107)
+* Added Word (.docx) output support with the new render_docx() engine. (#97)
+* Convert all gt_groups to lists of gt_tbls interally for easier handling across render functions (#113)
+* `doc_pagenum()` updated to support different output formats (#107)
 
 Bug Fixes
-* use individual markdown chunks for each table in a gt_group to avoid issues with caption ids (#79)
-* remove RTF warning about gt version number (#100)
-* allow character number to be passed to fancywrap.docorator (#109)
-* keep_with_next = FALSE for docx outputs to prevent unwanted page breaks
-* empty md strings in gt labels cause issues in word, replace them with empty strings (#115)
+* Fix issue where pdf render fails for gt_groups due to duplicate caption ids (#79)
+* Removed an unnecessary RTF warning related to the gt package version (#100)
+* Fix bug where chars argument wasnt passed through fancywrap.docorator correctly (#109)
 
 
 # docorator 0.6.0
