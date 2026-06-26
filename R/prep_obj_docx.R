@@ -46,18 +46,13 @@ prep_obj_docx.gt_tbl <- function(x, ...) {
 #' @rdname prep_obj_docx
 #' @export
 #' @keywords internal
-prep_obj_docx.gt_group <- function(x, ...) {
-  # list of ooxml - one for each table in the gt_group
-  lapply(x$display$gt_tbls$gt_tbl, function(i) {
-    gt_to_word(i)
-  })
-}
-
-#' @rdname prep_obj_docx
-#' @export
-#' @keywords internal
 prep_obj_docx.list <- function(x, ...) {
-  # TODO: handle lists of and flatten gt_groups to lists
+  # list of ooxml - one for each element in the list
+  lapply(x$display, function(i) {
+    new_docorator <- x
+    new_docorator$display <- i
+    prep_obj_docx(new_docorator)
+  })
 }
 
 #' convert gt_tbl object to ooxml

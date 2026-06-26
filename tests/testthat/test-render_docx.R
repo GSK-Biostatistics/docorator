@@ -246,3 +246,48 @@ test_that("render docx works - png", {
     expect_true(stringr::str_detect(doc_summary$image_path, ".png"))
   })
 })
+
+test_that("render docx works - list", {
+  withr::with_tempdir({
+    gt_tbl <- gt::gt(mtcars[1:5, 1:5]) |>
+      gt::tab_header(title = "", subtitle = "A gt table")
+    gt_tbl2 <- gt::gt(mtcars[6:10, 6:10]) |>
+      gt::tab_header(title = "", subtitle = "A second gt table")
+    gt_group <- gt::gt_group(gt_tbl2, gt_tbl2)
+    p <- ggplot2::ggplot(mtcars, ggplot2::aes(x = wt, y = mpg)) +
+      ggplot2::geom_point() +
+      ggplot2::labs(title = "A ggplot2 plot")
+
+    suppressMessages(
+      list(gt_tbl, p, gt_group) |>
+        as_docorator(
+          display_name = "gt_group"
+        ) |>
+        render_docx()
+    )
+    # file exists
+    expect_true(file.exists("gt_group.docx"))
+
+    # file contains expected content - subtitle from first table
+    doc <- officer::read_docx("gt_group.docx")
+    summary <- officer::docx_summary(doc, detailed = TRUE)
+    expect_equal(
+      summary |>
+        dplyr::pull(run_content_text) |>
+        stringr::str_detect("A gt table") |>
+        any(),
+      TRUE
+    )
+    # file contains expected content - plot
+    expect_true(any(stringr::str_detect(summary$image_path, ".png")))
+
+    # file contains expected content - subtitle from gt_group appears twice
+    expect_equal(
+      summary |>
+        dplyr::pull(run_content_text) |>
+        stringr::str_detect("A second gt table") |>
+        sum(na.rm = TRUE),
+      2
+    )
+  })
+})
