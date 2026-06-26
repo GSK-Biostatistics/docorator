@@ -92,3 +92,49 @@ test_that("package version messages are printed correctly",{
   })
 
 })
+
+test_that("convert_list_displays works", {
+  gt_tbl <- gt::exibble |> gt::gt()
+  gt_tbl2 <- gt::exibble |>
+    dplyr::slice_head(n = 5) |>
+    gt::gt() |>
+    gt::tab_header(title = "title2")
+  gt_group <- gt::gt_group(gt_tbl, gt_tbl2)
+
+  gt_list <- convert_list_displays(gt_group)
+
+  expect_equal(class(gt_list), "list")
+  expect_equal(length(gt_list), 2)
+  expect_true(inherits(gt_list[[1]], "gt_tbl"))
+  expect_true(inherits(gt_list[[2]], "gt_tbl"))
+
+  # display is not a gt_group stays the same
+
+  no_list <- convert_list_displays(gt_tbl)
+  expect_equal(no_list, gt_tbl)
+
+  # list with gt_groups gets flattened to list with gt_tbls
+  plot <- ggplot2::ggplot(mtcars) +
+    ggplot2::aes(x = disp, y = mpg) +
+    ggplot2::geom_point()
+  list <- list(plot, gt_group, gt_tbl2)
+
+  list_flattened <- convert_list_displays(list)
+
+  expect_equal(class(list_flattened), "list")
+  # should have 3 gt_tbls and 1 ggplot
+  expect_equal(length(list_flattened), 4)
+  expect_true(inherits(list_flattened[[1]], "ggplot"))
+  expect_true(inherits(list_flattened[[2]], "gt_tbl"))
+  expect_true(inherits(list_flattened[[3]], "gt_tbl"))
+  expect_true(inherits(list_flattened[[4]], "gt_tbl"))
+
+  # nested lists are not supported
+  nested_list <- list(gt_tbl, list(gt_tbl2, plot))
+
+  expect_error(
+    convert_list_displays(nested_list),
+    "Nested lists are not supported. See documentation for supported display types."
+  )
+})
+
