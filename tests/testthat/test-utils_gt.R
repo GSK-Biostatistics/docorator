@@ -363,3 +363,138 @@ test_that("Extract header footer information from ggplot", {
   expect_equal(hf_ggplot$foot_data, "footnote1")
 
 })
+
+test_that("replace empty md labels works", {
+  gt_tbl <- gt::exibble |>
+    gt::gt() |>
+    gt::cols_label(
+      num = gt::md(" "),
+      char = gt::md("char")
+    )
+
+  # stubheader blank md()
+  gt_with_stub <- gt::exibble |>
+    gt::gt(rowname_col = "row") |>
+    gt::tab_stubhead(gt::md(""))
+
+  # stub md() not empty
+  gt_with_char_stub <- gt::exibble |>
+    gt::gt(rowname_col = "row") |>
+    gt::tab_stubhead(gt::md("test"))
+
+  # md in the body of the table
+  gt_with_md_body <- gt::exibble |>
+    dplyr::mutate(char = "") |>
+    gt::gt() |>
+    gt::fmt_markdown()
+
+  expect_equal(
+    lapply(gt_tbl$`_boxhead`$column_label, class),
+    list(
+      "from_markdown",
+      "from_markdown",
+      "character",
+      "character",
+      "character",
+      "character",
+      "character",
+      "character",
+      "character"
+    )
+  )
+
+  cleaned_gt <- replace_empty_md(gt_tbl)
+
+  expect_equal(
+    lapply(cleaned_gt$`_boxhead`$column_label, class),
+    list(
+      "character",
+      "from_markdown",
+      "character",
+      "character",
+      "character",
+      "character",
+      "character",
+      "character",
+      "character"
+    )
+  )
+
+  # no stub so cleaning shouldnt impact the stubhead
+  expect_identical(
+    gt_tbl$`_stubhead`,
+    cleaned_gt$`_stubhead`
+  )
+
+  # with stub
+
+  expect_equal(
+    class(gt_with_stub$`_stubhead`$label),
+    "from_markdown"
+  )
+
+  # stub isnt markdown in the boxhead
+  expect_equal(
+    lapply(gt_with_stub$`_boxhead`$column_label, class),
+    list(
+      "character",
+      "character",
+      "character",
+      "character",
+      "character",
+      "character",
+      "character",
+      "character",
+      "character"
+    )
+  )
+
+  cleaned_gt_stub <- replace_empty_md(gt_with_stub)
+
+  expect_equal(
+    class(cleaned_gt_stub$`_stubhead`$label),
+    "character"
+  )
+
+  expect_equal(
+    lapply(cleaned_gt_stub$`_boxhead`$column_label, class),
+    list(
+      "character",
+      "character",
+      "character",
+      "character",
+      "character",
+      "character",
+      "character",
+      "character",
+      "character"
+    )
+  )
+
+  # non empty stub md()
+
+  cleaned_with_char_stub <- replace_empty_md(gt_with_char_stub)
+
+  # shouldnt change the stubhead
+  expect_equal(
+    cleaned_with_char_stub$`_stubhead`,
+    gt_with_char_stub$`_stubhead`
+  )
+
+  # empty md in the body of the table
+  expect_equal(gt_with_md_body$`_data`$char, c("", "", "", "", "", "", "", ""))
+  cleaned_md_body <- replace_empty_md(gt_with_md_body)
+  expect_equal(
+    cleaned_md_body$`_data`$char,
+    c(
+      "\u200B",
+      "\u200B",
+      "\u200B",
+      "\u200B",
+      "\u200B",
+      "\u200B",
+      "\u200B",
+      "\u200B"
+    )
+  )
+})
