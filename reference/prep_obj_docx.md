@@ -16,9 +16,6 @@ prep_obj_docx(x, ...)
 # S3 method for class 'gt_tbl'
 prep_obj_docx(x, ...)
 
-# S3 method for class 'gt_group'
-prep_obj_docx(x, ...)
-
 # S3 method for class 'list'
 prep_obj_docx(x, ...)
 ```
