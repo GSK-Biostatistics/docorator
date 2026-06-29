@@ -41,12 +41,7 @@ hf_to_gt <- function(x) {
 
   head_foot <- hf_extract(x)
 
-
-  # for gt_group objects iteratively add headers and footers
-
-  if(inherits(gt, "gt_group")){
-    gt <- hf_to_gt_group(gt, head_foot$head_data, head_foot$subhead_data, head_foot$foot_data)
-  }else if(inherits(gt, "gt_tbl")){
+  if(inherits(gt, "gt_tbl")){
     gt <- hf_to_gt_tbl(gt, head_foot$head_data, head_foot$subhead_data, head_foot$foot_data)
   }
 
@@ -100,24 +95,6 @@ hf_to_gt_tbl <- function(gt, header, subheader, footer){
   return(gt)
 }
 
-
-#' headers and footers for gt_group
-#' @param gt_group a gt_group object
-#' @param header a dataframe containing header information
-#' @param subheader a dataframe containing subheader information
-#' @param footer a dataframe containing footnote information
-#'
-#' @noRd
-hf_to_gt_group <- function(gt_group, header, subheader, footer){
-  if(inherits(gt_group, "gt_group")){
-    for(i in 1:nrow(gt_group$gt_tbls)){
-      gt <- gt::grp_pull(gt_group, i)
-      # replace
-      gt_group <- gt::grp_replace(gt_group, hf_to_gt_tbl(gt, header, subheader, footer),.which = i)
-    }
-  }
-  return(gt_group)
-}
 
 #' extract header footer info from docorator object
 #' @param x a docorator object
@@ -359,4 +336,53 @@ hf_strip <- function(x){
        subhead_data = subhead_data,
        foot_data = foot_data)
 
+}
+
+
+#' Replace empty markdown labels in gt_tbl or gt_group with empty string
+#' @param x a gt_tbl or gt_group
+#' @keywords internal
+#' @noRd
+replace_empty_md <- function(x) {
+  #TODO: remove this and set gt dep when this is released: https://github.com/rstudio/gt/pull/2120/changes
+
+  if (inherits(x, "gt_tbl")) {
+    # boxhead
+    gt_tbl_labs <- x$`_boxhead`
+
+    gt_tbl_labs <- gt_tbl_labs |>
+      dplyr::mutate(
+        column_label = lapply(.data$column_label, \(x) {
+          if (inherits(x, "from_markdown")) {
+            trimmed_lab <- unclass(trimws(x))
+            if (identical(trimmed_lab, "")) {
+              x <- ""
+            }
+          }
+          x
+        })
+      )
+
+    x$`_boxhead` <- gt_tbl_labs
+
+     #stub
+    gt_stub_labs <- x$`_stubhead`
+
+    gt_stub_labs <- lapply(gt_stub_labs, \(x) {
+      if (inherits(x, "from_markdown")) {
+        trimmed_lab <- unclass(trimws(x))
+        if (identical(trimmed_lab, "")) {
+          x <- ""
+        }
+      }
+      x
+    })
+
+    x$`_stubhead` <- gt_stub_labs
+
+    # data - replace empty with invisible whitespace
+    x$`_data`[x$`_data` == ""] <- "\u200B"
+  }
+
+  x
 }

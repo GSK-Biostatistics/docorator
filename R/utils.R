@@ -39,7 +39,7 @@ doc_datetime <- function(){
 #' doc_pagenum()
 #'
 doc_pagenum <- function(){
-  "Page \\thepage\\ of \\pageref*{LastPage}"
+  "_DOCORATOR_PAGE_PLACEHOLDER_"
 }
 
 
@@ -210,21 +210,12 @@ create_chunks_all <- function(x, transform) {
       new_docorator <- x
       new_docorator$display <- display[[i]]
       create_chunk(new_docorator,i,transform)
-      if(length(display)>1){
+      # no pagebreak for the last chunk, otherwise it will create an extra blank page at the end of the document
+      if (i != length(display)) {
         cat("\\pagebreak\n")
       }
     }
-  } else if(inherits(display, "gt_group")){
-    # each table in the gt_group gets its own chunk to avoid issues with caption ids
-    for(i in 1:nrow(display$gt_tbls)){
-      new_docorator <- x
-      new_docorator$display <- gt::grp_pull(display,i)
-      create_chunk(new_docorator,i,transform)
-       if(i!=nrow(display$gt_tbls)){
-        cat("\\pagebreak\n")
-       }
-    }
-  } else {
+  }  else {
     create_chunk(x, 1, transform)
   }
 }
@@ -283,6 +274,40 @@ convert_ggplot <- function(x, fig_dim = c(5, 8)) {
 
   if (length(x) == 1) {
     x <- x[[1]]
+  }
+  x
+}
+
+# convert any gt_groups to a list, flatten any lists containing gt_groups to a list of gt_tbls
+#' @param x object containing the display.
+#' @return object containing the display, converted to list if appropriate
+#' @noRd
+#' @keywords internal
+convert_list_displays <- function(x) {
+  if (inherits(x, "gt_group")) {
+    x <- lapply(seq_len(nrow(x$gt_tbls)), function(i) {
+      gt::grp_pull(x, i)
+    })
+  }
+
+  # if a list contains gt_group, flatten to gt_tbls
+  if (identical(class(x), "list")) {
+    x <- lapply(x, function(j) {
+      if (inherits(j, "gt_group")) {
+        lapply(seq_len(nrow(j$gt_tbls)), function(i) {
+          gt::grp_pull(j, i)
+        })
+        # lists of lists etc not supported
+      } else if (identical(class(j), "list")) {
+        cli::cli_abort(
+          "Nested lists are not supported. See documentation for supported display types.",
+          call = rlang::caller_env()
+        )
+      } else {
+        list(j)
+      }
+    })
+    x <- unlist(x, recursive = FALSE)
   }
   x
 }

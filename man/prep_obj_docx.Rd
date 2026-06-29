@@ -5,7 +5,6 @@
 \alias{prep_obj_docx.default}
 \alias{prep_obj_docx.PNG}
 \alias{prep_obj_docx.gt_tbl}
-\alias{prep_obj_docx.gt_group}
 \alias{prep_obj_docx.list}
 \title{Prepare table, listing, figure object for inclusion in the template Rmd}
 \usage{
@@ -16,8 +15,6 @@ prep_obj_docx(x, ...)
 \method{prep_obj_docx}{PNG}(x, ...)
 
 \method{prep_obj_docx}{gt_tbl}(x, ...)
-
-\method{prep_obj_docx}{gt_group}(x, ...)
 
 \method{prep_obj_docx}{list}(x, ...)
 }

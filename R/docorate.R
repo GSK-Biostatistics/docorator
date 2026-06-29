@@ -188,6 +188,9 @@ as_docorator <- function(
   check_fancyhdr(header, chr_ok = TRUE)
   check_fancyhdr(footer)
 
+  # convert any gt_groups to a list
+  x <- convert_list_displays(x)
+
   # notify user about any possible scaling issues
   x <- apply_scale(
     x,

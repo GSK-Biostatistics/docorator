@@ -62,19 +62,11 @@ prep_obj_rtf.gt_tbl <- function(x,  ...) {
 #' @rdname prep_obj_rtf
 #' @export
 #' @keywords internal
-prep_obj_rtf.gt_group <- function(x,  ...) {
-
-  hf_to_gt(x)
-
-}
-
-#' @rdname prep_obj_rtf
-#' @export
-#' @keywords internal
 prep_obj_rtf.list <- function(x,  ...) {
   prepped_list <-lapply(x$display, function(j){
-    x$display <- j
-    prep_obj_rtf(x)
+    new_docorator <- x
+    new_docorator$display <- j
+    prep_obj_rtf(new_docorator)
   })
 
   gt::gt_group(.list = prepped_list)
