@@ -324,7 +324,7 @@ gg_to_PNG <- function(x, fig_dim = c(5,8), convert_ggplot = TRUE) {
 #' @keywords internal
 prep_display <- function(x, fig_dim = c(5,8), convert_ggplot = TRUE, fontsize = 10, tbl_scale = TRUE, tbl_stub_pct = 0.3) {
   
-  # convert to gt_groups if appropriate
+  # convert gt_groups if appropriate
   x <- convert_list_displays(x)
   # convert ggplot to png if appropriate
   x <- gg_to_PNG(x, fig_dim, convert_ggplot)
