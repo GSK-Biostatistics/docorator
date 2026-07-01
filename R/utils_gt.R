@@ -296,7 +296,7 @@ gg_to_image <- function(plot_object, fig_dim = c(5,8), path = NULL) {
         create.dir = TRUE,
         plot = plot_object[[x]],
         device = "png",
-        dpi = 100,
+        dpi = 300,
         width = fig_dim[2],
         height = fig_dim[1],
         units = "in"
