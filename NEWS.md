@@ -3,6 +3,7 @@ Improvements
 * Added Word (.docx) output support with the new render_docx() engine. (#97)
 * Convert all gt_groups to lists of gt_tbls interally for easier handling across render functions (#113)
 * `doc_pagenum()` updated to support different output formats (#107)
+* Convert all ggplots to PNGs interally for consistency across output formats (#84)
 
 Bug Fixes
 * Fix issue where pdf render fails for gt_groups due to duplicate caption ids (#79)

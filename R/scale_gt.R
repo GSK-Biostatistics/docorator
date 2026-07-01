@@ -67,6 +67,26 @@ apply_scale.gt_group <- function(x, fontsize, tbl_scale, tbl_stub_pct) {
   x
 }
 
+#' @name apply_scale
+#' @export
+#' @keywords internal
+apply_scale.list <- function(x, fontsize, tbl_scale, tbl_stub_pct) {
+  x <- lapply(
+    seq_along(x),
+    FUN = function(i) {
+      x[[i]] <- apply_scale(
+        x[[i]],
+        fontsize = fontsize,
+        tbl_scale = tbl_scale,
+        tbl_stub_pct = tbl_stub_pct
+      )
+      x[[i]]
+    }
+  )
+  x
+}
+
+
 #' Scale gt table contents for document
 #'
 #' @param x table of class `gt_tbl`

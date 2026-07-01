@@ -138,3 +138,82 @@ test_that("convert_list_displays works", {
   )
 })
 
+test_that("gg_to_png works", {
+  # single ggplot object
+  gg <- ggplot2::ggplot(mtcars, ggplot2::aes(x = wt, y = mpg)) +
+    ggplot2::geom_point()
+
+  # list of ggplot objects
+  list_gg <- list(
+    ggplot2::ggplot(mtcars, ggplot2::aes(x = wt, y = mpg)) + ggplot2::geom_point(),
+    ggplot2::ggplot(mtcars, ggplot2::aes(x = hp, y = mpg)) + ggplot2::geom_point()
+  )
+
+  # list of gt tables and ggplot objects
+  list_mixed <- list(
+    gt::gt(mtcars),
+    ggplot2::ggplot(mtcars, ggplot2::aes(x = wt, y = mpg)) + ggplot2::geom_point()
+  )
+
+  list_no_gg <- list(
+    gt::gt(mtcars),
+    gt::gt(mtcars)
+  )
+
+  png <- gg_to_PNG(gg)
+  expect_equal(class(png), "PNG")
+
+  list_png <- gg_to_PNG(list_gg)
+  expect_equal(class(list_png), "list")
+  expect_equal(length(list_png), 2)
+  expect_true(all(sapply(list_png, function(x) inherits(x, "PNG"))))
+
+  list_mixed_png <- gg_to_PNG(list_mixed)
+  expect_equal(class(list_mixed_png), "list")
+  expect_equal(length(list_mixed_png), 2)
+  expect_true(inherits(list_mixed_png[[1]], "gt_tbl"))
+  expect_true(inherits(list_mixed_png[[2]], "PNG"))
+
+  # if convert_ggplot is FALSE, ggplot objects should not be converted
+  list_mixed_no_convert <- gg_to_PNG(list_mixed, convert_ggplot = FALSE)
+  expect_equal(class(list_mixed_no_convert), "list")
+  expect_equal(length(list_mixed_no_convert), 2)
+  expect_true(inherits(list_mixed_no_convert[[1]], "gt_tbl"))
+  expect_true(inherits(list_mixed_no_convert[[2]], "ggplot"))
+
+  # no ggplots present should not change
+  list_no_gg_png <- gg_to_PNG(list_no_gg)
+  expect_identical(list_no_gg, list_no_gg_png)
+
+})
+
+test_that("prep_display works", {
+  # single gt table - only scaling should happen
+  gt_tbl <- gt::gt(mtcars)
+  scaled_gt_tbl <- apply_scale(gt_tbl, fontsize = 10, tbl_scale = TRUE, tbl_stub_pct = 0.3)
+  prep_gt <- prep_display(gt_tbl)
+  expect_identical(prep_gt, scaled_gt_tbl)
+
+  # single ggplot - only conversion should happen
+  gg <- ggplot2::ggplot(mtcars, ggplot2::aes(x = wt, y = mpg)) +
+    ggplot2::geom_point()
+  prep_gg <- prep_display(gg)
+  expect_true(inherits(prep_gg, "PNG"))
+  
+  list_mixed <- list(
+    # should be scaled
+    gt_tbl,
+    # should be converted to PNG
+    ggplot2::ggplot(mtcars, ggplot2::aes(x = wt, y = mpg)) + ggplot2::geom_point(),
+    # should be converted to gt_tbls and scaled
+    gt::gt_group(gt_tbl, gt_tbl)
+  )
+  prep_list_mixed <- prep_display(list_mixed)
+  expect_equal(class(prep_list_mixed), "list")
+  expect_equal(length(prep_list_mixed), 4)
+  expect_identical(prep_list_mixed[[1]], scaled_gt_tbl)
+  expect_true(inherits(prep_list_mixed[[2]], "PNG"))
+  expect_identical(prep_list_mixed[[3]], scaled_gt_tbl)
+  expect_identical(prep_list_mixed[[4]], scaled_gt_tbl)
+
+})

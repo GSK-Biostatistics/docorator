@@ -111,6 +111,7 @@ docorate <- function(
 #'   package. Accepts a named list. Default is `geom_set()`.
 #' @param fig_dim vector containing figure height and width in inches. Defaults
 #'   to `c(5,8)`
+#' @param convert_ggplot Boolean for whether or not to convert ggplot objects to PNG files to preserve scaling for all render engines. Defaults to TRUE.
 #' @param tbl_scale Boolean for whether or not to automatically scale table columns to fit display area. Defaults to TRUE. Note that this will overwrite scaling set in the table directly unless set to FALSE.
 #' @param tbl_stub_pct percent of total width that should be dedicated to stub column(s). If more than 1 stub column then this is the total for both.
 #'
@@ -154,6 +155,7 @@ as_docorator <- function(
   fontsize = 10,
   geometry = geom_set(),
   fig_dim = c(5, 8),
+  convert_ggplot = TRUE,
   tbl_scale = TRUE,
   tbl_stub_pct = 0.3
 ) {
@@ -181,12 +183,11 @@ as_docorator <- function(
   check_fancyhdr(header, chr_ok = TRUE)
   check_fancyhdr(footer)
 
-  # convert any gt_groups to a list
-  x <- convert_list_displays(x)
-
-  # notify user about any possible scaling issues
-  x <- apply_scale(
+  # prep displays for render
+  x <- prep_display(
     x,
+    fig_dim = fig_dim,
+    convert_ggplot = convert_ggplot,
     fontsize = fontsize,
     tbl_scale = tbl_scale,
     tbl_stub_pct = tbl_stub_pct
