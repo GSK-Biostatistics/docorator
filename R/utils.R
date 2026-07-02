@@ -336,4 +336,6 @@ prep_display <- function(x, fig_dim = c(5,8), convert_ggplot = TRUE, fontsize = 
     tbl_scale = tbl_scale,
     tbl_stub_pct = tbl_stub_pct
   )
+  
+  x
 }
