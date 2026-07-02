@@ -203,6 +203,7 @@ as_docorator <- function(
       fontsize = fontsize,
       geometry = geometry,
       fig_dim = fig_dim,
+      convert_ggplot = convert_ggplot,
       session_info = utils::sessionInfo()
     ),
     class = "docorator"
