@@ -9,6 +9,7 @@ Bug Fixes
 * Fix issue where pdf render fails for gt_groups due to duplicate caption ids (#79)
 * Removed an unnecessary RTF warning related to the gt package version (#100)
 * Fix bug where chars argument wasnt passed through fancywrap.docorator correctly (#109)
+* Pass height and width through to gt::fmt_image for dynamic image sizing in RTF output (#103)
 
 
 # docorator 0.6.0
