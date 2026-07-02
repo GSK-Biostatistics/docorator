@@ -15,6 +15,9 @@ apply_scale(x, fontsize, tbl_scale, tbl_stub_pct)
 
 # S3 method for class 'gt_group'
 apply_scale(x, fontsize, tbl_scale, tbl_stub_pct)
+
+# S3 method for class 'list'
+apply_scale(x, fontsize, tbl_scale, tbl_stub_pct)
 ```
 
 ## Arguments

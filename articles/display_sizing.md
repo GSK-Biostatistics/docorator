@@ -183,7 +183,26 @@ Figure sizes can be adjusted via the `fig_dim` argument of
 This argument expects a numeric vector of length 2, where the first and
 second elements are the height and width in inches, respectively. For
 example, the default `c(5,8)` translates to a height of 5 inches and
-width of 8 inches.
+width of 8 inches. Note: for `ggplot2` objects, the height and width are
+applied in the
+[`ggplot2::ggsave()`](https://ggplot2.tidyverse.org/reference/ggsave.html)
+function when the plot is converted to PNG prior to render. For further
+control over figure sizing, such as changing the DPI, users can use
+[`ggplot2::ggsave()`](https://ggplot2.tidyverse.org/reference/ggsave.html)
+directly on the plot object prior to passing it to
+[`as_docorator()`](https://GSK-Biostatistics.github.io/docorator/reference/as_docorator.md)
+via `png_path`. For example:
+
+``` r
+
+myplot <- ggplot2::ggplot(mtcars, ggplot2::aes(x = wt, y = mpg)) +
+  ggplot2::geom_point()
+
+ggplot2::ggsave(myplot, filename = "myplot.png", width = 6, height = 4, dpi = 300)
+
+as_docorator(png_path("myplot.png"), display_name = "my_plot") |> 
+  render_pdf()
+```
 
 ## Future developments
 

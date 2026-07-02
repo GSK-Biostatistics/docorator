@@ -8,7 +8,7 @@ articles:
   headers_footers: headers_footers.html
   multi_page: multi_page.html
   render: render.html
-last_built: 2026-06-26T13:16Z
+last_built: 2026-07-02T14:28Z
 urls:
   reference: https://GSK-Biostatistics.github.io/docorator/reference
   article: https://GSK-Biostatistics.github.io/docorator/articles

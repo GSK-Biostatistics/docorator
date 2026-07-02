@@ -36,7 +36,7 @@ fancyfoot(
 #> [1] NA
 #> 
 #> $right
-#> [1] "26June2026 13:16"
+#> [1] "02July2026 14:28"
 #> 
 #> attr(,"class")
 #> [1] "fancyrow"

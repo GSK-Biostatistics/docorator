@@ -2294,7 +2294,21 @@ resizing to fit the allotted area.</p>
 <code><a href="../reference/as_docorator.html">as_docorator()</a></code>. This argument expects a numeric vector of
 length 2, where the first and second elements are the height and width
 in inches, respectively. For example, the default <code>c(5,8)</code>
-translates to a height of 5 inches and width of 8 inches.</p>
+translates to a height of 5 inches and width of 8 inches. Note: for
+<code>ggplot2</code> objects, the height and width are applied in the
+<code><a href="https://ggplot2.tidyverse.org/reference/ggsave.html" class="external-link">ggplot2::ggsave()</a></code> function when the plot is converted to
+PNG prior to render. For further control over figure sizing, such as
+changing the DPI, users can use <code><a href="https://ggplot2.tidyverse.org/reference/ggsave.html" class="external-link">ggplot2::ggsave()</a></code> directly
+on the plot object prior to passing it to <code><a href="../reference/as_docorator.html">as_docorator()</a></code>
+via <code>png_path</code>. For example:</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">myplot</span> <span class="op">&lt;-</span> <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">mtcars</span>, <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">wt</span>, y <span class="op">=</span> <span class="va">mpg</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsave.html" class="external-link">ggsave</a></span><span class="op">(</span><span class="va">myplot</span>, filename <span class="op">=</span> <span class="st">"myplot.png"</span>, width <span class="op">=</span> <span class="fl">6</span>, height <span class="op">=</span> <span class="fl">4</span>, dpi <span class="op">=</span> <span class="fl">300</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="../reference/as_docorator.html">as_docorator</a></span><span class="op">(</span><span class="fu"><a href="../reference/png_path.html">png_path</a></span><span class="op">(</span><span class="st">"myplot.png"</span><span class="op">)</span>, display_name <span class="op">=</span> <span class="st">"my_plot"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="../reference/render_pdf.html">render_pdf</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="future-developments">Future developments<a class="anchor" aria-label="anchor" href="#future-developments"></a>

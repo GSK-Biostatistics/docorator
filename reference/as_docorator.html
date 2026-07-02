@@ -60,6 +60,7 @@
 <span>  fontsize <span class="op">=</span> <span class="fl">10</span>,</span>
 <span>  geometry <span class="op">=</span> <span class="fu"><a href="geom_set.html">geom_set</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  fig_dim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fl">8</span><span class="op">)</span>,</span>
+<span>  convert_ggplot <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  tbl_scale <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  tbl_stub_pct <span class="op">=</span> <span class="fl">0.3</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -113,6 +114,10 @@ package. Accepts a named list. Default is <code><a href="geom_set.html">geom_set
 <dt id="arg-fig-dim">fig_dim<a class="anchor" aria-label="anchor" href="#arg-fig-dim"></a></dt>
 <dd><p>vector containing figure height and width in inches. Defaults
 to <code>c(5,8)</code></p></dd>
+
+
+<dt id="arg-convert-ggplot">convert_ggplot<a class="anchor" aria-label="anchor" href="#arg-convert-ggplot"></a></dt>
+<dd><p>Boolean for whether or not to convert ggplot objects to PNG files to preserve scaling for all render engines. Defaults to TRUE.</p></dd>
 
 
 <dt id="arg-tbl-scale">tbl_scale<a class="anchor" aria-label="anchor" href="#arg-tbl-scale"></a></dt>

@@ -17,6 +17,7 @@ as_docorator(
   fontsize = 10,
   geometry = geom_set(),
   fig_dim = c(5, 8),
+  convert_ggplot = TRUE,
   tbl_scale = TRUE,
   tbl_stub_pct = 0.3
 )
@@ -72,6 +73,11 @@ as_docorator(
 
   vector containing figure height and width in inches. Defaults to
   `c(5,8)`
+
+- convert_ggplot:
+
+  Boolean for whether or not to convert ggplot objects to PNG files to
+  preserve scaling for all render engines. Defaults to TRUE.
 
 - tbl_scale:
 
