@@ -213,7 +213,7 @@ png_to_gt <- function(x){
   # convert to gt
   gt <- dplyr::tibble(ggplot =  temp_png) |>
     gt::gt() |>
-    gt::fmt_image(columns = dplyr::everything(), sep = ",", width = "6in") |>
+    gt::fmt_image(columns = dplyr::everything(), sep = ",", height = paste0(x$fig_dim[1], "in"), width = paste0(x$fig_dim[2], "in")) |>
     # remove column headers and borders
     gt::tab_options(
       column_labels.hidden = TRUE,
