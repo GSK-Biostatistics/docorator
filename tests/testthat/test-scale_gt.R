@@ -299,3 +299,71 @@ test_that("apply_scale works - gt_group",{
 
   expect_identical(apply_scale(gt_group2, fontsize = 10, tbl_scale = TRUE, tbl_stub_pct = 0.3), expected_group2)
 })
+
+test_that("apply_scale works - list", {
+  gt_tbl <- gt::exibble |>
+    gt::gt() |>
+    gt::tab_options(
+      table.font.size = "10pt",
+      heading.subtitle.font.size = "10pt",
+      heading.title.font.size = "10pt",
+      table.width = "100%"
+    )
+  list_gt <- list(
+    # one bad column widths
+    gt_tbl |> gt::cols_width(num ~ "400%", char ~ "3%"),
+    # one good column widths
+    gt_tbl
+  )
+
+  # expect first table to be auto rescaled, second table unchanged
+  expected_list_gt <- list(scale_gt(gt_tbl, tbl_stub_pct = 0.3), gt_tbl)
+
+  expect_warning(
+    apply_scale(list_gt, fontsize = 10, tbl_scale = FALSE, tbl_stub_pct = 0.3),
+    "Column widths must be add to =<100%, not 403%. Applying auto table scaling."
+  )
+  expect_identical(
+    suppressWarnings(apply_scale(
+      list_gt,
+      fontsize = 10,
+      tbl_scale = FALSE,
+      tbl_stub_pct = 0.3
+    )),
+    expected_list_gt
+  )
+  
+  ggplot <- ggplot2::ggplot(ggplot2::mpg, ggplot2::aes(x = displ, y = hwy)) +
+      ggplot2::geom_point()
+  
+  list_gt_ggplot <- list(
+    # one bad column widths
+    gt_tbl |> gt::cols_width(num ~ "400%", char ~ "3%"),
+    # one good column widths
+    gt_tbl,
+    # ggplot
+    ggplot
+  )
+
+  # expect first table to be auto rescaled, second table unchanged, ggplot unchanged
+  expected_list_gt_ggplot <- list(
+    scale_gt(gt_tbl, tbl_stub_pct = 0.3),
+    gt_tbl,
+    ggplot
+  )
+
+
+  expect_warning(
+    apply_scale(list_gt_ggplot, fontsize = 10, tbl_scale = FALSE, tbl_stub_pct = 0.3),
+    "Column widths must be add to =<100%, not 403%. Applying auto table scaling."
+  )
+  expect_identical(
+    suppressWarnings(apply_scale(
+      list_gt_ggplot,
+      fontsize = 10,
+      tbl_scale = FALSE,
+      tbl_stub_pct = 0.3
+    )),
+    expected_list_gt_ggplot
+  )
+})

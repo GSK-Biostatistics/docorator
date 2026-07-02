@@ -171,13 +171,21 @@ create_chunk <- function(x, id = 1, transform) {
     }
   ), collapse = '')
 
+  # set figure output args
+  if(isTRUE(x$convert_ggplot)){
+    size_args <- paste0("out.height='", x$fig_dim[1], "in', out.width='", x$fig_dim[2], "in',")
+  } else {
+    size_args <- ""
+  }
+
   new_chunk <- paste0("
-  `","``{r new_chunk", id, ", fig.height=", x$fig_dim[1], ", fig.width=", x$fig_dim[2], ", echo=FALSE, results='asis', output='asis'}",
-                      "\n(",
-                      deparsed
-                      , ")()",
-                      "\n  `","``
-  ")
+  `","``{r new_chunk", id, ", fig.height=", x$fig_dim[1], ", fig.width=", x$fig_dim[2], ",", size_args, " echo=FALSE, results='asis', output='asis'}",
+                       "\n(",
+                       deparsed
+                       , ")()",
+                       "\n  `","``
+   ")
+
 
   cat(knitr::knit(text = knitr::knit_expand(text = new_chunk), quiet = TRUE))
 }
@@ -275,5 +283,67 @@ convert_list_displays <- function(x) {
     })
     x <- unlist(x, recursive = FALSE)
   }
+  x
+}
+
+
+#' convert all the ggplots in a display or list of displays to png objects
+#' @param x display object
+#' @param fig_dim figure dimensions
+#' @param convert_ggplot Boolean for whether or not to convert ggplot objects to PNG files to preserve scaling for all render engines. Defaults to TRUE.
+#' @return display object with ggplots converted to png objects
+#' @noRd
+#' @keywords internal
+gg_to_PNG <- function(x, fig_dim = c(5,8), convert_ggplot = TRUE) {
+  # if not a list convert to one 
+  if(!identical(class(x), "list")){
+    x <- list(x)
+  }
+
+  x <- lapply(
+    seq_along(x),
+    FUN = function(i) {
+      if (inherits(x[[i]], "ggplot") && convert_ggplot) {
+        filepath <- gg_to_image(x[[i]], fig_dim, path = tempdir())
+        x[[i]] <- png_path(filepath)
+      }
+      x[[i]]
+    }
+  )
+
+  # if the list has only one element, return the element instead of a list
+  if(length(x) == 1){
+    x <- x[[1]]
+  }
+
+  x
+}
+
+
+#' prep display for rendering, convert display type where appropriate, apply scaling
+#' @param x display object
+#' @param fig_dim figure dimensions
+#' @param convert_ggplot Boolean for whether or not to convert ggplot objects to PNG files to preserve scaling for all render engines. Defaults to TRUE.
+#' @param fontsize font size for scaling
+#' @param tbl_scale Boolean for whether or not to scale tables
+#' @param tbl_stub_pct percentage of table stub to scale
+#' @return display object ready for rendering
+#' @noRd
+#' @keywords internal
+prep_display <- function(x, fig_dim = c(5,8), convert_ggplot = TRUE, fontsize = 10, tbl_scale = TRUE, tbl_stub_pct = 0.3) {
+  
+  # convert gt_groups if appropriate
+  x <- convert_list_displays(x)
+  # convert ggplot to png if appropriate
+  x <- gg_to_PNG(x, fig_dim, convert_ggplot)
+
+  # notify user about any possible scaling issues
+  x <- apply_scale(
+    x,
+    fontsize = fontsize,
+    tbl_scale = tbl_scale,
+    tbl_stub_pct = tbl_stub_pct
+  )
+  
   x
 }

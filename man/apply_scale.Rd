@@ -5,6 +5,7 @@
 \alias{apply_scale.default}
 \alias{apply_scale.gt_tbl}
 \alias{apply_scale.gt_group}
+\alias{apply_scale.list}
 \title{Apply scaling to gt objects}
 \usage{
 apply_scale(x, fontsize, tbl_scale, tbl_stub_pct)
@@ -14,6 +15,8 @@ apply_scale(x, fontsize, tbl_scale, tbl_stub_pct)
 \method{apply_scale}{gt_tbl}(x, fontsize, tbl_scale, tbl_stub_pct)
 
 \method{apply_scale}{gt_group}(x, fontsize, tbl_scale, tbl_stub_pct)
+
+\method{apply_scale}{list}(x, fontsize, tbl_scale, tbl_stub_pct)
 }
 \arguments{
 \item{x}{gt object}

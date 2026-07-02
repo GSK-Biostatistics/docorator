@@ -33,7 +33,7 @@ prep_obj_docx.PNG <- function(x, ...) {
   # temporarily store png
   temp <- tempfile(fileext = ".png", tmpdir = tempdir())
   png::writePNG(x$display$png, temp)
-  polish::polish_content_word(polish::as_file(temp))
+  polish::polish_content_word(polish::as_file(temp), width = x$fig_dim[2], height = x$fig_dim[1])
 }
 
 #' @rdname prep_obj_docx

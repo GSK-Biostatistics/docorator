@@ -16,6 +16,7 @@ as_docorator(
   fontsize = 10,
   geometry = geom_set(),
   fig_dim = c(5, 8),
+  convert_ggplot = TRUE,
   tbl_scale = TRUE,
   tbl_stub_pct = 0.3
 )
@@ -44,6 +45,8 @@ package. Accepts a named list. Default is \code{geom_set()}.}
 
 \item{fig_dim}{vector containing figure height and width in inches. Defaults
 to \code{c(5,8)}}
+
+\item{convert_ggplot}{Boolean for whether or not to convert ggplot objects to PNG files to preserve scaling for all render engines. Defaults to TRUE.}
 
 \item{tbl_scale}{Boolean for whether or not to automatically scale table columns to fit display area. Defaults to TRUE. Note that this will overwrite scaling set in the table directly unless set to FALSE.}
 

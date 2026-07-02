@@ -213,7 +213,7 @@ png_to_gt <- function(x){
   # convert to gt
   gt <- dplyr::tibble(ggplot =  temp_png) |>
     gt::gt() |>
-    gt::fmt_image(columns = dplyr::everything(), sep = ",", width = "6in") |>
+    gt::fmt_image(columns = dplyr::everything(), sep = ",", height = paste0(x$fig_dim[1], "in"), width = paste0(x$fig_dim[2], "in")) |>
     # remove column headers and borders
     gt::tab_options(
       column_labels.hidden = TRUE,
@@ -296,7 +296,7 @@ gg_to_image <- function(plot_object, fig_dim = c(5,8), path = NULL) {
         create.dir = TRUE,
         plot = plot_object[[x]],
         device = "png",
-        dpi = 100,
+        dpi = 300,
         width = fig_dim[2],
         height = fig_dim[1],
         units = "in"

@@ -3,6 +3,7 @@
 S3method(apply_scale,default)
 S3method(apply_scale,gt_group)
 S3method(apply_scale,gt_tbl)
+S3method(apply_scale,list)
 S3method(fancywrap,default)
 S3method(fancywrap,docorator)
 S3method(fancywrap,fancyfoot)
