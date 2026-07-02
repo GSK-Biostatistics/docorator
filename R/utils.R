@@ -295,7 +295,7 @@ gg_to_PNG <- function(x, fig_dim = c(5,8), convert_ggplot = TRUE) {
   x <- lapply(
     seq_along(x),
     FUN = function(i) {
-      if (inherits(x[[i]], "ggplot") & convert_ggplot) {
+      if (inherits(x[[i]], "ggplot") && convert_ggplot) {
         filepath <- gg_to_image(x[[i]], fig_dim, path = tempdir())
         x[[i]] <- png_path(filepath)
       }
