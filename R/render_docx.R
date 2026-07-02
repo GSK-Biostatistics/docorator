@@ -38,6 +38,11 @@ render_docx <- function(x, display_loc = NULL, version_check = TRUE) {
 
   engine = "docx"
 
+  # if no path is given, use docorator path
+  if (is.null(display_loc)) {
+    display_loc <- x$display_loc %||% "."
+  }
+
   # initialize empty docx file
   doc <- officer::read_docx(system.file(
     "template/template.docx",
@@ -102,10 +107,10 @@ render_docx <- function(x, display_loc = NULL, version_check = TRUE) {
 
   doc <- officer::body_set_default_section(doc, value = ps)
 
-  print(doc, target = paste0(x$display_name, ".docx"))
+  path <- print(doc, target = file.path(display_loc, paste0(x$display_name, ".docx")))
 
   if (!is.null(doc)) {
-    cli::cli_alert_success("Document created at: {x$display_name}.docx")
+    cli::cli_alert_success("Document created at:  {normalizePath(path, winslash = \"/\")}")
   }
 
   invisible(x)
