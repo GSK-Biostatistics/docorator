@@ -1,4 +1,4 @@
-# docorator development version
+# docorator 0.7.0
 Improvements
 * Added Word (.docx) output support with the new render_docx() engine. (#97)
 * Convert all gt_groups to lists of gt_tbls interally for easier handling across render functions (#113)
