@@ -59,7 +59,7 @@ geom_process_docx <- function(geometry) {
   if (!all(c("left", "right", "top", "bottom") %in% names(geometry))) {
     missing <- setdiff(c("left", "right", "top", "bottom"), names(geometry))
 
-    geometry <- modifyList(
+    geometry <- utils::modifyList(
       geom_set()[c("left", "right", "top", "bottom")],
       geometry
     )
