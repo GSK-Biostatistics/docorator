@@ -2,8 +2,9 @@ Package: docorator
 Title: Docorate (Decorate + Output) Displays
 Version: 0.6.0.9000
 Authors@R: 
-    c(person(given = "Becca", family = "Krouse", email = "becca.z.krouse@gsk.com", role = c("aut", "cre")),
-      person(given = "Shannon", family = "Haughton", email = "shannon.l.haughton@gsk.com", role = c("aut")),
+    c(
+      person(given = "Shannon", family = "Haughton", email = "shannon.l.haughton@gsk.com", role = c("aut", "cre")),
+      person(given = "Becca", family = "Krouse", email = "becca.z.krouse@gsk.com", role = c("aut")),
       person(given = "Seongbin", family = "Hong", email = "seongbin.x.hong@gsk.com", role = c("aut")),
       person("Dragoș", "Moldovan-Grünfeld", , "dragos.v.moldovan-grunfeld@gsk.com", role = "aut"),
       person("GlaxoSmithKline Research & Development Limited", role = c("cph", "fnd")))
