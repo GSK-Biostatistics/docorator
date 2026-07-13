@@ -1,5 +1,34 @@
 # Changelog
 
+## docorator 0.7.0
+
+CRAN release: 2026-07-08
+
+Improvements \* Added Word (.docx) output support with the new
+render_docx() engine.
+([\#97](https://github.com/GSK-Biostatistics/docorator/issues/97)) \*
+Convert all gt_groups to lists of gt_tbls interally for easier handling
+across render functions
+([\#113](https://github.com/GSK-Biostatistics/docorator/issues/113)) \*
+[`doc_pagenum()`](https://GSK-Biostatistics.github.io/docorator/reference/doc_pagenum.md)
+updated to support different output formats
+([\#107](https://github.com/GSK-Biostatistics/docorator/issues/107)) \*
+Convert all ggplots to PNGs interally for consistency across output
+formats
+([\#84](https://github.com/GSK-Biostatistics/docorator/issues/84))
+
+Bug Fixes \* Fix issue where pdf render fails for gt_groups due to
+duplicate caption ids
+([\#79](https://github.com/GSK-Biostatistics/docorator/issues/79)) \*
+Removed an unnecessary RTF warning related to the gt package version
+([\#100](https://github.com/GSK-Biostatistics/docorator/issues/100)) \*
+Fix bug where chars argument wasnt passed through fancywrap.docorator
+correctly
+([\#109](https://github.com/GSK-Biostatistics/docorator/issues/109)) \*
+Pass height and width through to gt::fmt_image for dynamic image sizing
+in RTF output
+([\#103](https://github.com/GSK-Biostatistics/docorator/issues/103))
+
 ## docorator 0.6.0
 
 CRAN release: 2026-03-20
