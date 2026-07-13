@@ -347,3 +347,16 @@ prep_display <- function(x, fig_dim = c(5,8), convert_ggplot = TRUE, fontsize = 
   
   x
 }
+
+#' Check that the display object is not empty
+#' @param x object passed to `as_docorator`
+#' @noRd
+#'
+check_display <- function(x) {
+  if(is.null(x) || (identical(class(x), "list") && length(x) == 0)) {
+    cli::cli_abort(
+      "The {.arg {rlang::caller_arg(x)}} argument cannot be empty or NULL. Please provide a valid display object.",
+      call = rlang::caller_env()
+    )
+  }
+}
