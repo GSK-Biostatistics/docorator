@@ -1,4 +1,6 @@
 # docorator (development version)
+Improvements
+* Check that display objects are not empty before processing with as_docorator (#125)
 
 # docorator 0.7.0
 Improvements
