@@ -353,7 +353,7 @@ prep_display <- function(x, fig_dim = c(5,8), convert_ggplot = TRUE, fontsize = 
 #' @noRd
 #'
 check_display <- function(x) {
-  if(rlang::is_empty(x))) {
+  if(rlang::is_empty(x)) {
     cli::cli_abort(
       "The {.arg {rlang::caller_arg(x)}} argument cannot be empty or NULL. Please provide a valid display object.",
       call = rlang::caller_env()
