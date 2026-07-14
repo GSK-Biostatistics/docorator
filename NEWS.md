@@ -1,3 +1,5 @@
+# docorator (development version)
+
 # docorator 0.7.0
 Improvements
 * Added Word (.docx) output support with the new render_docx() engine. (#97)
