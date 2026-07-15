@@ -90,3 +90,21 @@ test_that("Create docorator object without display_name errors",{
 
 
 })
+
+test_that("Create docorator object with invalid display errors",{
+
+  expect_error(as_docorator(
+    x = list(),
+    display_name = "empty_list",
+    save_object = FALSE
+  ),
+  "The `x` argument cannot be empty or NULL. Please provide a valid display object.")
+
+  expect_error(as_docorator(
+    x = NULL,
+    display_name = "null_object",
+    save_object = FALSE
+  ),
+  "The `x` argument cannot be empty or NULL. Please provide a valid display object.")
+
+})
