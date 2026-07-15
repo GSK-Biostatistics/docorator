@@ -2,6 +2,10 @@
 
 ## docorator (development version)
 
+Improvements \* Check that display objects are not empty before
+processing with as_docorator
+([\#125](https://github.com/GSK-Biostatistics/docorator/issues/125))
+
 ## docorator 0.7.0
 
 CRAN release: 2026-07-08
