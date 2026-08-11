@@ -139,102 +139,6 @@ render_pdf <- function(
   }
 }
 
-
-#' Render to rtf
-#'
-#' `r lifecycle::badge('experimental')`
-#'
-#' @param x `docorator` object
-#' @param display_loc path to save the output rtf to
-#' @param remove_unicode_ws Option to remove unicode white space from text.
-#' @param use_page_header If `TRUE` then all table headings will be migrated to the page header. See https://gt.rstudio.com/reference/tab_options.html#arg-page-header-use-tbl-headings
-#' @param version_check Boolean indicating whether to print a note if gt or ggplot versions dont match between the original docorator object and the one being used for rendering
-#'
-#' @details Option `remove_unicode_ws` serves as a workaround for this
-#'   [issue](https://github.com/rstudio/gt/issues/1437) in gt
-#'
-#' @returns This function saves an rtf to a specified location
-#' @export
-#'
-#' @section Examples:
-#'
-#' ```r
-#' gt::gtcars |>
-#'   dplyr::slice_head(n = 10) |>
-#'   dplyr::select(mfr, model, year, msrp) |>
-#'   gt::gt(groupname_col = "mfr",
-#'          row_group_as_column = TRUE) |>
-#'   as_docorator(
-#'    header = fancyhead(fancyrow("Header 1"), fancyrow("Header 2")),
-#'    display_name = "mytbl") |>
-#'  render_rtf()
-#' ```
-#'
-render_rtf <- function(
-  x,
-  display_loc = NULL,
-  remove_unicode_ws = TRUE,
-  use_page_header = FALSE,
-  version_check = TRUE
-) {
-  if (!inherits(x, "docorator")) {
-    cli::cli_abort(
-      "The {.arg {rlang::caller_arg(x)}} argument must be class docorator, not {.obj_type_friendly {x}}. See documentation for `as_docorator`.",
-      call = rlang::caller_env()
-    )
-  }
-
-  # check package versions
-  if (isTRUE(version_check)) {
-    check_pkg_version(x)
-  }
-
-  # if no path is given, use docorator path
-  if (is.null(display_loc)) {
-    display_loc <- x$display_loc %||% "."
-  }
-
-  # set name
-  filename <- paste0(x$display_name, ".rtf")
-
-  # convert outputs to gt for rtf render
-  gt <- prep_obj_rtf(x)
-
-  # page headers
-  gt <- apply_to_gt_group(
-    gt,
-    gt::tab_options,
-    list(
-      page.numbering = FALSE,
-      page.header.use_tbl_headings = use_page_header
-    )
-  )
-
-  # render rtf
-  doc <- gt::gtsave(gt, filename = filename, path = display_loc)
-
-  if (!is.null(doc)) {
-    if (remove_unicode_ws) {
-      doc_tmp <- readLines(doc)
-
-      doc_tmp_new <- gsub("\u00A0", " ", doc_tmp, perl = TRUE)
-
-      writeLines(
-        doc_tmp_new,
-        sep = "\n",
-        file.path(display_loc, filename)
-      )
-    }
-    cli::cli_alert_success(
-      "Document created at: {normalizePath(doc, winslash = \"/\")}"
-    )
-  }
-
-  # return docorator object for further renders
-  invisible(x)
-}
-
-
 #' Render to pdf (quarto)
 #'
 #' @param x `docorator` object
@@ -350,5 +254,97 @@ render_pdf_qmd <- function(
   }
 
   # return docorator object for further renders
+  invisible(x)
+}
+
+#' Render to PDF via HTML
+#'
+#' `r lifecycle::badge("experimental")`
+#'
+#' @param keep_html Whether to keep the intermediate HTML file. If `TRUE`
+#'   (default), the HTML is saved alongside the PDF with the same base name.
+#'   If `FALSE`, HTML is deleted after conversion.
+#' @param wait Number of seconds to wait after page navigation before printing.
+#'   Increase if the table takes time to render. Defaults to `3`.
+#' @inheritParams render_pdf
+#' 
+#' @returns Invisibly returns the path to the created PDF file.
+#' @export
+#'
+#' @section Examples:
+#'
+#' ```r
+#' gt::gtcars |>
+#'   dplyr::slice_head(n = 10) |>
+#'   dplyr::select(mfr, model, year, msrp) |>
+#'   gt::gt() |>
+#'   as_docorator(
+#'      display_name = "output",
+#'      header = fancyhead(
+#'        fancyrow(left = "Study ABC-123", right = "Draft"),
+#'        fancyrow(center = "Table 1: Vehicle Summary")
+#'      ),
+#'      footer = fancyfoot(
+#'        fancyrow(left = "Source: gtcars"),
+#'        fancyrow(left = "program.R", right = format(Sys.Date(), "%d%b%Y"))
+#'      )
+#'   ) |> 
+#'   render_pdf_html()
+#' ```
+#'
+render_pdf_html <- function(x,
+                            display_loc = NULL,
+                            keep_html = FALSE,
+                            wait = 3) {
+
+  if (!inherits(x, "docorator")) {
+    cli::cli_abort("The {.arg {rlang::caller_arg(x)}} argument must be class docorator, not {.obj_type_friendly {x}}. See documentation for `as_docorator`.",
+              call = rlang::caller_env())
+  }
+
+  # if no path is given, use docorator path
+  display_loc <- x$display_loc %||% "."
+  display_loc <- normalizePath(display_loc, winslash = "/")
+
+  # set filename
+  filename_html <- file.path(display_loc, paste0(x$display_name,".html"))
+  filename_pdf <- file.path(display_loc, paste0(x$display_name,".pdf"))
+
+  # determine intermediate html path
+  if(isFALSE(keep_html)) {
+    on.exit(unlink(filename_html), add = TRUE)
+    # todo avoid the message if we dont want to keep HTML..
+  }
+
+  # render intermediate html
+  render_html(x, display_loc = display_loc)
+
+  # convert to pdf via chromote
+  b <- chromote::ChromoteSession$new()
+  on.exit(b$close(), add = TRUE)
+
+  url <- paste0("file://", normalizePath(filename_html))
+  b$Page$navigate(url, wait_ = TRUE)
+  Sys.sleep(wait)
+
+  result <- b$Page$printToPDF(
+    marginTop = 0,
+    marginBottom = 0,
+    marginLeft = 0,
+    marginRight = 0,
+    printBackground = TRUE,
+    displayHeaderFooter = FALSE,
+    preferCSSPageSize = TRUE,
+    headerTemplate = '<div></div>',
+    footerTemplate = '<div></div>',
+    wait_ = TRUE
+  )
+
+  result$data |>
+    base64enc::base64decode() |>
+    writeBin(con = filename_pdf)
+
+  cli::cli_alert_success("Document created at: {.path {normalizePath(filename_pdf, winslash = '/')}}")
+
   invisible(x)
 }
