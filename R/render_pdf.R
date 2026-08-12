@@ -87,9 +87,8 @@ render_pdf <- function(
 #'
 #'
 #' @returns This function saves a pdf to a specified location
-#'
+#' @keywords internal
 #' @section Examples:
-#'
 #' ```r
 #' gt::gtcars |>
 #'   dplyr::slice_head(n = 10) |>
