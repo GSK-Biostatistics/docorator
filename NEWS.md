@@ -1,6 +1,7 @@
 # docorator (development version)
 Improvements
 * Check that display objects are not empty before processing with as_docorator (#125)
+* Deprecate `render_pdf_qmd` in favour of `render_pdf_latex` and and `render_pdf_html`
 
 # docorator 0.7.0
 Improvements
