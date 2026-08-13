@@ -200,7 +200,7 @@ as_tibble_fancyrow <- function(x, ...) {
 #' hf_process(header)
 #'
 hf_process <- function(x, escape_latex = TRUE, fontsize = 10, engine = "pdf") {
-  engine <- match.arg(engine, choices = c("pdf", "docx", "html"))
+  engine <- match.arg(engine, choices = c("pdf", "docx"))
   UseMethod("hf_process", x)
 }
 
@@ -299,8 +299,7 @@ process_rows <- function(
   switch(
     engine,
     pdf = process_rows_pdf(x_df, type = type, escape_latex = escape_latex),
-    docx = process_rows_docx(x, fontsize = fontsize),
-    html = process_rows_html(x_df, type = type) 
+    docx = process_rows_docx(x, fontsize = fontsize)
   )
 }
 
@@ -400,46 +399,6 @@ process_rows_docx <- function(x, fontsize = 10) {
   })
 
   fpar_list
-}
-
-#' Process list of `fancyrow` objects into character string containing latex code
-#'
-#' @param x list of `fancyrow` objects
-#' @param type Text positioning in the header (`head`) or footer (`foot`) of
-#'   document. Defaults to `head`.
-#'
-#' @return Character string
-#' @noRd
-process_rows_html <- function(x, type = c("head", "foot")) {
-
-  type <- match.arg(type)
-
-  x <- x |>
-    dplyr::mutate(
-      dplyr::across(dplyr::everything(), \(x) {
-        as.character(x) |>
-          # ignore pagenumber placeholder for html
-          # TODO: figure this out for pdf_html
-          stringr::str_replace_all(stringr::fixed("_DOCORATOR_PAGE_PLACEHOLDER_"), "") |>
-          tidyr::replace_na("")
-      })
-    )
-
-  row_html <- x |>
-    dplyr::mutate(
-      left = paste0('<span class="hf-left">', .data$left, '</span>'),
-      center = paste0('<span class="hf-center">', .data$center, '</span>'),
-      right = paste0('<span class="hf-right">', .data$right, '</span>')
-    ) |>
-    tidyr::unite(
-      "row",
-      dplyr::everything(),
-      sep = ""
-    ) |>
-    dplyr::pull("row")
-
-  paste0('<div class="hf-row">', row_html, "</div>") |>
-    paste(collapse = "\n")
 }
 
 #' Calculate desired header or footer height for the document
