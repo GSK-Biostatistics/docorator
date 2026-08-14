@@ -3,13 +3,11 @@
 #' @param x `docorator` object
 #' @param display_loc optional path to save the output pdf to
 #' @param engine character vector of rendering engines to use. Options are "latex" (default).
-#' @param transform optional latex transformation function to apply to a gt latex string - valid for latex engine only
-#' @param header_latex optional .tex file of header latex - valid for latex engine only
-#' @param keep_tex Boolean indicating if to keep resulting .tex file from latex conversion. Defaults to FALSE. - valid for latex engine only
-#' @param escape_latex Boolean indicating if headers and footers of a gt table should be escaped with gt::escape_latex - valid for latex engine only
-#' @param quarto Boolean indicating whether to use Quarto as the rendering engine. Defaults to `FALSE`, which uses Rmarkdown to render. `r lifecycle::badge("deprecated")`
 #' @param version_check Boolean indicating whether to print a note if gt or ggplot versions dont match between the original docorator object and the one being used for rendering
 #' @param fancywrap Boolean indicating if headers and footers should be split to fit the page. Defaults to `TRUE`. Note that only fancyrows with one `left`, `right` OR `center` element will be wrapped. `r lifecycle::badge("experimental")`
+#' @param ... Additional arguments passed to the engine-specific render function.
+#'
+#'   For `engine = "latex"`, see [render_pdf_latex()] for supported arguments.
 #'
 #'
 #' @returns This function saves a pdf to a specified location
@@ -33,13 +31,9 @@ render_pdf <- function(
   x,
   display_loc = NULL,
   engine = c("latex"),
-  transform = NULL,
-  header_latex = NULL,
-  keep_tex = FALSE,
-  escape_latex = TRUE,
-  quarto = lifecycle::deprecated(),
   version_check = TRUE,
-  fancywrap = TRUE
+  fancywrap = TRUE,
+  ...
 ) {
   if (!inherits(x, "docorator")) {
     cli::cli_abort(
@@ -65,11 +59,7 @@ render_pdf <- function(
     latex = render_pdf_latex(
       x,
       display_loc = display_loc,
-      transform = transform,
-      header_latex = header_latex,
-      keep_tex = keep_tex,
-      escape_latex = escape_latex,
-      quarto = quarto
+      ...
     )
   )
 

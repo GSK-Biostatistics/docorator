@@ -8,13 +8,9 @@ render_pdf(
   x,
   display_loc = NULL,
   engine = c("latex"),
-  transform = NULL,
-  header_latex = NULL,
-  keep_tex = FALSE,
-  escape_latex = TRUE,
-  quarto = lifecycle::deprecated(),
   version_check = TRUE,
-  fancywrap = TRUE
+  fancywrap = TRUE,
+  ...
 )
 }
 \arguments{
@@ -24,19 +20,13 @@ render_pdf(
 
 \item{engine}{character vector of rendering engines to use. Options are "latex" (default).}
 
-\item{transform}{optional latex transformation function to apply to a gt latex string - valid for latex engine only}
-
-\item{header_latex}{optional .tex file of header latex - valid for latex engine only}
-
-\item{keep_tex}{Boolean indicating if to keep resulting .tex file from latex conversion. Defaults to FALSE. - valid for latex engine only}
-
-\item{escape_latex}{Boolean indicating if headers and footers of a gt table should be escaped with gt::escape_latex - valid for latex engine only}
-
-\item{quarto}{Boolean indicating whether to use Quarto as the rendering engine. Defaults to \code{FALSE}, which uses Rmarkdown to render. \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}}
-
 \item{version_check}{Boolean indicating whether to print a note if gt or ggplot versions dont match between the original docorator object and the one being used for rendering}
 
 \item{fancywrap}{Boolean indicating if headers and footers should be split to fit the page. Defaults to \code{TRUE}. Note that only fancyrows with one \code{left}, \code{right} OR \code{center} element will be wrapped. \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}}
+
+\item{...}{Additional arguments passed to the engine-specific render function.
+
+For \code{engine = "latex"}, see \code{\link[=render_pdf_latex]{render_pdf_latex()}} for supported arguments.}
 }
 \value{
 This function saves a pdf to a specified location
