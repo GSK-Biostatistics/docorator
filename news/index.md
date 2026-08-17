@@ -4,7 +4,9 @@
 
 Improvements \* Check that display objects are not empty before
 processing with as_docorator
-([\#125](https://github.com/GSK-Biostatistics/docorator/issues/125))
+([\#125](https://github.com/GSK-Biostatistics/docorator/issues/125)) \*
+Deprecate `render_pdf_qmd`
+([\#131](https://github.com/GSK-Biostatistics/docorator/issues/131))
 
 ## docorator 0.7.0
 
