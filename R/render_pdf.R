@@ -2,13 +2,12 @@
 #'
 #' @param x `docorator` object
 #' @param display_loc optional path to save the output pdf to
-#' @param transform optional latex transformation function to apply to a gt latex string
-#' @param header_latex optional .tex file of header latex
-#' @param keep_tex Boolean indicating if to keep resulting .tex file from latex conversion. Defaults to FALSE.
-#' @param escape_latex Boolean indicating if headers and footers of a gt table should be escaped with gt::escape_latex
-#' @param quarto Boolean indicating whether to use Quarto as the rendering engine. Defaults to `FALSE`, which uses Rmarkdown to render. `r lifecycle::badge("experimental")`
+#' @param engine character vector of rendering engines to use. Options are "latex" (default).
 #' @param version_check Boolean indicating whether to print a note if gt or ggplot versions dont match between the original docorator object and the one being used for rendering
 #' @param fancywrap Boolean indicating if headers and footers should be split to fit the page. Defaults to `TRUE`. Note that only fancyrows with one `left`, `right` OR `center` element will be wrapped. `r lifecycle::badge("experimental")`
+#' @param ... Additional arguments passed to the engine-specific render function.
+#'
+#'   For `engine = "latex"`, see [render_pdf_latex()] for supported arguments.
 #'
 #'
 #' @returns This function saves a pdf to a specified location
@@ -31,13 +30,10 @@
 render_pdf <- function(
   x,
   display_loc = NULL,
-  transform = NULL,
-  header_latex = NULL,
-  keep_tex = FALSE,
-  escape_latex = TRUE,
-  quarto = FALSE,
+  engine = c("latex"),
   version_check = TRUE,
-  fancywrap = TRUE
+  fancywrap = TRUE,
+  ...
 ) {
   if (!inherits(x, "docorator")) {
     cli::cli_abort(
@@ -54,6 +50,56 @@ render_pdf <- function(
   if (isTRUE(fancywrap)) {
     x <- fancywrap(x)
   }
+
+  # get the pdf engine and switch to the appropriate render function
+  engine <- match.arg(engine, c("latex"))
+
+  switch(
+    engine,
+    latex = render_pdf_latex(
+      x,
+      display_loc = display_loc,
+      ...
+    )
+  )
+
+}
+
+#' Render to pdf (latex)
+#'
+#' @param x `docorator` object
+#' @param display_loc optional path to save the output pdf to
+#' @param transform optional latex transformation function to apply to a gt latex string - valid for latex engine only
+#' @param header_latex optional .tex file of header latex - valid for latex engine only
+#' @param keep_tex Boolean indicating if to keep resulting .tex file from latex conversion. Defaults to FALSE. - valid for latex engine only
+#' @param escape_latex Boolean indicating if headers and footers of a gt table should be escaped with gt::escape_latex - valid for latex engine only
+#' @param quarto Boolean indicating whether to use Quarto as the rendering engine. Defaults to `FALSE`, which uses Rmarkdown to render. `r lifecycle::badge("deprecated")`
+#'
+#'
+#' @returns This function saves a pdf to a specified location
+#' @keywords internal
+#' @section Examples:
+#' ```r
+#' gt::gtcars |>
+#'   dplyr::slice_head(n = 10) |>
+#'   dplyr::select(mfr, model, year, msrp) |>
+#'   gt::gt(groupname_col = "mfr",
+#'          row_group_as_column = TRUE) |>
+#'   as_docorator(
+#'    header = fancyhead(fancyrow("Header 1"), fancyrow("Header 2")),
+#'    display_name = "mytbl") |>
+#'  render_pdf(engine = "latex")
+#' ```
+#'
+render_pdf_latex <- function(
+  x,
+  display_loc = NULL,
+  transform = NULL,
+  header_latex = NULL,
+  keep_tex = FALSE,
+  escape_latex = TRUE,
+  quarto = lifecycle::deprecated()
+) {
 
   # check transform is a function if not convert to NULL
   if (!is.null(transform) & !inherits(transform, "function")) {
@@ -99,8 +145,9 @@ render_pdf <- function(
 
   # set filename
   filename <- paste0(x$display_name, ".pdf")
-
-  if (quarto) {
+  
+  if (lifecycle::is_present(quarto)) {
+    lifecycle::deprecate_warn("0.7.1", "render_pdf(quarto = )", "render_pdf(engine = )")
     withr::with_envvar(
       new = c("DOCORATOR_RENDER_ENGINE" = "qmd"),
       render_pdf_qmd(x, display_loc, transform, header_latex, clean = !keep_tex)
@@ -139,104 +186,10 @@ render_pdf <- function(
   }
 }
 
-
-#' Render to rtf
-#'
-#' `r lifecycle::badge('experimental')`
-#'
-#' @param x `docorator` object
-#' @param display_loc path to save the output rtf to
-#' @param remove_unicode_ws Option to remove unicode white space from text.
-#' @param use_page_header If `TRUE` then all table headings will be migrated to the page header. See https://gt.rstudio.com/reference/tab_options.html#arg-page-header-use-tbl-headings
-#' @param version_check Boolean indicating whether to print a note if gt or ggplot versions dont match between the original docorator object and the one being used for rendering
-#'
-#' @details Option `remove_unicode_ws` serves as a workaround for this
-#'   [issue](https://github.com/rstudio/gt/issues/1437) in gt
-#'
-#' @returns This function saves an rtf to a specified location
-#' @export
-#'
-#' @section Examples:
-#'
-#' ```r
-#' gt::gtcars |>
-#'   dplyr::slice_head(n = 10) |>
-#'   dplyr::select(mfr, model, year, msrp) |>
-#'   gt::gt(groupname_col = "mfr",
-#'          row_group_as_column = TRUE) |>
-#'   as_docorator(
-#'    header = fancyhead(fancyrow("Header 1"), fancyrow("Header 2")),
-#'    display_name = "mytbl") |>
-#'  render_rtf()
-#' ```
-#'
-render_rtf <- function(
-  x,
-  display_loc = NULL,
-  remove_unicode_ws = TRUE,
-  use_page_header = FALSE,
-  version_check = TRUE
-) {
-  if (!inherits(x, "docorator")) {
-    cli::cli_abort(
-      "The {.arg {rlang::caller_arg(x)}} argument must be class docorator, not {.obj_type_friendly {x}}. See documentation for `as_docorator`.",
-      call = rlang::caller_env()
-    )
-  }
-
-  # check package versions
-  if (isTRUE(version_check)) {
-    check_pkg_version(x)
-  }
-
-  # if no path is given, use docorator path
-  if (is.null(display_loc)) {
-    display_loc <- x$display_loc %||% "."
-  }
-
-  # set name
-  filename <- paste0(x$display_name, ".rtf")
-
-  # convert outputs to gt for rtf render
-  gt <- prep_obj_rtf(x)
-
-  # page headers
-  gt <- apply_to_gt_group(
-    gt,
-    gt::tab_options,
-    list(
-      page.numbering = FALSE,
-      page.header.use_tbl_headings = use_page_header
-    )
-  )
-
-  # render rtf
-  doc <- gt::gtsave(gt, filename = filename, path = display_loc)
-
-  if (!is.null(doc)) {
-    if (remove_unicode_ws) {
-      doc_tmp <- readLines(doc)
-
-      doc_tmp_new <- gsub("\u00A0", " ", doc_tmp, perl = TRUE)
-
-      writeLines(
-        doc_tmp_new,
-        sep = "\n",
-        file.path(display_loc, filename)
-      )
-    }
-    cli::cli_alert_success(
-      "Document created at: {normalizePath(doc, winslash = \"/\")}"
-    )
-  }
-
-  # return docorator object for further renders
-  invisible(x)
-}
-
-
 #' Render to pdf (quarto)
-#'
+#' 
+#' `r lifecycle::badge("deprecated")`
+#' 
 #' @param x `docorator` object
 #' @param display_loc path to save the output pdf to
 #' @param transform optional latex transformation function to apply to a gt latex string
@@ -252,6 +205,8 @@ render_pdf_qmd <- function(
   header_latex = NULL,
   clean = TRUE
 ) {
+  lifecycle::deprecate_warn("0.7.1", "render_pdf_qmd()", "render_pdf()")
+
   if (!is.null(transform)) {
     cli::cli_warn(
       "The {.arg {rlang::caller_arg(transform)}} argument is not currently available for quarto rendered documents. Try `quarto = FALSE`",
