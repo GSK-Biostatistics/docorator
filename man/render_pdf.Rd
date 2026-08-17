@@ -7,7 +7,7 @@
 render_pdf(
   x,
   display_loc = NULL,
-  engine = c("latex"),
+  engine = c("latex", "html"),
   version_check = TRUE,
   fancywrap = TRUE,
   ...
@@ -18,7 +18,7 @@ render_pdf(
 
 \item{display_loc}{optional path to save the output pdf to}
 
-\item{engine}{character vector of rendering engines to use. Options are "latex" (default).}
+\item{engine}{character vector of rendering engines to use. Options are "latex" (default) and "html".}
 
 \item{version_check}{Boolean indicating whether to print a note if gt or ggplot versions dont match between the original docorator object and the one being used for rendering}
 
@@ -26,7 +26,8 @@ render_pdf(
 
 \item{...}{Additional arguments passed to the engine-specific render function.
 
-For \code{engine = "latex"}, see \code{\link[=render_pdf_latex]{render_pdf_latex()}} for supported arguments.}
+For \code{engine = "latex"}, see \code{\link[=render_pdf_latex]{render_pdf_latex()}} for supported arguments.
+For \code{engine = "html"}, see \code{\link[=render_pdf_html]{render_pdf_html()}} for supported arguments.}
 }
 \value{
 This function saves a pdf to a specified location

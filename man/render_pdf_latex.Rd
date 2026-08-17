@@ -2,7 +2,7 @@
 % Please edit documentation in R/render_pdf.R
 \name{render_pdf_latex}
 \alias{render_pdf_latex}
-\title{Render to pdf (latex)}
+\title{Render to pdf (LaTeX)}
 \usage{
 render_pdf_latex(
   x,
@@ -33,7 +33,7 @@ render_pdf_latex(
 This function saves a pdf to a specified location
 }
 \description{
-Render to pdf (latex)
+Render to pdf (LaTeX)
 }
 \section{Examples}{
 

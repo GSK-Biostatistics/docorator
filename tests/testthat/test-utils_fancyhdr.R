@@ -284,7 +284,7 @@ test_that("doc_pagenum renders correctly in different render engines", {
     right = doc_pagenum()
   ))
   rows_df <- purrr::map_dfr(fancyrows, as_tibble_fancyrow)
-  latex <- process_rows_pdf(rows_df, type = "head")
+  latex <- process_rows_latex(rows_df, type = "head")
   expect_true(grep("Page \\\\thepage", latex) > 0)
 
   docx_fpar <- process_rows_docx(fancyrows)
