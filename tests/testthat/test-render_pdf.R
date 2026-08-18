@@ -290,9 +290,6 @@ test_that("pipe together renders",{
 
 test_that("render non docorator object fails", {
 
-  skip_on_cran()
-  skip_on_ci()
-
   my_gt <- gt::exibble |>
     gt::gt(
       rowname_col = "row",

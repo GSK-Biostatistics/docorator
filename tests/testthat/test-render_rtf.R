@@ -146,3 +146,28 @@ test_that("render to rtf, lists of figures", {
   })
 
 })
+
+test_that("render non docorator object fails", {
+
+  my_gt <- gt::exibble |>
+    gt::gt(
+      rowname_col = "row",
+      groupname_col = "group"
+    )
+
+  expect_error(render_rtf(my_gt), "The `my_gt` argument must be class docorator, not a <gt_tbl> object. See documentation for `as_docorator`.")
+})
+
+test_that("display_loc can be passed to render_rtf", {
+  withr::with_tempdir({
+    dir.create("tempdir2")
+
+    suppressMessages(
+      "this is a string" |>
+        as_docorator(display_name = "string") |>
+        render_rtf(display_loc = "tempdir2")
+    )
+
+    expect_true(file.exists(file.path("tempdir2", "string.rtf")))
+  })
+})

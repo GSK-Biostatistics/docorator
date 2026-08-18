@@ -177,7 +177,6 @@ test_that("render docx works - gt_group", {
         any(),
       TRUE
     )
-  })
 
   # check both table contents are present - mpg is in first table, qsec is in second table
   expect_equal(
@@ -194,6 +193,8 @@ test_that("render docx works - gt_group", {
       any(),
     TRUE
   )
+    
+  })
 })
 
 test_that("render docx works - ggplot2", {
@@ -289,5 +290,30 @@ test_that("render docx works - list", {
         sum(na.rm = TRUE),
       2
     )
+  })
+})
+
+test_that("render non docorator object fails", {
+
+  my_gt <- gt::exibble |>
+    gt::gt(
+      rowname_col = "row",
+      groupname_col = "group"
+    )
+
+  expect_error(render_docx(my_gt), "The `my_gt` argument must be class docorator, not a <gt_tbl> object. See documentation for `as_docorator`.")
+})
+
+test_that("display_loc can be passed to render_docx", {
+  withr::with_tempdir({
+    dir.create("tempdir2")
+
+    suppressMessages(
+      "this is a string" |>
+        as_docorator(display_name = "string") |>
+        render_docx(display_loc = "tempdir2")
+    )
+
+    expect_true(file.exists(file.path("tempdir2", "string.docx")))
   })
 })
