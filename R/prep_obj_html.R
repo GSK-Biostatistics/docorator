@@ -30,6 +30,14 @@ prep_obj_html.default <- function(x, ...) {
 #' @rdname prep_obj_html
 #' @export
 #' @keywords internal
+prep_obj_html.character <- function(x, ...) {
+  lines <- paste0('<p style="text-align:center;">', x$display, '</p>', collapse = "\n")
+  paste0('<div style="text-align:center;">', "\n", lines, "\n", "</div>")
+}
+
+#' @rdname prep_obj_html
+#' @export
+#' @keywords internal
 prep_obj_html.gt_tbl <- function(x, ...) {
   gt::as_raw_html(x$display) 
 }
