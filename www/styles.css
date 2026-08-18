@@ -1,0 +1,41 @@
+/* css for docorator html-based outputs */
+
+body * {
+  margin: 0;
+  padding: 0;
+  font-family: Courier, 'Courier New', monospace;
+}
+
+/* Header/footer row: left / center / right layout  left is default so doesnt need to be specified*/
+.hf-row {
+  display: flex;
+  justify-content: space-between;
+  line-height: 1.4;
+}
+
+.hf-center {
+  text-align: center;
+  flex: 1;
+}
+
+.hf-right {
+  text-align: right;
+}
+
+/* PDF page layout */
+@page {
+  size: 11in 8.5in;
+  margin: 1.25in 1in;
+}
+
+/* Simulate landscape page in browser */
+@media screen {
+  body {
+    width: 11in;
+    height: 8.5in;
+    margin: 1in auto;
+    padding: 1.25in 1in;
+    background: white;
+    overflow-y: auto;
+  }
+}
