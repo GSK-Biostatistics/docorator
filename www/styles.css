@@ -13,6 +13,11 @@ body * {
   line-height: 1.4;
 }
 
+.hf-left {
+  text-align: left;
+  flex: 1;
+}
+
 .hf-center {
   text-align: center;
   flex: 1;
@@ -20,7 +25,26 @@ body * {
 
 .hf-right {
   text-align: right;
+  flex: 1;
 }
+
+/* Page layout table: stretch to full width/height so footer sits at page bottom */
+html, body { height: 100%; }
+
+.page-layout {
+  width: 100%;
+  height: 100%;
+  border-collapse: collapse;
+}
+
+.page-layout thead td,
+.page-layout tfoot td,
+.page-layout tbody td {
+  width: 100%;
+  display: block;
+}
+
+.page-layout tbody { height: 100%; }
 
 /* PDF page layout */
 @page {
@@ -33,6 +57,7 @@ body * {
   body {
     width: 11in;
     height: 8.5in;
+    box-sizing: border-box;
     margin: 1in auto;
     padding: 1.25in 1in;
     background: white;
