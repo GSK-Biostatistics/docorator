@@ -32,6 +32,13 @@
 #'
 render_html <- function(x, display_loc = NULL) {
  
+    if (!inherits(x, "docorator")) {
+      cli::cli_abort(
+        "The {.arg {rlang::caller_arg(x)}} argument must be class docorator, not {.obj_type_friendly {x}}. See documentation for `as_docorator`.",
+        call = rlang::caller_env()
+      )
+    }
+
   # if no path is given, use docorator path
   if (is.null(display_loc)) {
     display_loc <- x$display_loc %||% "."

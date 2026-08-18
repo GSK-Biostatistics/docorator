@@ -56,8 +56,9 @@ prep_obj_html.PNG <- function(x, ...) {
   # save the png to a temp location 
   temp <- tempfile(fileext = ".png", tmpdir = tempdir())
   png::writePNG(x$display$png, temp)
-  paste0('<img src="', knitr::image_uri(temp), '" style="max-width:100%;" />')
-
+  img_style <- paste0("width:", x$fig_dim[2], "in;height:", x$fig_dim[1], "in;")
+  img_tag <- paste0('<img src="', knitr::image_uri(temp), '" style="', img_style, '" />')
+  paste0('<div style="text-align:center;">', img_tag, '</div>')
 }
 
 #' @rdname prep_obj_html

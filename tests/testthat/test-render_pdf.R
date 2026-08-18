@@ -1,4 +1,4 @@
-test_that("render to pdf works (latex)", {
+test_that("render to pdf works", {
 
   skip_on_cran()
   skip_on_ci()
@@ -40,6 +40,7 @@ test_that("render to pdf works (latex)", {
   # quarto render with path supplied
   withr::with_tempdir({
 
+    rlang::local_options(lifecycle_verbosity = "quiet")
     dir.create("tempdir3")
 
     res <- suppressMessages( docorator |> render_pdf(
@@ -52,6 +53,7 @@ test_that("render to pdf works (latex)", {
 
   # quarto render with no path supplied
   withr::with_tempdir({
+    rlang::local_options(lifecycle_verbosity = "quiet")
     docorator <- as_docorator(
       x = my_gt,
       header = fancyhead(fancyrow("first line header"), fancyrow("second line header")),
@@ -67,9 +69,28 @@ test_that("render to pdf works (latex)", {
     expect_true(file.exists("my_first_gt.pdf"))
 
   })
+
+  # html engine render with no path supplied
+  withr::with_tempdir({
+    
+    res <- suppressMessages(docorator |> render_pdf(engine = "html"))
+
+    expect_true(file.exists("my_first_gt.pdf"))
+  })
+
+  # html engine render with path supplied
+  withr::with_tempdir({
+    dir.create("tempdir4")
+    res <- suppressMessages(docorator |> render_pdf(
+      engine = "html",
+      display_loc = "tempdir4"
+    ))
+
+    expect_true(file.exists(file.path("tempdir4", "my_first_gt.pdf")))
+  })
 })
 
-test_that("render to pdf, lists (latex)", {
+test_that("render to pdf, lists", {
 
   skip_on_cran()
   skip_on_ci()
@@ -117,6 +138,19 @@ test_that("render to pdf, lists (latex)", {
     # 2 pages
     expect_equal(pdftools::pdf_info("my_first_list.pdf")$pages,2)
     expect_equal(pdftools::pdf_info("my_first_ggplot_list.pdf")$pages,2)
+
+    # html engine
+    docorator$display_name <- "my_first_list_html"
+    docorator2$display_name <- "my_first_ggplot_list_html"
+    res <- suppressMessages( docorator |> render_pdf(engine = "html"))
+    res2 <- suppressMessages( docorator2 |> render_pdf(engine = "html"))
+
+    expect_true(file.exists("my_first_list_html.pdf"))
+    expect_true(file.exists("my_first_ggplot_list_html.pdf"))
+
+    # 2 pages
+    expect_equal(pdftools::pdf_info("my_first_list_html.pdf")$pages,2)
+    expect_equal(pdftools::pdf_info("my_first_ggplot_list_html.pdf")$pages,2)
   })
 
 })
@@ -135,7 +169,7 @@ test_that("render to pdf, lists - quarto", {
     ggplot2::geom_point()
 
   withr::with_tempdir({
-
+    rlang::local_options(lifecycle_verbosity = "quiet")
     docorator <- as_docorator(
       x = list(png_obj1, png_obj2),
       header = fancyhead(fancyrow("first line header"), fancyrow("second line header")),
@@ -207,7 +241,7 @@ test_that("render to pdf - transform (latex)", {
 
   # quarto render
   withr::with_tempdir({
-
+    rlang::local_options(lifecycle_verbosity = "quiet")
     docorator <- as_docorator(
       x = my_gt,
       header = fancyhead(fancyrow("first line header"), fancyrow("second line header")),
@@ -421,20 +455,6 @@ test_that("render to pdf works with brackets in headers/footers (latex)", {
     expect_true(file.exists("my_first_gt.pdf"))
   })
 
-
-  # # quarto render pdf - doesn't work
-  # withr::with_tempdir({
-
-  #   dir.create("tempdir2")
-
-  #   res <- suppressMessages( docorator |> render_pdf(
-  #     quarto = TRUE,
-  #     keep_tex = TRUE,
-  #     display_loc = "tempdir2"
-  #   )
-  #   )
-  #   expect_true(file.exists(file.path("tempdir2", "my_first_gt.pdf")))
-  # })
 
 })
 

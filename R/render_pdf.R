@@ -360,7 +360,9 @@ render_pdf_html <- function(x,
   }
 
   # if no path is given, use docorator path
-  display_loc <- x$display_loc %||% "."
+  if (is.null(display_loc)) {
+    display_loc <- x$display_loc %||% "."
+  }
   display_loc <- normalizePath(display_loc, winslash = "/")
 
   # set filename
