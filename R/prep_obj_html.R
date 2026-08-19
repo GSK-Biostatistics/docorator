@@ -76,6 +76,4 @@ prep_obj_html.list <- function(x, ...){
     paste0("<div", style, ">", prep_obj_html(x), "</div>")
   })
 
-  #TODO figure out why this is not resulting in page breaks in pdf
-
 }

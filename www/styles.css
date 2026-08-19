@@ -37,9 +37,9 @@ html, body { height: 100%; }
   border-collapse: collapse;
 }
 
-.page-layout thead td,
-.page-layout tfoot td,
-.page-layout tbody td {
+.page-layout > thead > tr > td,
+.page-layout > tfoot > tr > td,
+.page-layout > tbody > tr > td {
   width: 100%;
   display: block;
 }

@@ -455,3 +455,31 @@ test_that("render to pdf works with brackets in headers/footers (latex)", {
 
 })
 
+test_that("keep_html works as expected",{
+  skip_on_cran()
+  skip_on_ci()
+
+  withr::with_tempdir({
+    docorator <- as_docorator(
+      "string",
+      header = fancyhead(fancyrow("first line header"), fancyrow("second line header")),
+      footer = NULL,
+      display_name = "string",
+      save_object = FALSE
+    )
+
+    res <- suppressMessages( docorator |> render_pdf(engine = "html",keep_html = TRUE)
+    )
+
+    expect_true(file.exists("string.html"))
+    expect_true(file.exists("string.pdf"))
+
+
+    docorator$display_name <- "string2"
+    res <- suppressMessages( docorator |> render_pdf(engine = "html", keep_html = FALSE)
+    )
+
+    expect_false(file.exists("string2.html"))
+    expect_true(file.exists("string2.pdf"))
+  })
+})

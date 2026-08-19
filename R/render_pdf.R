@@ -369,14 +369,13 @@ render_pdf_html <- function(x,
   filename_html <- file.path(display_loc, paste0(x$display_name,".html"))
   filename_pdf <- file.path(display_loc, paste0(x$display_name,".pdf"))
 
-  # determine intermediate html path
+  # determine intermediate html path and render
   if(isFALSE(keep_html)) {
     on.exit(unlink(filename_html), add = TRUE)
-    # todo avoid the message if we dont want to keep HTML..
+    suppressMessages(render_html(x, display_loc = display_loc))
+  }else{
+    render_html(x, display_loc = display_loc)
   }
-
-  # render intermediate html
-  render_html(x, display_loc = display_loc)
 
   # convert to pdf via chromote
   b <- chromote::ChromoteSession$new()
