@@ -3,6 +3,7 @@
 \name{prep_obj_html}
 \alias{prep_obj_html}
 \alias{prep_obj_html.default}
+\alias{prep_obj_html.character}
 \alias{prep_obj_html.gt_tbl}
 \alias{prep_obj_html.gg}
 \alias{prep_obj_html.PNG}
@@ -12,6 +13,8 @@
 prep_obj_html(x, ...)
 
 \method{prep_obj_html}{default}(x, ...)
+
+\method{prep_obj_html}{character}(x, ...)
 
 \method{prep_obj_html}{gt_tbl}(x, ...)
 

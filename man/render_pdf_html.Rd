@@ -46,3 +46,4 @@ Invisibly returns the path to the created PDF file.
 }\if{html}{\out{</div>}}
 }
 
+\keyword{internal}

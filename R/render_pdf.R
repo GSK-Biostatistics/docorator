@@ -326,8 +326,7 @@ render_pdf_qmd <- function(
 #' @inheritParams render_pdf
 #' 
 #' @returns Invisibly returns the path to the created PDF file.
-#' @export
-#'
+#' @keywords internal
 #' @section Examples:
 #'
 #' ```r
