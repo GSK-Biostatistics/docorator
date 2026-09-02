@@ -6,26 +6,36 @@ body * {
   font-family: Courier, 'Courier New', monospace;
 }
 
-/* Header/footer row: left / center / right layout  left is default so doesnt need to be specified*/
+/* Header/footer row: independently anchored left / center / right layout */
 .hf-row {
-  display: flex;
-  justify-content: space-between;
+  position: relative;
+  height: 1.4em;
   line-height: 1.4;
 }
 
+.hf-left,
+.hf-center,
+.hf-right {
+  position: absolute;
+  top: 0;
+  max-width: none;
+  white-space: nowrap;
+}
+
 .hf-left {
+  left: 0;
   text-align: left;
-  flex: 1;
 }
 
 .hf-center {
+  left: 50%;
   text-align: center;
-  flex: 1;
+  transform: translateX(-50%);
 }
 
 .hf-right {
+  right: 0;
   text-align: right;
-  flex: 1;
 }
 
 /* Page layout table: stretch to full width/height so footer sits at page bottom */
