@@ -44,7 +44,7 @@ html, body { height: 100%; }
   display: block;
 }
 
-.page-layout tbody { height: 100%; }
+.page-layout > tbody { height: 100%; }
 
 /* PDF page layout */
 @page {
