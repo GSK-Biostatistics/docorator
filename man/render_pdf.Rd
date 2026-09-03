@@ -9,7 +9,6 @@ render_pdf(
   display_loc = NULL,
   engine = c("latex", "html"),
   version_check = TRUE,
-  fancywrap = TRUE,
   ...
 )
 }
@@ -21,8 +20,6 @@ render_pdf(
 \item{engine}{character vector of rendering engines to use. Options are "latex" (default) and "html".}
 
 \item{version_check}{Boolean indicating whether to print a note if gt or ggplot versions dont match between the original docorator object and the one being used for rendering}
-
-\item{fancywrap}{Boolean indicating if headers and footers should be split to fit the page. Defaults to \code{TRUE}. Note that only fancyrows with one \code{left}, \code{right} OR \code{center} element will be wrapped. \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}}
 
 \item{...}{Additional arguments passed to the engine-specific render function.
 

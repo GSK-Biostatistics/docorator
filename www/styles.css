@@ -8,33 +8,40 @@ body * {
 
 /* Header/footer row: independently anchored left / center / right layout */
 .hf-row {
-  position: relative;
-  height: 1.4em;
+  /* Contain floated left/right header items and expand if wrapped text adds lines. */
+  display: flow-root;
+  min-height: 1.4em;
   line-height: 1.4;
 }
 
 .hf-left,
 .hf-center,
 .hf-right {
-  position: absolute;
-  top: 0;
-  max-width: none;
-  white-space: nowrap;
+  /* Keep long header/footer text inside the page content box instead of clipping or overflowing. */
+  box-sizing: border-box;
+  display: block;
+  max-width: 100%;
+  white-space: normal;
+  overflow-wrap: anywhere;
 }
 
 .hf-left {
-  left: 0;
+  /* Float keeps left text anchored to the left margin while still allowing wrapping. */
+  float: left;
+  clear: left;
   text-align: left;
 }
 
 .hf-center {
-  left: 50%;
+  /* Auto inline margins preserve center alignment without absolute positioning. */
+  margin-inline: auto;
   text-align: center;
-  transform: translateX(-50%);
 }
 
 .hf-right {
-  right: 0;
+  /* Float keeps right text anchored to the right margin while still allowing wrapping. */
+  float: right;
+  clear: right;
   text-align: right;
 }
 

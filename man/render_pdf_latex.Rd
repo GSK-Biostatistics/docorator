@@ -7,6 +7,7 @@
 render_pdf_latex(
   x,
   display_loc = NULL,
+  fancywrap = TRUE,
   transform = NULL,
   header_latex = NULL,
   keep_tex = FALSE,
@@ -18,6 +19,8 @@ render_pdf_latex(
 \item{x}{\code{docorator} object}
 
 \item{display_loc}{optional path to save the output pdf to}
+
+\item{fancywrap}{Boolean indicating whether to wrap the header and footer text in a LaTeX \fbox{} command. Defaults to TRUE. - valid for latex engine only}
 
 \item{transform}{optional latex transformation function to apply to a gt latex string - valid for latex engine only}
 
