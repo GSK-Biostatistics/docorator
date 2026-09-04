@@ -20,7 +20,7 @@ render_pdf_latex(
 
 \item{display_loc}{optional path to save the output pdf to}
 
-\item{fancywrap}{Boolean indicating whether to wrap the header and footer text in a LaTeX \fbox{} command. Defaults to TRUE. - valid for latex engine only}
+\item{fancywrap}{Boolean indicating if headers and footers should be split to fit the page. Defaults to \code{TRUE}. Note that only fancyrows with one \code{left}, \code{right} OR \code{center} element will be wrapped. \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}}
 
 \item{transform}{optional latex transformation function to apply to a gt latex string - valid for latex engine only}
 

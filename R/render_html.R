@@ -5,8 +5,8 @@
 #' @param x `docorator` object
 #' @param display_loc optional path to save the output pdf to
 #'
-#' @returns Invisibly returns `file`. Called for its side effect of writing
-#'   an HTML file to disk.
+#' @returns Invisibly returns docorator object. 
+#'
 #' @export
 #'
 #' @section Examples:

@@ -69,7 +69,7 @@ render_pdf <- function(
 #'
 #' @param x `docorator` object
 #' @param display_loc optional path to save the output pdf to
-#' @param fancywrap Boolean indicating whether to wrap the header and footer text in a LaTeX \fbox{} command. Defaults to TRUE. - valid for latex engine only
+#' @param fancywrap Boolean indicating if headers and footers should be split to fit the page. Defaults to `TRUE`. Note that only fancyrows with one `left`, `right` OR `center` element will be wrapped. `r lifecycle::badge("experimental")`
 #' @param transform optional latex transformation function to apply to a gt latex string - valid for latex engine only
 #' @param header_latex optional .tex file of header latex - valid for latex engine only
 #' @param keep_tex Boolean indicating if to keep resulting .tex file from latex conversion. Defaults to FALSE. - valid for latex engine only
@@ -326,7 +326,7 @@ render_pdf_qmd <- function(
 #'   Increase if the table takes time to render. Defaults to `3`.
 #' @inheritParams render_pdf
 #' 
-#' @returns Invisibly returns the path to the created PDF file.
+#' @returns Invisibly returns docorator object
 #' @keywords internal
 #' @section Examples:
 #'

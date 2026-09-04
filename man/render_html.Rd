@@ -12,8 +12,7 @@ render_html(x, display_loc = NULL)
 \item{display_loc}{optional path to save the output pdf to}
 }
 \value{
-Invisibly returns \code{file}. Called for its side effect of writing
-an HTML file to disk.
+Invisibly returns docorator object.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}

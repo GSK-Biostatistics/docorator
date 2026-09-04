@@ -19,7 +19,7 @@ If \code{FALSE}, HTML is deleted after conversion.}
 Increase if the table takes time to render. Defaults to \code{3}.}
 }
 \value{
-Invisibly returns the path to the created PDF file.
+Invisibly returns docorator object
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
