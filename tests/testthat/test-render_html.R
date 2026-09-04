@@ -55,7 +55,20 @@ test_that("render html works - gt table", {
     suppressMessages(
       gt_tbl |>
         as_docorator(
-          display_name = "gt_tbl"
+          display_name = "gt_tbl",
+          header = fancyhead(
+          fancyrow(
+            left = "Left header"
+          ),
+          fancyrow(center = "Center header", right = "Right header")
+        ),
+        footer = fancyfoot(
+          fancyrow(
+            left = "Left footer",
+            center = "Center footer"
+          ),
+          fancyrow(right = "Right footer") 
+        )
         ) |>
         render_html()
     )
