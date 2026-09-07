@@ -402,7 +402,9 @@ render_pdf_html <- function(x,
     base64enc::base64decode() |>
     writeBin(con = filename_pdf)
 
-  cli::cli_alert_success("Document created at: {.path {normalizePath(filename_pdf, winslash = '/')}}")
+  if(file.exists(filename_pdf)){
+    cli::cli_alert_success("Document created at: {.path {normalizePath(filename_pdf, winslash = '/')}}")
+  }
 
   invisible(x)
 }

@@ -68,7 +68,7 @@ render_html <- function(x, display_loc = NULL) {
 
   fontsize_css <- paste0("body * { font-size: ", x$fontsize, "pt; }")
 
-  htmltools::save_html(
+  doc <- htmltools::save_html(
     htmltools::tagList(
       htmltools::tags$head(htmltools::HTML(paste0(
         "<style>", css, "\n", fontsize_css, "</style>"
@@ -78,8 +78,9 @@ render_html <- function(x, display_loc = NULL) {
     file = filename
   )
 
-
-  cli::cli_alert_success("Document created at: {.path {normalizePath(filename, winslash = '/')}}")
+  if(file.exists(filename)){
+      cli::cli_alert_success("Document created at: {.path {normalizePath(filename, winslash = '/')}}")
+  }
 
   invisible(x)
   }
