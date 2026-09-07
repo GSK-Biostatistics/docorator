@@ -46,7 +46,7 @@ prep_obj_html.gt_tbl <- function(x, ...) {
 #' @export
 #' @keywords internal
 prep_obj_html.gg <- function(x, ...) {
-  cli::cli_abort("ggplot objects are not supported for HTML output. Please ensure `convert_ggplot` is set to TRUE in `as_docorator()`.")
+  cli::cli_abort("ggplot objects are not supported for HTML output. Please ensure `convert_ggplot` is set to TRUE in `as_docorator()` for conversion to PNG instead.")
 }
 
 #' @rdname prep_obj_html
