@@ -12,8 +12,8 @@ render_pdf_html(x, display_loc = NULL, keep_html = FALSE, wait = 3)
 \item{display_loc}{optional path to save the output pdf to}
 
 \item{keep_html}{Whether to keep the intermediate HTML file. If \code{TRUE}
-(default), the HTML is saved alongside the PDF with the same base name.
-If \code{FALSE}, HTML is deleted after conversion.}
+the HTML is saved alongside the PDF with the same base name.
+If \code{FALSE} (default), HTML is deleted after conversion.}
 
 \item{wait}{Number of seconds to wait after page navigation before printing.
 Increase if the table takes time to render. Defaults to \code{3}.}

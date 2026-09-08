@@ -3,7 +3,7 @@
 #' `r lifecycle::badge("experimental")`
 #'
 #' @param x `docorator` object
-#' @param display_loc optional path to save the output pdf to
+#' @param display_loc optional path to save the output html to
 #'
 #' @returns Invisibly returns docorator object. 
 #'

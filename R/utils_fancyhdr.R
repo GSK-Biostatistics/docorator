@@ -402,7 +402,7 @@ process_rows_docx <- function(x, fontsize = 10) {
   fpar_list
 }
 
-#' Process list of `fancyrow` objects into character string containing latex code
+#' Process list of `fancyrow` objects into character string containing HTML
 #'
 #' @param x list of `fancyrow` objects
 #' @param type Text positioning in the header (`head`) or footer (`foot`) of
@@ -411,8 +411,15 @@ process_rows_docx <- function(x, fontsize = 10) {
 #' @return Character string
 #' @noRd
 process_rows_html <- function(x, type = c("head", "foot")) {
-
   type <- match.arg(type)
+
+  page_num_placeholder <- "_DOCORATOR_PAGE_PLACEHOLDER_"
+
+  if (any(x == page_num_placeholder, na.rm = TRUE)) {
+    cli::cli_inform(
+      "Page numbering with {.fun doc_pagenum} is not currently available for HTML rendering; removing it from the {type}er."
+    )
+  }
 
   x <- x |>
     dplyr::mutate(
@@ -420,8 +427,10 @@ process_rows_html <- function(x, type = c("head", "foot")) {
         as.character(x) |>
           # ignore pagenumber placeholder for html
           # TODO: figure this out for pdf_html
-          stringr::str_replace_all(stringr::fixed("_DOCORATOR_PAGE_PLACEHOLDER_"), "") |>
-          tidyr::replace_na("")
+          stringr::str_replace_all(stringr::fixed(page_num_placeholder), "") |>
+          tidyr::replace_na("") |> 
+          # escape html characters
+          htmltools::htmlEscape()
       })
     )
 

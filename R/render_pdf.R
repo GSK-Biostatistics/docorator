@@ -320,8 +320,8 @@ render_pdf_qmd <- function(
 #' `r lifecycle::badge("experimental")`
 #'
 #' @param keep_html Whether to keep the intermediate HTML file. If `TRUE`
-#'   (default), the HTML is saved alongside the PDF with the same base name.
-#'   If `FALSE`, HTML is deleted after conversion.
+#'   the HTML is saved alongside the PDF with the same base name.
+#'   If `FALSE` (default), HTML is deleted after conversion.
 #' @param wait Number of seconds to wait after page navigation before printing.
 #'   Increase if the table takes time to render. Defaults to `3`.
 #' @inheritParams render_pdf

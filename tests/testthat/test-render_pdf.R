@@ -481,5 +481,12 @@ test_that("keep_html works as expected",{
 
     expect_false(file.exists("string2.html"))
     expect_true(file.exists("string2.pdf"))
+
+    docorator$display_name <- "string3"
+    res <- suppressMessages( docorator |> render_pdf(engine = "html")
+    )
+
+    expect_false(file.exists("string3.html"))
+    expect_true(file.exists("string3.pdf"))
   })
 })

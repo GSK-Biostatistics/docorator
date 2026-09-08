@@ -9,7 +9,7 @@ render_html(x, display_loc = NULL)
 \arguments{
 \item{x}{\code{docorator} object}
 
-\item{display_loc}{optional path to save the output pdf to}
+\item{display_loc}{optional path to save the output html to}
 }
 \value{
 Invisibly returns docorator object.
