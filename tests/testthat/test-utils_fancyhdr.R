@@ -284,10 +284,39 @@ test_that("doc_pagenum renders correctly in different render engines", {
     right = doc_pagenum()
   ))
   rows_df <- purrr::map_dfr(fancyrows, as_tibble_fancyrow)
-  latex <- process_rows_pdf(rows_df, type = "head")
+  latex <- process_rows_latex(rows_df, type = "head")
   expect_true(grep("Page \\\\thepage", latex) > 0)
 
   docx_fpar <- process_rows_docx(fancyrows)
   expect_true((grepl("PAGE", docx_fpar[[1]]$chunks[[6]]$field)))
   expect_true((grepl("NUMPAGES", docx_fpar[[1]]$chunks[[8]]$field)))
+})
+
+test_that("HTML header and footer processing escapes special characters", {
+  fancyrows <- fancyhead(fancyrow(
+    left = "A & B < C",
+    right = "D > E & F"
+  ))
+  rows_df <- purrr::map_dfr(fancyrows, as_tibble_fancyrow)
+
+  html <- process_rows_html(rows_df, type = "head")
+
+  expect_true(stringr::str_detect(html, "A &amp; B &lt; C"))
+  expect_true(stringr::str_detect(html, "D &gt; E &amp; F"))
+})
+
+test_that("HTML header and footer processing warns and removes page numbers", {
+  fancyrows <- fancyfoot(fancyrow(
+    left = "Left text",
+    center = doc_pagenum(),
+    right = "Right text"
+  ))
+  rows_df <- purrr::map_dfr(fancyrows, as_tibble_fancyrow)
+
+  expect_snapshot(
+    html <- process_rows_html(rows_df, type = "foot")
+  )
+
+  expect_false(stringr::str_detect(html, "_DOCORATOR_PAGE_PLACEHOLDER_"))
+
 })

@@ -18,6 +18,7 @@ Imports:
     rlang,
     cli,
     dplyr,
+    htmltools,
     rstudioapi, 
     purrr,
     stringr,
@@ -30,7 +31,9 @@ Imports:
     quarto, 
     officer,
     polish, 
-    xml2
+    xml2,
+    chromote, 
+    base64enc
 Suggests: 
     rprojroot,
     testthat (>= 3.0.0),

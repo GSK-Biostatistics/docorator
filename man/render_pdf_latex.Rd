@@ -2,11 +2,12 @@
 % Please edit documentation in R/render_pdf.R
 \name{render_pdf_latex}
 \alias{render_pdf_latex}
-\title{Render to pdf (latex)}
+\title{Render to pdf (LaTeX)}
 \usage{
 render_pdf_latex(
   x,
   display_loc = NULL,
+  fancywrap = TRUE,
   transform = NULL,
   header_latex = NULL,
   keep_tex = FALSE,
@@ -18,6 +19,8 @@ render_pdf_latex(
 \item{x}{\code{docorator} object}
 
 \item{display_loc}{optional path to save the output pdf to}
+
+\item{fancywrap}{Boolean indicating if headers and footers should be split to fit the page. Defaults to \code{TRUE}. Note that only fancyrows with one \code{left}, \code{right} OR \code{center} element will be wrapped. \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}}
 
 \item{transform}{optional latex transformation function to apply to a gt latex string - valid for latex engine only}
 
@@ -33,7 +36,7 @@ render_pdf_latex(
 This function saves a pdf to a specified location
 }
 \description{
-Render to pdf (latex)
+Render to pdf (LaTeX)
 }
 \section{Examples}{
 

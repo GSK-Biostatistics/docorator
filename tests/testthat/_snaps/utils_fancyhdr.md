@@ -39,3 +39,10 @@
     Output
       [1] "\\fancyhead[L]{\\begin{tabular}[b]{@{}l@{}}{Page \\thepage\\ of \\pageref*{LastPage}}\\end{tabular}}\\fancyhead[C]{\\begin{tabular}[b]{@{}c@{}}{\\phantom{}}\\end{tabular}}\\fancyhead[R]{\\begin{tabular}[b]{@{}r@{}}{\\phantom{}}\\end{tabular}}"
 
+# HTML header and footer processing warns and removes page numbers
+
+    Code
+      html <- process_rows_html(rows_df, type = "foot")
+    Message
+      Page numbering with `doc_pagenum()` is not currently available for HTML rendering; removing it from the footer.
+
