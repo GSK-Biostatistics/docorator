@@ -8,9 +8,8 @@ Render to pdf
 render_pdf(
   x,
   display_loc = NULL,
-  engine = c("latex"),
+  engine = c("latex", "html"),
   version_check = TRUE,
-  fancywrap = TRUE,
   ...
 )
 ```
@@ -28,7 +27,7 @@ render_pdf(
 - engine:
 
   character vector of rendering engines to use. Options are "latex"
-  (default).
+  (default) and "html".
 
 - version_check:
 
@@ -36,18 +35,14 @@ render_pdf(
   dont match between the original docorator object and the one being
   used for rendering
 
-- fancywrap:
-
-  Boolean indicating if headers and footers should be split to fit the
-  page. Defaults to `TRUE`. Note that only fancyrows with one `left`,
-  `right` OR `center` element will be wrapped. **\[experimental\]**
-
 - ...:
 
   Additional arguments passed to the engine-specific render function.
 
   For `engine = "latex"`, see
   [`render_pdf_latex()`](https://GSK-Biostatistics.github.io/docorator/reference/render_pdf_latex.md)
+  for supported arguments. For `engine = "html"`, see
+  [`render_pdf_html()`](https://GSK-Biostatistics.github.io/docorator/reference/render_pdf_html.md)
   for supported arguments.
 
 ## Value

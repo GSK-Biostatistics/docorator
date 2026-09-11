@@ -6,7 +6,10 @@ Improvements \* Check that display objects are not empty before
 processing with as_docorator
 ([\#125](https://github.com/GSK-Biostatistics/docorator/issues/125)) \*
 Deprecate `render_pdf_qmd`
-([\#131](https://github.com/GSK-Biostatistics/docorator/issues/131))
+([\#131](https://github.com/GSK-Biostatistics/docorator/issues/131)) \*
+Added HTML output support with the new render_html() engine. \* Add HTML
+engine option to render_pdf for html-first pdf outputs.
+([\#101](https://github.com/GSK-Biostatistics/docorator/issues/101))
 
 ## docorator 0.7.0
 

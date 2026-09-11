@@ -5,19 +5,19 @@ Process headers/footers
 ## Usage
 
 ``` r
-hf_process(x, escape_latex = TRUE, fontsize = 10, engine = "pdf")
+hf_process(x, escape_latex = TRUE, fontsize = 10, engine = "latex")
 
 # Default S3 method
-hf_process(x, escape_latex = TRUE, fontsize = 10, engine = "pdf")
+hf_process(x, escape_latex = TRUE, fontsize = 10, engine = "latex")
 
 # S3 method for class 'character'
-hf_process(x, escape_latex = TRUE, fontsize = 10, engine = "pdf")
+hf_process(x, escape_latex = TRUE, fontsize = 10, engine = "latex")
 
 # S3 method for class 'fancyhead'
-hf_process(x, escape_latex = TRUE, fontsize = 10, engine = "pdf")
+hf_process(x, escape_latex = TRUE, fontsize = 10, engine = "latex")
 
 # S3 method for class 'fancyfoot'
-hf_process(x, escape_latex = TRUE, fontsize = fontsize, engine = "pdf")
+hf_process(x, escape_latex = TRUE, fontsize = fontsize, engine = "latex")
 ```
 
 ## Arguments

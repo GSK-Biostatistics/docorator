@@ -18,6 +18,8 @@
   **\[experimental\]** : Render to rtf
 - [`render_docx()`](https://GSK-Biostatistics.github.io/docorator/reference/render_docx.md)
   **\[experimental\]** : Render to docx
+- [`render_html()`](https://GSK-Biostatistics.github.io/docorator/reference/render_html.md)
+  **\[experimental\]** : Render to HTML
 
 ## Header and footer helpers
 

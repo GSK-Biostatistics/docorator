@@ -1,6 +1,6 @@
-# Render to pdf (latex)
+# Render to pdf (LaTeX)
 
-Render to pdf (latex)
+Render to pdf (LaTeX)
 
 ## Usage
 
@@ -8,6 +8,7 @@ Render to pdf (latex)
 render_pdf_latex(
   x,
   display_loc = NULL,
+  fancywrap = TRUE,
   transform = NULL,
   header_latex = NULL,
   keep_tex = FALSE,
@@ -25,6 +26,12 @@ render_pdf_latex(
 - display_loc:
 
   optional path to save the output pdf to
+
+- fancywrap:
+
+  Boolean indicating if headers and footers should be split to fit the
+  page. Defaults to `TRUE`. Note that only fancyrows with one `left`,
+  `right` OR `center` element will be wrapped. **\[experimental\]**
 
 - transform:
 
