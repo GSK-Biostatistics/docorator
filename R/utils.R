@@ -348,7 +348,7 @@ prep_display <- function(x, fig_dim = c(5,8), convert_ggplot = TRUE, fontsize = 
   x
 }
 
-#' Check that the display object is not empty
+#' Check that the display object is not empty and, for a list, has no NULL elements
 #' @param x object passed to `as_docorator`
 #' @noRd
 #'
@@ -358,5 +358,19 @@ check_display <- function(x) {
       "The {.arg {rlang::caller_arg(x)}} argument cannot be empty or NULL. Please provide a valid display object.",
       call = rlang::caller_env()
     )
+  }
+
+  if (identical(class(x), "list")) {
+    null_pos <- which(vapply(x, is.null, logical(1)))
+    if (length(null_pos) > 0) {
+      cli::cli_abort(
+        c(
+          "The {.arg {rlang::caller_arg(x)}} list contains NULL at {cli::qty(length(null_pos))}position{?s} {null_pos}.",
+          "i" = "Remove NULL elements before calling {.fn as_docorator}, for example:",
+          " " = "{.code my_list <- Filter(Negate(is.null), my_list)}"
+        ),
+        call = rlang::caller_env()
+      )
+    }
   }
 }

@@ -108,3 +108,56 @@ test_that("Create docorator object with invalid display errors",{
   "The `x` argument cannot be empty or NULL. Please provide a valid display object.")
 
 })
+
+test_that("NULL elements in a list of displays error with a cleanup hint", {
+
+  tbl <- gt::gt(gt::exibble)
+
+  # NULL in the middle used to silently duplicate the following element
+  expect_error(
+    as_docorator(
+      x = list(tbl, NULL, tbl),
+      display_name = "null_in_list",
+      save_object = FALSE
+    ),
+    "contains NULL .* 2"
+  )
+
+  # all NULL positions are reported, and the message shows how to fix it
+  expect_error(
+    as_docorator(
+      x = list(NULL, tbl, NULL),
+      display_name = "null_in_list",
+      save_object = FALSE
+    ),
+    "1 and 3"
+  )
+  expect_error(
+    as_docorator(
+      x = list(tbl, NULL),
+      display_name = "null_in_list",
+      save_object = FALSE
+    ),
+    "Filter(Negate(is.null)",
+    fixed = TRUE
+  )
+
+  # lists without NULL elements are unaffected
+  expect_no_error(
+    as_docorator(
+      x = list(tbl, tbl),
+      display_name = "no_null_in_list",
+      save_object = FALSE
+    )
+  )
+
+  # NA is a valid element and is not flagged
+  expect_no_error(
+    as_docorator(
+      x = list(tbl, NA, tbl),
+      display_name = "na_in_list",
+      save_object = FALSE
+    )
+  )
+
+})
