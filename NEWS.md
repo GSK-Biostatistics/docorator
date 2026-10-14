@@ -1,7 +1,7 @@
 # docorator (development version)
 Improvements
 * Check that display objects are not empty before processing with as_docorator (#125)
-* `as_docorator()` now errors, with a cleanup hint, if a list of displays contains NULL elements. Previously a NULL silently duplicated the next element (or errored obscurely).
+* `as_docorator()` now removes NULL elements from a list of displays and shows a message. Previously a NULL silently duplicated the next element (or errored obscurely).
 * Deprecate `render_pdf_qmd` (#131)
 * Added HTML output support with the new render_html() engine. 
 * Add HTML engine option to render_pdf for html-first pdf outputs. (#101)

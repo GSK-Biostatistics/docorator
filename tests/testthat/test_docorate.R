@@ -109,37 +109,49 @@ test_that("Create docorator object with invalid display errors",{
 
 })
 
-test_that("NULL elements in a list of displays error with a cleanup hint", {
+test_that("NULL elements in a list of displays are removed with a message", {
 
   tbl <- gt::gt(gt::exibble)
 
   # NULL in the middle used to silently duplicate the following element
-  expect_error(
-    as_docorator(
+  expect_message(
+    doc <- as_docorator(
       x = list(tbl, NULL, tbl),
       display_name = "null_in_list",
       save_object = FALSE
     ),
-    "contains NULL .* 2"
+    "Removed 1 NULL element"
+  )
+  expect_length(doc$display, 2)
+
+  # leading, trailing and multiple NULLs are all removed
+  expect_message(
+    doc <- as_docorator(
+      x = list(NULL, tbl, NULL, tbl, NULL),
+      display_name = "null_in_list",
+      save_object = FALSE
+    ),
+    "Removed 3 NULL elements"
+  )
+  expect_length(doc$display, 2)
+
+  # a list of only NULLs ends up empty and errors
+  expect_error(
+    suppressMessages(as_docorator(
+      x = list(NULL, NULL),
+      display_name = "all_null",
+      save_object = FALSE
+    )),
+    "cannot be empty or NULL"
   )
 
-  # all NULL positions are reported, and the message shows how to fix it
-  expect_error(
+  # lists without NULL elements are unaffected and give no message
+  expect_no_message(
     as_docorator(
-      x = list(NULL, tbl, NULL),
-      display_name = "null_in_list",
+      x = list(tbl, tbl),
+      display_name = "no_null_in_list",
       save_object = FALSE
-    ),
-    "1 and 3"
-  )
-  expect_error(
-    as_docorator(
-      x = list(tbl, NULL),
-      display_name = "null_in_list",
-      save_object = FALSE
-    ),
-    "Filter(Negate(is.null)",
-    fixed = TRUE
+    )
   )
 
   # lists without NULL elements are unaffected

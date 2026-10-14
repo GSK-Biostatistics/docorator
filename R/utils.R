@@ -348,7 +348,30 @@ prep_display <- function(x, fig_dim = c(5,8), convert_ggplot = TRUE, fontsize = 
   x
 }
 
-#' Check that the display object is not empty and, for a list, has no NULL elements
+#' Remove NULL elements from a list of displays
+#'
+#' A NULL element in a list would otherwise be silently duplicated or error
+#' during scaling, so NULLs are dropped and the user is notified.
+#' @param x object passed to `as_docorator`
+#' @noRd
+#'
+remove_null_displays <- function(x) {
+  if (!identical(class(x), "list")) {
+    return(x)
+  }
+
+  is_null <- vapply(x, is.null, logical(1))
+  if (any(is_null)) {
+    cli::cli_inform(
+      "Removed {sum(is_null)} NULL element{?s} from the list of displays."
+    )
+    x <- x[!is_null]
+  }
+
+  x
+}
+
+#' Check that the display object is not empty
 #' @param x object passed to `as_docorator`
 #' @noRd
 #'
@@ -358,19 +381,5 @@ check_display <- function(x) {
       "The {.arg {rlang::caller_arg(x)}} argument cannot be empty or NULL. Please provide a valid display object.",
       call = rlang::caller_env()
     )
-  }
-
-  if (identical(class(x), "list")) {
-    null_pos <- which(vapply(x, is.null, logical(1)))
-    if (length(null_pos) > 0) {
-      cli::cli_abort(
-        c(
-          "The {.arg {rlang::caller_arg(x)}} list contains NULL at {cli::qty(length(null_pos))}position{?s} {null_pos}.",
-          "i" = "Remove NULL elements before calling {.fn as_docorator}, for example:",
-          " " = "{.code my_list <- Filter(Negate(is.null), my_list)}"
-        ),
-        call = rlang::caller_env()
-      )
-    }
   }
 }
