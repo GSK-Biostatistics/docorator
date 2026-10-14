@@ -4,6 +4,7 @@ Improvements
 * Deprecate `render_pdf_qmd` (#131)
 * Added HTML output support with the new render_html() engine. 
 * Add HTML engine option to render_pdf for html-first pdf outputs. (#101)
+* Fix HTML-based PDF output adding an extra last page that contained only the header and footer, caused by the browser's default body margin.
 
 # docorator 0.7.0
 Improvements
