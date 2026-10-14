@@ -63,6 +63,9 @@ html, body { height: 100%; }
 
 .page-layout > tbody { height: 100%; }
 
+/* gt footnotes/source notes live in the table's tfoot; print them once after the last row instead of repeating on every page */
+.gt_table tfoot { display: table-row-group; }
+
 /* PDF page layout */
 @page {
   size: 11in 8.5in;

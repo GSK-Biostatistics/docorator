@@ -4,6 +4,7 @@ Improvements
 * Deprecate `render_pdf_qmd` (#131)
 * Added HTML output support with the new render_html() engine. 
 * Add HTML engine option to render_pdf for html-first pdf outputs. (#101)
+* Fix HTML-based PDF output repeating gt footnotes and source notes at the bottom of every page; they now print once, after the last row.
 
 # docorator 0.7.0
 Improvements

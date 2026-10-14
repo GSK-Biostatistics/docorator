@@ -490,3 +490,33 @@ test_that("keep_html works as expected",{
     expect_true(file.exists("string3.pdf"))
   })
 })
+
+test_that("html pdf prints footnotes and source notes once, after the last row", {
+  skip_on_cran()
+  skip_on_ci()
+
+  # a table long enough to need several pages
+  my_gt <- data.frame(label = paste("Row", seq_len(80)), value = seq_len(80)) |>
+    gt::gt() |>
+    gt::tab_footnote("Footnote text.", locations = gt::cells_column_labels(columns = "value")) |>
+    gt::tab_source_note("Source note text.")
+
+  withr::with_tempdir({
+    docorator <- as_docorator(
+      my_gt,
+      header = fancyhead(fancyrow(left = "Header")),
+      footer = NULL,
+      display_name = "footnotes",
+      save_object = FALSE
+    )
+
+    suppressMessages(render_pdf(docorator, engine = "html", wait = 1))
+
+    txt <- pdftools::pdf_text("footnotes.pdf")
+    expect_gt(length(txt), 1)
+    expect_equal(sum(stringr::str_count(txt, "Footnote text\\.")), 1)
+    expect_equal(sum(stringr::str_count(txt, "Source note text\\.")), 1)
+    # and they sit on the last page
+    expect_match(txt[length(txt)], "Footnote text\\.")
+  })
+})
