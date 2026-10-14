@@ -324,6 +324,11 @@ render_pdf_qmd <- function(
 #'   If `FALSE` (default), HTML is deleted after conversion.
 #' @param wait Number of seconds to wait after page navigation before printing.
 #'   Increase if the table takes time to render. Defaults to `3`.
+#' @param orphan_rows Number of final table rows to keep together with whatever
+#'   would otherwise be left alone on the last page. When a table's last page
+#'   would hold only blank spacer rows, the closing border, or the footnotes,
+#'   this many non-blank rows are moved onto that page. Defaults to `2`;
+#'   use `0` to turn this off.
 #' @inheritParams render_pdf
 #' 
 #' @returns Invisibly returns docorator object
@@ -352,7 +357,8 @@ render_pdf_qmd <- function(
 render_pdf_html <- function(x,
                             display_loc = NULL,
                             keep_html = FALSE,
-                            wait = 3) {
+                            wait = 3,
+                            orphan_rows = 2) {
 
   if (!inherits(x, "docorator")) {
     cli::cli_abort("The {.arg {rlang::caller_arg(x)}} argument must be class docorator, not {.obj_type_friendly {x}}. See documentation for `as_docorator`.",
@@ -385,6 +391,10 @@ render_pdf_html <- function(x,
   b$Page$navigate(url, wait_ = TRUE)
   Sys.sleep(wait)
 
+  if (orphan_rows > 0) {
+    html_move_orphan_rows(b, orphan_rows)
+  }
+
   result <- b$Page$printToPDF(
     marginTop = 0,
     marginBottom = 0,
@@ -407,4 +417,60 @@ render_pdf_html <- function(x,
   }
 
   invisible(x)
+}
+
+# Measures each gt table in print layout. If a table's last page would contain
+# only trailing blank rows, the closing border or the footnotes (an "orphan"),
+# the last `n` non-blank rows are pushed onto that page with `break-before: page`.
+# Footnotes and source notes print once after the last row (see inst/www/styles.css),
+# so they are measured as the tail of the last page, not as a per-page footer.
+# NOTE: page size (11in x 8.5in, margins 1.25in/1in) mirrors inst/www/styles.css;
+# 864 x 576 px is that page area at 96 dpi.
+html_move_orphan_rows <- function(b, n) {
+  js <- "(function(N){
+    const PAGE_H = 576;
+    const lay = document.querySelector('.page-layout');
+    if (!lay) return '[]';
+    const C = PAGE_H - lay.querySelector(':scope > thead').getBoundingClientRect().height
+                     - lay.querySelector(':scope > tfoot').getBoundingClientRect().height;
+    const blank = r => r.innerText.replace(/[\\s\\u00a0]+/g, '') === '';
+    const res = [];
+    document.querySelectorAll('.page-layout > tbody table.gt_table').forEach((tbl, ti) => {
+      const wr = tbl.parentElement.getBoundingClientRect();
+      const th = tbl.tHead ? tbl.tHead.getBoundingClientRect().height : 0;
+      const rows = [...tbl.tBodies].flatMap(b => [...b.rows]);
+      if (!rows.length) return;
+      const r0 = rows[0].getBoundingClientRect();
+      const headExtra = r0.top - wr.top - th;
+      let page = 0, start = r0.top; const firsts = [0];
+      rows.forEach((r, i) => {
+        const b = r.getBoundingClientRect();
+        if ((b.bottom - start) + th + (page === 0 ? headExtra : 0) > C) { page++; start = b.top; firsts.push(i); }
+      });
+      const first = firsts[firsts.length - 1];
+      const lb = rows[rows.length - 1].getBoundingClientRect();
+      const usedRows = (lb.bottom - start) + th + (page === 0 ? headExtra : 0);
+      // everything after the last row: footnotes / source notes and the closing border
+      const total = usedRows + (wr.bottom - lb.bottom);
+      const lastPageBlank = rows.slice(first).every(blank);
+      // 3px tolerance: the browser can break a page a fraction of a pixel before the measured limit
+      const borderSpill = usedRows <= C && total > C - 3;
+      if (!((page > 0 && lastPageBlank) || borderSpill)) return;
+      let cnt = 0, idx = rows.length;
+      while (idx > 0 && cnt < N) { idx--; if (!blank(rows[idx])) cnt++; }
+      const prevFirst = firsts.length > 1 && lastPageBlank ? firsts[firsts.length - 2] : first;
+      if (idx > prevFirst) { rows[idx].style.breakBefore = 'page'; res.push({table: ti, movedFrom: idx}); }
+    });
+    return JSON.stringify(res);
+  })"
+
+  b$Emulation$setDeviceMetricsOverride(width = 864, height = 576, deviceScaleFactor = 1, mobile = FALSE)
+  b$Emulation$setEmulatedMedia(media = "print")
+  Sys.sleep(0.3)
+  b$Runtime$evaluate(paste0(js, "(", as.integer(n), ")"))
+  b$Emulation$clearDeviceMetricsOverride()
+  b$Emulation$setEmulatedMedia(media = "")
+  Sys.sleep(0.2)
+
+  invisible(NULL)
 }

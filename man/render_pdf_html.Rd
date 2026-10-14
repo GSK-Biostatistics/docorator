@@ -4,7 +4,13 @@
 \alias{render_pdf_html}
 \title{Render to PDF (HTML)}
 \usage{
-render_pdf_html(x, display_loc = NULL, keep_html = FALSE, wait = 3)
+render_pdf_html(
+  x,
+  display_loc = NULL,
+  keep_html = FALSE,
+  wait = 3,
+  orphan_rows = 2
+)
 }
 \arguments{
 \item{x}{\code{docorator} object}
@@ -17,6 +23,12 @@ If \code{FALSE} (default), HTML is deleted after conversion.}
 
 \item{wait}{Number of seconds to wait after page navigation before printing.
 Increase if the table takes time to render. Defaults to \code{3}.}
+
+\item{orphan_rows}{Number of final table rows to keep together with whatever
+would otherwise be left alone on the last page. When a table's last page
+would hold only blank spacer rows, the closing border, or the footnotes,
+this many non-blank rows are moved onto that page. Defaults to \code{2};
+use \code{0} to turn this off.}
 }
 \value{
 Invisibly returns docorator object

@@ -542,3 +542,38 @@ test_that("html pdf of a short table does not add a header/footer-only last page
     expect_equal(pdftools::pdf_info("short.pdf")$pages, 1)
   })
 })
+
+test_that("orphan_rows keeps data rows on the last page of an html pdf", {
+  skip_on_cran()
+  skip_on_ci()
+
+  make_gt <- function(n) {
+    # one blank spacer row at the end, as in typical summary tables
+    df <- data.frame(
+      label = c(paste("Row", sprintf("%02d", seq_len(n))), ""),
+      value = c(seq_len(n), NA)
+    )
+    gt::gt(df) |> gt::sub_missing(missing_text = "")
+  }
+
+  last_page_data_rows <- function(n, ...) {
+    docorator <- as_docorator(
+      make_gt(n),
+      header = fancyhead(fancyrow(left = "Header")),
+      footer = NULL,
+      display_name = paste0("orphan_", n),
+      save_object = FALSE
+    )
+    suppressMessages(render_pdf(docorator, engine = "html", wait = 1, ...))
+    txt <- pdftools::pdf_text(paste0("orphan_", n, ".pdf"))
+    sum(grepl("Row", strsplit(txt[length(txt)], "\n")[[1]]))
+  }
+
+  withr::with_tempdir({
+    # lengths around a page boundary: the last page must never hold only
+    # blank rows / the closing border
+    for (n in 30:34) {
+      expect_gt(last_page_data_rows(n), 0)
+    }
+  })
+})
