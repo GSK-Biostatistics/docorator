@@ -39,7 +39,27 @@ prep_obj_html.character <- function(x, ...) {
 #' @export
 #' @keywords internal
 prep_obj_html.gt_tbl <- function(x, ...) {
-  gt::as_raw_html(x$display) 
+  gt::as_raw_html(drop_default_table_borders(x$display))
+}
+
+# gt frames every table with a default outer top and bottom border. In HTML these
+# show up as extra rules above the title and below the last row that the LaTeX
+# output does not have. Drop them unless the user has restyled them.
+drop_default_table_borders <- function(gt_obj) {
+  opts <- gt_obj[["_options"]]
+  is_default <- function(side) {
+    get <- function(what) {
+      unlist(opts$value[opts$parameter == paste0("table_border_", side, "_", what)])
+    }
+    identical(get("style"), "solid") && identical(get("color"), "#A8A8A8")
+  }
+  if (is_default("top")) {
+    gt_obj <- gt::tab_options(gt_obj, table.border.top.style = "none")
+  }
+  if (is_default("bottom")) {
+    gt_obj <- gt::tab_options(gt_obj, table.border.bottom.style = "none")
+  }
+  gt_obj
 }
 
 #' @rdname prep_obj_html

@@ -4,6 +4,7 @@ Improvements
 * Deprecate `render_pdf_qmd` (#131)
 * Added HTML output support with the new render_html() engine. 
 * Add HTML engine option to render_pdf for html-first pdf outputs. (#101)
+* Remove gt's default outer table borders in HTML output, so HTML and HTML-based PDF outputs no longer show extra rules compared to LaTeX PDF output.
 
 # docorator 0.7.0
 Improvements
