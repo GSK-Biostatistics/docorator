@@ -520,3 +520,25 @@ test_that("html pdf prints footnotes and source notes once, after the last row",
     expect_match(txt[length(txt)], "Footnote text\\.")
   })
 })
+
+test_that("html pdf of a short table does not add a header/footer-only last page", {
+  skip_on_cran()
+  skip_on_ci()
+
+  my_gt <- data.frame(label = paste("Row", seq_len(5)), value = seq_len(5)) |>
+    gt::gt()
+
+  withr::with_tempdir({
+    docorator <- as_docorator(
+      my_gt,
+      header = fancyhead(fancyrow(left = "Header")),
+      footer = fancyfoot(fancyrow(left = "Footer")),
+      display_name = "short",
+      save_object = FALSE
+    )
+
+    suppressMessages(render_pdf(docorator, engine = "html", wait = 1))
+
+    expect_equal(pdftools::pdf_info("short.pdf")$pages, 1)
+  })
+})

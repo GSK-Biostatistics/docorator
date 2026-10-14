@@ -48,6 +48,9 @@ body * {
 /* Page layout table: stretch to full width/height so footer sits at page bottom */
 html, body { height: 100%; }
 
+/* The browser's default 8px body margin makes the 100%-high page layout taller than one printed page, adding an extra page with only the header and footer. The screen view sets its own margin below. */
+body { margin: 0; }
+
 .page-layout {
   width: 100%;
   height: 100%;
