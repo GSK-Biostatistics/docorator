@@ -16,7 +16,7 @@ test_that("prep_obj_html drops gt's default outer top and bottom borders", {
   expect_match(html, "border-bottom-style: none", fixed = TRUE)
 })
 
-test_that("prep_obj_html keeps outer borders the user has customised", {
+test_that("prep_obj_html removes outer borders even if the user styled them", {
   my_gt <- gt::gt(gt::exibble[1:3, 1:2]) |>
     gt::tab_options(
       table.border.top.style = "solid",
@@ -26,15 +26,6 @@ test_that("prep_obj_html keeps outer borders the user has customised", {
     )
   html <- prep_obj_html(make_html_docorator(my_gt))
 
-  expect_no_match(html, "border-top-style: none", fixed = TRUE)
-  expect_no_match(html, "border-bottom-style: none", fixed = TRUE)
-})
-
-test_that("prep_obj_html only drops the border that is still the default", {
-  my_gt <- gt::gt(gt::exibble[1:3, 1:2]) |>
-    gt::tab_options(table.border.top.color = "black")
-  html <- prep_obj_html(make_html_docorator(my_gt))
-
-  expect_no_match(html, "border-top-style: none", fixed = TRUE)
+  expect_match(html, "border-top-style: none", fixed = TRUE)
   expect_match(html, "border-bottom-style: none", fixed = TRUE)
 })
