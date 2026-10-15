@@ -348,38 +348,34 @@ prep_display <- function(x, fig_dim = c(5,8), convert_ggplot = TRUE, fontsize = 
   x
 }
 
-#' Remove NULL elements from a list of displays
+#' Check that the display object is valid
 #'
-#' A NULL element in a list would otherwise be silently duplicated or error
-#' during scaling, so NULLs are dropped and the user is notified.
+#' Removes NULL elements from a list of displays, then checks that the display
+#' is not empty.
 #' @param x object passed to `as_docorator`
-#' @noRd
-#'
-remove_null_displays <- function(x) {
-  if (!identical(class(x), "list")) {
-    return(x)
-  }
-
-  is_null <- vapply(x, is.null, logical(1))
-  if (any(is_null)) {
-    cli::cli_inform(
-      "Removed {sum(is_null)} NULL element{?s} from the list of displays."
-    )
-    x <- x[!is_null]
-  }
-
-  x
-}
-
-#' Check that the display object is not empty
-#' @param x object passed to `as_docorator`
+#' @return `x`, with any NULL list elements removed
 #' @noRd
 #'
 check_display <- function(x) {
+  arg <- rlang::caller_arg(x)
+
+  # a NULL in a list would be silently duplicated or error during scaling
+  if (identical(class(x), "list")) {
+    is_null <- vapply(x, is.null, logical(1))
+    if (any(is_null)) {
+      cli::cli_inform(
+        "Removed {sum(is_null)} NULL element{?s} from the list of displays."
+      )
+      x <- x[!is_null]
+    }
+  }
+
   if(rlang::is_empty(x)) {
     cli::cli_abort(
-      "The {.arg {rlang::caller_arg(x)}} argument cannot be empty or NULL. Please provide a valid display object.",
+      "The {.arg {arg}} argument cannot be empty or NULL. Please provide a valid display object.",
       call = rlang::caller_env()
     )
   }
+
+  x
 }

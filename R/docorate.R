@@ -182,8 +182,7 @@ as_docorator <- function(
   # check inputs
   check_fancyhdr(header, chr_ok = TRUE)
   check_fancyhdr(footer)
-  x <- remove_null_displays(x)
-  check_display(x)
+  x <- check_display(x)
 
   # prep displays for render
   x <- prep_display(
