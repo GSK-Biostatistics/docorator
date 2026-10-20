@@ -169,7 +169,7 @@ render_pdf_latex <- function(
       output_dir = display_loc,
       output_options = list(
         keep_tex = keep_tex,
-        includes = if (!is.null(header_file)) rmarkdown::includes(in_header = header_file)
+        includes = rmarkdown::includes(in_header = header_file)
       ),
       params = list(
         x = x,
