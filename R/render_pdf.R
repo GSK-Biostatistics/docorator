@@ -124,6 +124,7 @@ render_pdf_latex <- function(
   template_folder <- file.path(temp_dir, "template")
 
   # copy tex header to temp directory and rename if one exists
+  header_file <- NULL
   if (!is.null(header_latex)) {
     if (file.exists(header_latex) && tools::file_ext(header_latex) == "tex") {
       file_name <- basename(header_latex)
@@ -137,6 +138,7 @@ render_pdf_latex <- function(
         file.path(template_folder, file_name),
         file.path(template_folder, "header.tex")
       )
+      header_file <- normalizePath(file.path(template_folder, "header.tex"), winslash = "/", mustWork = TRUE)
     } else {
       cli::cli_warn(
         "The header_latex argument must point to a valid .tex file. No header options applied.",
@@ -165,7 +167,10 @@ render_pdf_latex <- function(
       file.path(temp_dir, "template", "template.Rmd"),
       output_file = filename,
       output_dir = display_loc,
-      output_options = list(keep_tex = keep_tex),
+      output_options = list(
+        keep_tex = keep_tex,
+        includes = if (!is.null(header_file)) rmarkdown::includes(in_header = header_file)
+      ),
       params = list(
         x = x,
         header = hf_process(x$header, escape_latex = escape_latex),

@@ -5,6 +5,7 @@ Improvements
 * Added HTML output support with the new render_html() engine. 
 * Add HTML engine option to render_pdf for html-first pdf outputs. (#101)
 * Remove NULL values from lists of displays to prevent unexpected behaviour downstream
+* Fix bug where header latex can't be found during the latex render (#146)
 
 # docorator 0.7.0
 Improvements
