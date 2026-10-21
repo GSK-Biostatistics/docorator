@@ -17,7 +17,6 @@ header-includes:
   - \usepackage{fancyhdr, lastpage}
   - \usepackage{booktabs, longtable, colortbl, array, multirow, anyfontsize}
   - \usepackage[labelformat=empty]{caption} 
-  - \IfFileExists{header.tex}{\input{header.tex}}{}
 fig_crop: FALSE
 ---
 
