@@ -9,9 +9,12 @@ Deprecate `render_pdf_qmd`
 ([\#131](https://github.com/GSK-Biostatistics/docorator/issues/131)) \*
 Added HTML output support with the new render_html() engine. \* Add HTML
 engine option to render_pdf for html-first pdf outputs.
-([\#101](https://github.com/GSK-Biostatistics/docorator/issues/101)) \*
-Remove NULL values from lists of displays to prevent unexpected
-behaviour downstream
+([\#101](https://github.com/GSK-Biostatistics/docorator/issues/101))
+
+Bug Fixes \* Remove NULL values from lists of displays to prevent
+unexpected behaviour downstream \* Fix bug where header latex can’t be
+found during the latex render
+([\#146](https://github.com/GSK-Biostatistics/docorator/issues/146))
 
 ## docorator 0.7.0
 
