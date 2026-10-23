@@ -1,12 +1,13 @@
 Package: docorator
 Title: Docorate (Decorate + Output) Displays
-Version: 0.7.0.9000
+Version: 0.8.0
 Authors@R: 
     c(
       person(given = "Shannon", family = "Haughton", email = "shannon.l.haughton@gsk.com", role = c("aut", "cre")),
-      person(given = "Becca", family = "Krouse", email = "becca.z.krouse@gsk.com", role = c("aut")),
-      person(given = "Seongbin", family = "Hong", email = "seongbin.x.hong@gsk.com", role = c("aut")),
-      person("Dragoș", "Moldovan-Grünfeld", , "dragos.v.moldovan-grunfeld@gsk.com", role = "aut"),
+      person(given = "Becca", family = "Krouse", email = "becca.z.krouse@gsk.com", role = "aut"),
+      person(given = "Dragoș", family = "Moldovan-Grünfeld", email =  "dragos.v.moldovan-grunfeld@gsk.com", role = "aut"),
+      person(given = "Seongbin", family = "Hong", email = "seongbin.x.hong@gsk.com", role = "ctb"),
+      person(given = "Dmytro", family = "Syzonenko", email = "dmytro.x.syzonenko@gsk.com", role = "ctb"),
       person("GlaxoSmithKline Research & Development Limited", role = c("cph", "fnd")))
 Description: A framework for creating production outputs. Users can frame a table, listing, or figure with headers and footers and save to an output file. Stores an intermediate 'docorator' object for reproducibility and rendering to multiple output types.
 License: Apache License 2.0
