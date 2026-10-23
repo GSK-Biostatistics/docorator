@@ -1,6 +1,8 @@
 # Changelog
 
-## docorator (development version)
+## docorator 0.8.0
+
+CRAN release: 2026-10-21
 
 Improvements \* Check that display objects are not empty before
 processing with as_docorator

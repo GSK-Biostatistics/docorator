@@ -6,9 +6,11 @@
 
 - **Becca Krouse**. Author.
 
-- **Seongbin Hong**. Author.
-
 - **Dragoș Moldovan-Grünfeld**. Author.
+
+- **Seongbin Hong**. Contributor.
+
+- **Dmytro Syzonenko**. Contributor.
 
 - **GlaxoSmithKline Research & Development Limited**. Copyright holder,
   funder.
@@ -18,14 +20,14 @@
 Source:
 [`DESCRIPTION`](https://github.com/GSK-Biostatistics/docorator/blob/main/DESCRIPTION)
 
-Haughton S, Krouse B, Hong S, Moldovan-Grünfeld D (2026). *docorator:
-Docorate (Decorate + Output) Displays*. R package version 0.7.0.9000,
+Haughton S, Krouse B, Moldovan-Grünfeld D (2026). *docorator: Docorate
+(Decorate + Output) Displays*. R package version 0.8.0,
 <https://GSK-Biostatistics.github.io/docorator/>.
 
     @Manual{,
       title = {docorator: Docorate (Decorate + Output) Displays},
-      author = {Shannon Haughton and Becca Krouse and Seongbin Hong and Dragoș Moldovan-Grünfeld},
+      author = {Shannon Haughton and Becca Krouse and Dragoș Moldovan-Grünfeld},
       year = {2026},
-      note = {R package version 0.7.0.9000},
+      note = {R package version 0.8.0},
       url = {https://GSK-Biostatistics.github.io/docorator/},
     }
